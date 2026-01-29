@@ -320,7 +320,7 @@ export default function FrameworkPage() {
           <div className="rounded-2xl border border-gray-200 bg-gradient-to-br from-slate-50 to-white p-8 shadow-sm">
             <div className="grid gap-4 sm:grid-cols-2">
               {[
-                isChina ? '提交您的AI实践到竞技场竞争' : 'Submit your AI practice to compete in the Arena',
+                isChina ? '提交您的AI实践到擂台竞争' : 'Submit your AI practice to compete in the Arena',
                 isChina ? '对现有方案投票并提供反馈' : 'Vote and provide feedback on existing solutions',
                 isChina ? '在GitHub上贡献代码和改进' : 'Contribute code and improvements on GitHub',
                 isChina ? '与社区分享您的经验' : 'Share your experience with the community',
@@ -351,7 +351,7 @@ export default function FrameworkPage() {
               href={`/${locale}/arena`}
               className="inline-flex items-center justify-center gap-2 h-11 px-6 text-base font-medium transition-all duration-fast bg-blue-600 hover:bg-blue-700 text-white rounded-button"
             >
-              {isChina ? '浏览竞技场' : 'Browse Arena'}
+              {isChina ? '浏览擂台' : 'Browse Arena'}
               <ArrowRight className="h-5 w-5" />
             </Link>
             <Link

@@ -1,6 +1,6 @@
 # RWAI Arena - Real-World AI Best Practices Platform
 
-一个展示AI最佳实践的开源平台，通过"竞技场"机制验证和推荐真实场景下的AI解决方案。
+一个展示AI最佳实践的开源平台，通过"擂台"机制验证和推荐真实场景下的AI解决方案。
 
 ## 技术栈
 

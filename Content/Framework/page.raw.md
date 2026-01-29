@@ -126,7 +126,7 @@ Each AI practice is evaluated across four dimensions: Quality, Efficiency, Cost,
 
 ### Submit Your AI Practice
 **English**: Submit your AI practice to compete in the Arena
-**Chinese**: 提交您的AI实践到竞技场竞争
+**Chinese**: 提交您的AI实践到擂台竞争
 
 ### Vote and Provide Feedback
 **English**: Vote and provide feedback on existing solutions
@@ -145,7 +145,7 @@ Each AI practice is evaluated across four dimensions: Quality, Efficiency, Cost,
 ## Section 6: Ready to Get Started?
 
 ### CTA Buttons
-- **Primary**: Browse Arena（浏览竞技场）
+- **Primary**: Browse Arena（浏览擂台）
 - **Secondary**: Contact Us（联系我们）
 
 ---

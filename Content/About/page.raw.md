@@ -109,7 +109,7 @@ RWAI（Real-World AI，现实世界AI）是由清华大学和牛津大学研究�
 
 ### Milestones（里程碑）
 - **2024 Q1**: Project inception（项目启动）
-- **2024 Q3**: First Arena launch（首个竞技场上线）
+- **2024 Q3**: First Arena launch（首个擂台上线）
 - **2024 Q4**: 10 verified practices（10个验证过的实践）
 - **2025 Q1**: Public platform launch（公开平台上线）
 

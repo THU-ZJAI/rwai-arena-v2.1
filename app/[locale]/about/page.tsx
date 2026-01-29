@@ -278,7 +278,7 @@ export default function AboutPage() {
               href={`/${locale}/arena`}
               className="inline-flex items-center justify-center gap-2 h-14 px-8 text-lg font-medium transition-all duration-fast bg-blue-600 hover:bg-blue-700 text-white rounded-button w-full sm:w-auto font-semibold"
             >
-              {isChina ? '浏览竞技场' : 'Browse Arena'}
+              {isChina ? '浏览擂台' : 'Browse Arena'}
             </Link>
             <a
               href="https://github.com/THU-ZJAI/Real-World-AI"

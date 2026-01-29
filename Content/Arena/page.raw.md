@@ -4,7 +4,7 @@
 
 ### Page Header
 **Title**: AI Best Practices Arena
-**Chinese**: AI最佳实践竞技场
+**Chinese**: AI最佳实践擂台
 
 **Subtitle**: Discover and verify the best AI implementations
 **Chinese**: 发现并验证最佳AI实现方案
@@ -96,7 +96,7 @@
 
 ### No Results Message
 **English**: No arenas found matching your filters.
-**Chinese**: 未找到匹配的竞技场。
+**Chinese**: 未找到匹配的擂台。
 
 ### Load More Button
 **English**: Load More

@@ -104,12 +104,80 @@ export async function getArenaContent(
  * Get homepage section content
  * @param section - Section name (hero, approach, practice-includes, etc.)
  * @param locale - Locale
+ * @deprecated Use getHomepageSectionContent instead
  */
 export async function getHomepageContent(
   section: string,
   locale: string
 ): Promise<ContentFile | null> {
   return getContentFile('Homepage', section, locale);
+}
+
+/**
+ * Section header names per locale. Used so .zh.md can use Chinese headers (content quality).
+ * Callers pass the logical section key (e.g. 'Hero Section'); we look up the header for the locale.
+ */
+const HOMEPAGE_SECTION_HEADERS: Record<string, Record<string, string>> = {
+  'Hero Section': { en: 'Hero Section', zh: '英雄区' },
+  'Featured Arenas Section': { en: 'Featured Arenas Section', zh: '精选实践区' },
+  'Industries Section': { en: 'Industries Section', zh: '行业区' },
+  'Approach Section': { en: 'Approach Section', zh: '方法区' },
+  'Practice Includes Section': { en: 'Practice Includes Section', zh: '实践包含区' },
+  'Case Studies Section': { en: 'Case Studies Section', zh: '案例研究区' },
+  'Trust Section': { en: 'Trust Section', zh: '信任区' },
+  'Final CTA Section': { en: 'Final CTA Section', zh: '最终行动区' },
+};
+
+/**
+ * Get homepage section content from consolidated homepage file.
+ * Uses locale-appropriate section headers so .zh.md can have Chinese-only content (quality checklist).
+ * @param section - Logical section key (Hero Section, Featured Arenas Section, etc.)
+ * @param locale - Locale
+ */
+export async function getHomepageSectionContent(
+  section: string,
+  locale: string
+): Promise<ContentFile | null> {
+  const contentFile = await getContentFile('Homepage', 'homepage', locale);
+  if (!contentFile) return null;
+
+  const sectionHeader =
+    HOMEPAGE_SECTION_HEADERS[section]?.[locale] ?? section;
+  const escaped = sectionHeader.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const sectionRegex = new RegExp(
+    `## ${escaped}[\\s\\S]*?(?=##\\s|$)`,
+    'i'
+  );
+  const sectionMatch = contentFile.content.match(sectionRegex);
+
+  if (sectionMatch) {
+    return { content: sectionMatch[0] };
+  }
+
+  return null;
+}
+
+/**
+ * Parse homepage section content and return key-value pairs
+ */
+export function parseHomepageSectionContent(
+  content: string
+): Record<string, string> {
+  const result: Record<string, string> = {};
+  const lines = content.split('\n');
+
+  for (const line of lines) {
+    if (line.trim().startsWith('- **')) {
+      const match = line.match(/-\s*\*\*([^*]+)\*\*\s*[:：]\s*(.+)/);
+      if (match) {
+        const key = match[1].trim();
+        const value = match[2].trim();
+        result[key] = value;
+      }
+    }
+  }
+
+  return result;
 }
 
 /**
