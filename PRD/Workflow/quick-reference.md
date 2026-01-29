@@ -695,7 +695,7 @@ Arena详情页在手机上显示不正常：
       │                              │                                │
       │  ① 请求审查 / Request review  │                                │
       ├─────────────────────────────►│  ② 运行检查
-      │                              │  参考 PRD/quality-checklist.md
+      │                              │  参考 PRD/QA/quality-checklist.md
       │                              ├────────────────────────────────►│  ③ 审查报告
       │                              │◄────────────────────────────────┤  决定修复
       │                              │                                │
@@ -711,7 +711,7 @@ Arena详情页在手机上显示不正常：
 ```
 请帮我做一次全面的质量审查：
 
-参考 PRD/quality-checklist.md 中的检查项，重点检查：
+参考 PRD/QA/quality-checklist.md 中的检查项，重点检查：
 1. 双语内容完整性
 2. 响应式设计
 3. 所有链接是否正常
@@ -732,11 +732,11 @@ Arena详情页在手机上显示不正常：
 
 | 检查项 / Check Item | 参考 / Reference |
 |:-----|:-----|
-| 双语内容完整性 | `PRD/quality-checklist.md` §1 |
-| 视觉设计一致性 | `PRD/quality-checklist.md` §2 |
-| 组件实现规范 | `PRD/quality-checklist.md` §3 |
-| 响应式设计 | `PRD/quality-checklist.md` §4 |
-| 性能和可访问性 | `PRD/quality-checklist.md` §5 |
+| 双语内容完整性 | `PRD/QA/quality-checklist.md` §1 |
+| 视觉设计一致性 | `PRD/QA/quality-checklist.md` §2 |
+| 组件实现规范 | `PRD/QA/quality-checklist.md` §3 |
+| 响应式设计 | `PRD/QA/quality-checklist.md` §4 |
+| 性能和可访问性 | `PRD/QA/quality-checklist.md` §5 |
 
 ---
 
@@ -761,7 +761,7 @@ Arena详情页在手机上显示不正常：
 │  PRD/Architecture/site-structure.md  ← 了解网站架构                          │
 │  PRD/Design/*.md                   ← 了解设计规范                            │
 │  PRD/Workflow/*.md                 ← 了解协作流程                            │
-│  PRD/quality-checklist.md          ← 质量检查清单                            │
+│  PRD/QA/quality-checklist.md          ← 质量检查清单                            │
 │                                                                              │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │ Claude操作的文件 / Files Claude Handles (Technical)                          │
