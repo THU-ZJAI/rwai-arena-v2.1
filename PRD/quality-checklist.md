@@ -10,6 +10,7 @@
 ## Checklist Overview
 
 This checklist covers all aspects we've encountered during development:
+- ✅ **CRITICAL**: Source of Truth Verification (PRD/Content as single source)
 - ✅ Bilingual content integrity
 - ✅ Visual design consistency
 - ✅ Component implementation
@@ -350,6 +351,58 @@ This checklist covers all aspects we've encountered during development:
 
 ## 6. Content Management Workflow
 
+### 6.0 Source of Truth Verification ✅ **CRITICAL**
+
+> **Principle**: Team-managed documentation (PRD/ and Content/) is ALWAYS the source of truth. No hardcoded content, text, or magic values in code.
+
+- [ ] **No Hardcoded Content in Components**
+  - [ ] Search component files for hardcoded strings: `app/**/*.tsx`, `components/**/*.tsx`
+  - [ ] Verify NO Chinese or English text directly in JSX/TSX (except for ARIA labels with proper t() function)
+  - [ ] Check for hardcoded labels, buttons, headings, descriptions in components
+  - [ ] All user-facing content MUST come from `Content/*.md` files
+  - [ ] Example to check: `<h1>Which AI Actually Works?</h1>` → Should be from content file
+
+- [ ] **No Hardcoded Design Values**
+  - [ ] Search for magic numbers: colors (`#155EEF`), sizes (`width: 375px`), spacing (`p-24` without Tailwind)
+  - [ ] Verify design tokens match PRD/Design/ specifications
+  - [ ] Colors use semantic names from `PRD/Design/color-system.md`
+  - [ ] Typography uses values from `PRD/Design/typography.md`
+  - [ ] Component specs match `PRD/Design/component-library.md`
+
+- [ ] **Content File as Single Source**
+  - [ ] For each component displaying content, verify it reads from `Content/` files
+  - [ ] No duplicate content in code AND Content files
+  - [ ] `lib/data.ts` entries must have corresponding `Content/Arena/[id]/` directories
+  - [ ] Missing Content directory should cause build error, not silent fallback
+
+- [ ] **PRD Design Documentation Sync**
+  - [ ] Implementation matches `PRD/Design/layout-specs.md`
+  - [ ] Component props and styles match `PRD/Design/component-library.md`
+  - [ ] If code differs from PRD, either update PRD first OR document why exception exists
+  - [ ] All visual changes MUST have corresponding PRD update
+
+- [ ] **Automated Verification Commands**
+  ```bash
+  # Run these checks to verify no hardcoded content:
+  # 1. Find hardcoded Chinese in components
+  grep -r "[\u4e00-\u9fa5]" app/ components/ --include="*.tsx" --include="*.ts"
+  # Should return minimal results (only comments, console.log for debugging)
+
+  # 2. Find hardcoded English strings in components
+  grep -r '">[A-Z][a-zA-Z\s]{10,}<"' app/ components/ --include="*.tsx"
+  # Should return minimal results (aria-labels, data-testid only)
+
+  # 3. Verify all arenas in lib/data.ts have content directories
+  # (Claude should provide verification script)
+  ```
+
+- [ ] **Pre-Deployment Source of Truth Check**
+  - [ ] All new content added to `Content/*.raw.md` files
+  - [ ] All design changes documented in `PRD/Design/*.md` files
+  - [ ] `npm run sync-content` run successfully
+  - [ ] No TODO comments with content placeholder text
+  - [ ] No `// FIXME: hardcoded content` comments remaining
+
 ### 6.1 Content Updates ✅
 
 - [ ] **Adding new content**
@@ -527,7 +580,15 @@ This checklist covers all aspects we've encountered during development:
 
 ### Final Checks Before Deploy ✅
 
-- [ ] All checklist items above completed
+**CRITICAL GATE - Source of Truth Verification:**
+- [ ] **Section 6.0 (Source of Truth)**: ALL items checked - No hardcoded content in code
+- [ ] All content originates from `Content/*.raw.md` files
+- [ ] All design specs documented in `PRD/Design/` files
+- [ ] No magic values or hardcoded strings in components
+- [ ] `lib/data.ts` entries match `Content/Arena/` directories
+
+**Standard Checks:**
+- [ ] All other checklist items above completed
 - [ ] Build successful (`npm run build`)
 - [ ] No console errors in browser
 - [ ] All user flows tested
