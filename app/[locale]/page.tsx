@@ -1,10 +1,13 @@
 import { Button, Badge } from '@/components/ui';
 import { arenas, industries, categories } from '@/lib/data';
 import { Arena } from '@/lib/types';
-import { CheckCircle2, Target, Trophy, Users, Star, ArrowRight, Building2, ShoppingCart, GraduationCap, HeartPulse, Zap, Factory } from 'lucide-react';
+import { CheckCircle2, Target, Trophy, Users, Star, ArrowRight, Building2, ShoppingCart, GraduationCap, HeartPulse, Zap, Factory, Building } from 'lucide-react';
 import Link from 'next/link';
 import { getHomepageSectionContent, parseHomepageSectionContent } from '@/lib/content';
 import { Suspense } from 'react';
+import Image from 'next/image';
+import { ParticlesBackground } from '@/components/effects/particles-background';
+import { ParticleNebulaBackground } from '@/components/effects/particle-nebula-background';
 
 // Helper function to get localized labels (fallback to content files for consistency)
 function getLabel(locale: string, key: string): string {
@@ -28,6 +31,9 @@ export default async function HomePage({
     <div className="w-full">
       <Suspense fallback={<HeroSectionSkeleton />}>
         <HeroSection locale={locale} />
+      </Suspense>
+      <Suspense fallback={<PartnersSectionSkeleton />}>
+        <PartnersCarouselSection locale={locale} />
       </Suspense>
       <Suspense fallback={<SectionSkeleton />}>
         <FeaturedArenasSection locale={locale} />
@@ -87,6 +93,23 @@ function SectionSkeleton() {
   );
 }
 
+function PartnersSectionSkeleton() {
+  return (
+    <section className="py-12 bg-white border-y border-gray-100">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-8">
+          <div className="h-6 bg-gray-200 rounded w-48 mx-auto"></div>
+        </div>
+        <div className="flex gap-16 justify-center">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <div key={i} className="w-40 h-20 bg-gray-200 rounded-lg"></div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /**
  * Parse hero content from markdown file
  */
@@ -117,7 +140,8 @@ async function HeroSection({ locale }: { locale: string }) {
   const contentFile = await getHomepageSectionContent('Hero Section', locale);
   if (!contentFile) {
     return (
-      <section className="relative overflow-hidden bg-gradient-to-b from-bg-secondary to-bg-primary py-section">
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#0a0a1a] via-[#1a1a3a] to-[#0f0f2a] py-section">
+        <ParticlesBackground />
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-red-500">Error: Hero Section content not found for locale "{locale}". Please run sync-content or check Content/Homepage/homepage.{locale}.md</p>
         </div>
@@ -127,36 +151,164 @@ async function HeroSection({ locale }: { locale: string }) {
   const content = parseHeroContent(contentFile.content);
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-bg-secondary to-bg-primary py-section">
+    <section className="relative overflow-hidden bg-gradient-to-br from-[#0a0a1a] via-[#1a1a3a] to-[#0f0f2a] py-section">
+      <ParticlesBackground />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center">
-          <p className="text-sm font-medium text-text-secondary mb-6">
+          <p className="text-sm font-medium text-gray-300 mb-6 hero-animate hero-animate-delay-100">
             {content.badges}
           </p>
-          <h1 className="text-hero text-text-primary mb-6 max-w-4xl mx-auto leading-tight">
+          <h1 className="text-hero text-white mb-6 max-w-4xl mx-auto leading-tight hero-animate hero-animate-delay-200 hero-glow">
             {content.title}
           </h1>
-          <p className="text-h2 text-text-primary mb-6 font-semibold">
+          <p className="text-h2 text-gray-100 mb-6 font-semibold hero-animate hero-animate-delay-300">
             {content.subtitle}
           </p>
-          <p className="text-body-lg text-text-secondary max-w-2xl mx-auto mb-10">
+          <p className="text-body-lg text-gray-300 max-w-2xl mx-auto mb-10 hero-animate hero-animate-delay-400">
             {content.description}
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center hero-animate hero-animate-delay-500">
             <Link href={`/${locale}/arena`}>
-              <Button size="large" variant="primary">
+              <Button size="large" variant="primary" className="bg-blue-600 hover:bg-blue-700 text-white">
                 {content.primaryCta}
               </Button>
             </Link>
             <Link href={`/${locale}/about`}>
-              <Button size="large" variant="secondary">
+              <Button size="large" variant="secondary" className="border-purple-500 text-purple-300 hover:bg-purple-500/10">
                 {content.secondaryCta}
               </Button>
             </Link>
           </div>
         </div>
       </div>
+
+      <style>{`
+        @keyframes fadeUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .hero-glow {
+          text-shadow: 0 0 20px rgba(59, 130, 246, 0.5),
+                       0 0 40px rgba(59, 130, 246, 0.3),
+                       0 0 60px rgba(168, 85, 247, 0.2);
+        }
+
+        .hero-animate {
+          opacity: 0;
+          animation: fadeUp 0.8s ease-out forwards;
+        }
+
+        .hero-animate-delay-100 { animation-delay: 0.1s; }
+        .hero-animate-delay-200 { animation-delay: 0.2s; }
+        .hero-animate-delay-300 { animation-delay: 0.3s; }
+        .hero-animate-delay-400 { animation-delay: 0.4s; }
+        .hero-animate-delay-500 { animation-delay: 0.5s; }
+      `}</style>
     </section>
+  );
+}
+
+/**
+ * Partners Logo Carousel Section
+ */
+async function PartnersCarouselSection({ locale }: { locale: string }) {
+  const partners = [
+    { id: '1', name: 'Partner 1', logo: '/partners/logo1.png' },
+    { id: '2', name: 'Partner 2', logo: '/partners/logo2.png' },
+    { id: '3', name: 'Partner 3', logo: '/partners/logo3.png' },
+    { id: '4', name: 'Partner 4', logo: '/partners/logo4.png' },
+    { id: '5', name: 'Partner 5', logo: '/partners/logo5.png' },
+    { id: '6', name: 'Partner 6', logo: '/partners/logo6.png' },
+  ];
+
+  const title = locale === 'zh' ? '合作伙伴' : 'Partners';
+
+  return (
+    <>
+      <section className="py-12 bg-white border-y border-gray-100">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          {/* Title */}
+          <div className="text-center mb-8">
+            <p className="text-xl font-semibold text-gray-400">{title}</p>
+          </div>
+
+          {/* Carousel Container */}
+          <div className="relative overflow-hidden">
+            {/* Gradient Masks */}
+            <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-white to-transparent z-10"></div>
+            <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-white to-transparent z-10"></div>
+
+            {/* Scrolling Track */}
+            <div className="flex animate-scroll">
+              {/* First set of logos */}
+              {partners.map((partner) => (
+                <div
+                  key={partner.id}
+                  className="flex-shrink-0 w-32 h-16 sm:w-40 sm:h-20 mx-8 flex items-center justify-center opacity-50 hover:opacity-100 hover:scale-110 transition-all duration-300 cursor-pointer"
+                >
+                  <Image
+                    src={partner.logo}
+                    alt={partner.name}
+                    width={160}
+                    height={80}
+                    className="object-contain max-w-full max-h-full"
+                  />
+                </div>
+              ))}
+
+              {/* Duplicate set for seamless infinite scroll */}
+              {partners.map((partner) => (
+                <div
+                  key={`${partner.id}-duplicate`}
+                  className="flex-shrink-0 w-32 h-16 sm:w-40 sm:h-20 mx-8 flex items-center justify-center opacity-50 hover:opacity-100 hover:scale-110 transition-all duration-300 cursor-pointer"
+                >
+                  <Image
+                    src={partner.logo}
+                    alt={partner.name}
+                    width={160}
+                    height={80}
+                    className="object-contain max-w-full max-h-full"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Global Styles for Animation */}
+      <style>{`
+        @keyframes scroll {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+
+        .animate-scroll {
+          animation: scroll 40s linear infinite;
+        }
+
+        .animate-scroll:hover {
+          animation-play-state: paused;
+        }
+
+        @media (max-width: 768px) {
+          .animate-scroll {
+            animation-duration: 30s;
+          }
+        }
+      `}</style>
+    </>
   );
 }
 
@@ -172,8 +324,9 @@ async function FeaturedArenasSection({ locale }: { locale: string }) {
   const subtitle = parsed['Subtitle'];
 
   return (
-    <section className="py-section bg-bg-primary">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section className="relative py-section overflow-hidden">
+      <ParticleNebulaBackground />
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-h1 text-text-primary mb-4">{title}</h2>
           <p className="text-body-lg text-text-secondary">
@@ -570,6 +723,7 @@ async function FinalCtaSection({ locale }: { locale: string }) {
   const title = parsed['Title'];
   const description = parsed['Description'];
   const primaryButton = parsed['Primary Button'];
+  const secondaryButton = parsed['Secondary Button'];
   const betaNote = parsed['Beta Note'];
 
   return (
@@ -585,7 +739,7 @@ async function FinalCtaSection({ locale }: { locale: string }) {
             {primaryButton}
           </Button>
           <Button size="large" variant="secondary" className="border-white text-white hover:bg-white/10">
-            GitHub
+            {secondaryButton}
           </Button>
         </div>
 

@@ -10,36 +10,36 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           {/* Brand */}
           <div className="col-span-1">
-            <h3 className="text-lg font-bold text-primary mb-4">RWAI Arena</h3>
+            <h3 className="text-lg font-bold text-primary mb-4">{t('brand')}</h3>
             <p className="text-sm text-text-secondary">
-              Real-World AI Arena - Finding the best AI practices for real-world scenarios.
+              {t('brandDescription')}
             </p>
           </div>
 
           {/* Links */}
           <div>
-            <h4 className="text-sm font-semibold text-text-primary mb-4">Platform</h4>
+            <h4 className="text-sm font-semibold text-text-primary mb-4">{t('platform')}</h4>
             <ul className="space-y-2">
               <li>
                 <a href="/arena" className="text-sm text-text-secondary hover:text-primary transition-colors">
-                  Arena
+                  {t('arena')}
                 </a>
               </li>
               <li>
                 <a href="/framework" className="text-sm text-text-secondary hover:text-primary transition-colors">
-                  Framework
+                  {t('framework')}
                 </a>
               </li>
               <li>
                 <a href="/faq" className="text-sm text-text-secondary hover:text-primary transition-colors">
-                  FAQ
+                  {t('faq')}
                 </a>
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-sm font-semibold text-text-primary mb-4">Community</h4>
+            <h4 className="text-sm font-semibold text-text-primary mb-4">{t('community')}</h4>
             <ul className="space-y-2">
               <li>
                 <a
@@ -48,19 +48,27 @@ export function Footer() {
                   rel="noopener noreferrer"
                   className="text-sm text-text-secondary hover:text-primary transition-colors"
                 >
-                  GitHub
+                  {t('github')}
                 </a>
               </li>
               <li>
                 <a href="/about" className="text-sm text-text-secondary hover:text-primary transition-colors">
-                  About Us
+                  {t('about')}
+                </a>
+              </li>
+              <li>
+                <a
+                  href="mailto:contactmx@163.com"
+                  className="text-sm text-text-secondary hover:text-primary transition-colors"
+                >
+                  {t('contactUs')}
                 </a>
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-sm font-semibold text-text-primary mb-4">Legal</h4>
+            <h4 className="text-sm font-semibold text-text-primary mb-4">{t('legal')}</h4>
             <ul className="space-y-2">
               <li>
                 <a href="/privacy" className="text-sm text-text-secondary hover:text-primary transition-colors">
@@ -85,7 +93,7 @@ export function Footer() {
             className="flex items-center gap-2 text-text-secondary hover:text-primary transition-colors"
           >
             <Github className="w-5 h-5" />
-            <span className="text-sm">Follow on GitHub</span>
+            <span className="text-sm">{t('followOnGitHub')}</span>
           </a>
         </div>
       </div>

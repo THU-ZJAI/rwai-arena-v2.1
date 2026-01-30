@@ -52,9 +52,343 @@
 
 - **整体内边距**: 120-160px (桌面) / 80-120px (移动)
 
+**动态背景：能量力场粒子网络（Power Field Particle Network）**
+
+**视觉描述**:
+- 整体背景：深色渐变（深紫到深蓝），营造科技感
+- 光束：4-6 条能量光束从中心向外辐射
+- 粒子：大尺寸、高亮、快速移动的粒子
+- 连线：粗而亮的连接线，发光效果
+- 整体：能量爆发、力量感、未来科技
+
+**技术规范**:
+
+**Canvas 设置**:
+- **位置**: `absolute inset-0 -z-10` (在内容层下方)
+- **尺寸**: 全覆盖 Hero 区
+- **背景色**: 深色渐变 `bg-gradient-to-br from-[#0a0a1a] via-[#1a1a3a] to-[#0f0f2a]`
+- **响应式**: 监听窗口大小变化
+
+**光束效果（Energy Beams）**:
+- **数量**: 4-6 条
+- **起始点**: 从屏幕中心向外辐射
+- **颜色**:
+  - 主色: `rgba(59, 130, 246, 0.3)` (蓝色)
+  - 次色: `rgba(168, 85, 247, 0.25)` (紫色)
+  - 强调: `rgba(236, 72, 153, 0.2)` (粉紫)
+- **宽度**: 2-4px
+- **动画**: 缓慢旋转 + 脉冲效果
+- **混合模式**: `screen` 或 `plus`
+
+**粒子配置**（增强版）:
+- **数量**: 40-60 个（减少但更大更亮）
+  - 桌面: 50-60 个
+  - 平板: 35-45 个
+  - 移动: 25-30 个
+- **大小**: 4-6px 半径（增大 2-3 倍）
+- **颜色**: 霓虹发光色
+  - 电光蓝: `rgba(59, 130, 246, 0.8)`
+  - 霓虹紫: `rgba(168, 85, 247, 0.8)`
+  - 荧光绿: `rgba(34, 197, 94, 0.7)`
+  - 发光外圈: `rgba(255, 255, 255, 0.3)`
+- **透明度**: 0.7-0.9（更亮）
+
+**粒子运动**（快速版）:
+- **速度**: 0.8-1.5 像素/帧（提升 2-3 倍）
+- **方向**: 更多向中心辐射或螺旋运动
+- **边界**: 穿过边界从对面重新进入
+- **脉冲**: 粒子周期性放大缩小（可选）
+
+**连线效果**（增强版）:
+- **连线距离阈值**: 150-180px（扩大连接范围）
+- **线条粗细**: 2-3px（变粗）
+- **线条颜色**:
+  - 主色: `rgba(59, 130, 246, 0.6)`
+  - 次色: `rgba(168, 85, 247, 0.5)`
+- **发光**: 添加 `shadow` 或 `glow` 效果
+- **最大连线数**: 每个粒子最多连接 5-7 个邻近粒子
+
+**发光效果**:
+- **粒子发光**:
+  - 内圈：粒子本身
+  - 外圈：`box-shadow` 或径向渐变
+  - 半径：粒子大小的 2-3 倍
+- **连线发光**:
+  - 使用 `shadowBlur` 在 Canvas
+  - 或绘制多层线条
+
+**背景渐变**:
+- **基础背景**: `bg-gradient-to-br from-[#0a0a1a] via-[#1a1a3a] to-[#0f0f2a]`
+- **叠加**: 光束在最底层，粒子在中层，内容在上层
+- **整体色调**: 深色科技风，突出光效
+
+**动画参数**:
+```typescript
+const PARTICLE_CONFIG = {
+  count: {
+    desktop: 55,
+    tablet: 40,
+    mobile: 28
+  },
+  size: { min: 4, max: 6 },
+  speed: { min: 0.8, max: 1.5 },
+  connectionDistance: 160,
+  beamCount: 5,
+  beamWidth: 3,
+  colors: [
+    'rgba(59, 130, 246, 0.8)',   // Electric Blue
+    'rgba(168, 85, 247, 0.8)',   // Electric Purple
+    'rgba(34, 197, 94, 0.7)',    // Neon Green
+    'rgba(236, 72, 153, 0.6)'    // Pink Purple
+  ]
+};
+```
+
+**文字颜色调整**（适配深色背景）:
+- 标题: 白色 `text-white`
+- 副标题: 淡白色 `text-gray-100`
+- 描述: 浅灰色 `text-gray-300`
+- 按钮: 保持原色但可能需要加强对比
+
+**实现方式**:
+- 使用 React `useRef` 和 `useEffect`
+- Canvas 2D Context 绘制
+- 三层绘制：光束层 → 连线层 → 粒子层
+- 每帧：清空画布 → 绘制光束 → 更新粒子 → 绘制连线 → 绘制粒子
+
+**可访问性**:
+- `prefers-reduced-motion` 媒体查询：减少粒子数量和速度
+- 性能监控：帧率过低时降低效果
+
+**参考效果**:
+- 类似：Tron 遗迹、钢铁侠 HUD、科幻电影界面
+- 整体：能量场、力量感、科技未来
+
+**渐入动画**（内容）:
+- **标题**: 延迟 100ms，淡入 + 向上位移 + 发光效果（0.6s）
+- **副标题**: 延迟 200ms，淡入 + 向上位移（0.6s）
+- **描述**: 延迟 300ms，淡入 + 向上位移（0.6s）
+- **按钮**: 延迟 400ms，淡入 + 向上位移（0.6s）
+
+**CSS 类示例**:
+```css
+.hero-glow {
+  text-shadow: 0 0 20px rgba(59, 130, 246, 0.5),
+               0 0 40px rgba(59, 130, 246, 0.3);
+}
+
+.hero-animate {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeUpGlow 0.8s ease-out forwards;
+}
+
+@keyframes fadeUpGlow {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+```
+
 ---
 
-### 1.2 热门擂台区（Featured Arenas）
+### 1.2 合作伙伴展示区（Partner Logo Carousel）
+
+**布局结构**
+```
+┌─────────────────────────────────────────────────────┐
+│                                                     │
+│       Trusted by Leading Companies                   │
+│                                                     │
+│  ┌─────────────────────────────────────────────┐    │
+│  │                                              │    │
+│  │  [Logo1] [Logo2] [Logo3] [Logo4] [Logo5]...→  │    │ ← 滚动方向
+│  │                                              │    │
+│  │  ←...[Logo6] [Logo1] [Logo2] [Logo3] [Logo4]  │    │ ← 第二行（无缝循环）
+│  │                                              │    │
+│  └─────────────────────────────────────────────┘    │
+│                                                     │
+└─────────────────────────────────────────────────────┘
+```
+
+**位置**
+- 插入在 Hero区（1.1）和热门擂台区（1.3）之间
+- 作为视觉过渡，建立品牌信任
+
+**布局规范**
+
+**标题区**:
+- **标题**: "Partners" / "合作伙伴"
+- **对齐**: 居中
+- **字号**: 20-24px (text-xl)
+- **字重**: SemiBold (600)
+- **颜色**: #94A3B8 (text-gray-400)
+- **间距**: `mb-8` (32px)
+
+**Logo Carousel 容器**:
+- **宽度**: 全宽 `w-full`
+- **最大宽度**: `max-w-7xl mx-auto`
+- **高度**: 80-120px
+- **内边距**: `py-8`
+- **溢出**: `overflow-hidden`
+- **背景**: `bg-white` 或透明
+- **边框**: 可选 `border-y border-gray-100`
+
+**Logo 轨道**:
+- **布局**: 水平排列的 logo 行
+- **动画**: CSS keyframes 动画实现无限滚动
+- **动画名称**: `scroll`
+- **动画时长**: 30-40s（慢速优雅）
+- **动画方向**: `normal`（向左滚动）
+- **动画函数**: `linear`（匀速）
+- **循环**: `infinite`
+
+**双轨设计** (实现无缝循环):
+- **第一行**: Logo 1-6 从右向左滚动
+- **第二行**: Logo 1-6 的重复，无缝衔接第一行
+- **间距**: 两行之间无间隙
+- **同时移动**: 保持同步速度
+
+**Logo 卡片**:
+- **尺寸**:
+  - 宽度: 120-160px (`w-32 to w-40`)
+  - 高度: 60-80px (`h-16 to h-20`)
+- **间距**: 48-64px (`gap-12 to gap-16`)
+- **显示**: Flex 居中对齐 `flex items-center justify-center`
+- **不透明度**: 0.5-0.6（默认状态）`opacity-50`
+- **过渡**: `transition-all duration-300`
+- **悬停效果**:
+  - 不透明度: 1.0 `hover:opacity-100`
+  - 缩放: `hover:scale-110`
+  - 滤镜: 移除灰度（如果有）
+
+**Logo 图片样式**:
+- **对象适配**: `object-contain`
+- **最大宽度**: 100%
+- **最大高度**: 100%
+- **滤镜（可选）**: `grayscale opacity-80`
+- **圆角**: 8px（如需要）`rounded-lg`
+
+**动画实现**:
+
+```css
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%); /* 移动一半的总宽度 */
+  }
+}
+
+.logo-scroll {
+  animation: scroll 40s linear infinite;
+}
+
+/* 悬停时暂停动画 */
+.logo-scroll:hover {
+  animation-play-state: paused;
+}
+```
+
+**响应式设计**:
+- **桌面 (> 1024px)**:
+  - Logo 宽度: 160px
+  - Logo 高度: 80px
+  - 间距: 64px
+  - 显示 6+ logos
+
+- **平板 (768-1024px)**:
+  - Logo 宽度: 140px
+  - Logo 高度: 70px
+  - 间距: 48px
+  - 显示 4-5 logos
+
+- **移动 (< 768px)**:
+  - Logo 宽度: 120px
+  - Logo 高度: 60px
+  - 间距: 32px
+  - 显示 2-3 logos
+  - 动画速度加快: 20-30s
+
+**数据结构**:
+
+```typescript
+// partners.ts
+export const partners = [
+  { name: 'Partner 1', logo: '/partners/logo1.png', url: 'https://partner1.com' },
+  { name: 'Partner 2', logo: '/partners/logo2.png', url: 'https://partner2.com' },
+  { name: 'Partner 3', logo: '/partners/logo3.png', url: 'https://partner3.com' },
+  { name: 'Partner 4', logo: '/partners/logo4.png', url: 'https://partner4.com' },
+  { name: 'Partner 5', logo: '/partners/logo5.png', url: 'https://partner5.com' },
+  { name: 'Partner 6', logo: '/partners/logo6.png', url: 'https://partner6.com' },
+];
+```
+
+**组件结构**:
+
+```tsx
+<div className="bg-white py-12 border-y border-gray-100">
+  {/* 标题 */}
+  <div className="text-center mb-8">
+    <p className="text-xl font-semibold text-gray-400">
+      {t('partners.title')} {/* Trusted by Leading Companies */}
+    </p>
+  </div>
+
+  {/* Carousel 容器 */}
+  <div className="relative overflow-hidden max-w-7xl mx-auto">
+    {/* 双轨滚动 */}
+    <div className="flex logo-scroll">
+      {/* 第一组 logos */}
+      {partners.map((partner) => (
+        <div key={partner.name} className="flex-shrink-0 w-40 h-20 mx-8 flex items-center justify-center opacity-50 hover:opacity-100 hover:scale-110 transition-all">
+          <img src={partner.logo} alt={partner.name} className="object-contain max-w-full max-h-full" />
+        </div>
+      ))}
+
+      {/* 重复第二组 logos（无缝循环） */}
+      {partners.map((partner) => (
+        <div key={`${partner.name}-duplicate`} className="flex-shrink-0 w-40 h-20 mx-8 flex items-center justify-center opacity-50 hover:opacity-100 hover:scale-110 transition-all">
+          <img src={partner.logo} alt={partner.name} className="object-contain max-w-full max-h-full" />
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+```
+
+**性能优化**:
+- **图片优化**: 使用 Next.js Image 组件
+- **懒加载**: 图片懒加载
+- **压缩**: Logo 图片优化压缩（WebP 格式）
+- **预加载**: 关键 logos 预加载
+
+**可访问性**:
+- **Alt 文本**: 每个 logo 有描述性 alt 文本
+- **可跳过**: 提供跳过动画的选项
+- **减少动画**: 尊重用户 `prefers-reduced-motion` 设置
+
+**视觉选项**:
+
+**选项 A: 灰度 + 悬停彩色** (推荐)
+- 默认: `grayscale opacity-50`
+- 悬停: 移除灰度，opacity 100%
+- 效果: 干净、低调、突出交互
+
+**选项 B: 直接显示**
+- 默认: `opacity-60`
+- 悬停: `opacity-100 scale-110`
+- 效果: 直接、清晰
+
+**选项 C: 渐变遮罩**
+- 左右两侧添加渐变遮罩，表示无限滚动
+- 使用 `mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent)`
+
+---
+
+### 1.3 热门擂台区（Featured Arenas）
 
 **布局结构**
 ```
@@ -89,7 +423,7 @@
 
 ---
 
-### 1.3 行业探索区（Explore by Industry）
+### 1.4 行业探索区（Explore by Industry）
 
 **布局结构**
 ```
@@ -171,7 +505,7 @@
 
 ---
 
-### 1.4 方法论部分（Our Approach）
+### 1.5 方法论部分（Our Approach）
 
 **布局结构**
 ```
@@ -205,7 +539,7 @@
 
 ---
 
-### 1.5 Practice包含内容（Every Practice Includes）
+### 1.6 Practice包含内容（Every Practice Includes）
 
 **布局结构**
 ```
@@ -235,7 +569,7 @@
 
 ---
 
-### 1.6 案例研究（Case Studies）
+### 1.7 案例研究（Case Studies）
 
 **布局结构**
 ```
@@ -271,7 +605,7 @@
 
 ---
 
-### 1.7 信任部分（Why Trust RWAI）
+### 1.8 信任部分（Why Trust RWAI）
 
 **布局结构**
 ```
@@ -297,7 +631,7 @@
 
 ---
 
-### 1.8 底部CTA（Final CTA）
+### 1.9 底部CTA（Final CTA）
 
 **布局结构**
 ```

@@ -122,8 +122,20 @@
     "general": "通用"
   },
   "footer": {
-    "copyright": "© 2025 RWAI. 保留所有权利",
+    "brand": "RWAI Arena",
+    "brandDescription": "真实AI竞技场 - 为真实场景寻找最佳AI实践",
+    "platform": "平台",
+    "arena": "擂台",
+    "framework": "技术框架",
+    "faq": "常见问题",
+    "community": "社区",
+    "github": "GitHub",
+    "about": "关于我们",
+    "contactUs": "联系我们",
+    "legal": "法律",
     "privacy": "隐私政策",
-    "terms": "服务条款"
+    "terms": "服务条款",
+    "copyright": "© 2025 RWAI. 保留所有权利",
+    "followOnGitHub": "在 GitHub 上关注"
   }
 }

@@ -122,8 +122,20 @@
     "general": "General"
   },
   "footer": {
-    "copyright": "© 2025 RWAI. All rights reserved.",
+    "brand": "RWAI Arena",
+    "brandDescription": "Real-World AI Arena - Finding the best AI practices for real-world scenarios",
+    "platform": "Platform",
+    "arena": "Arena",
+    "framework": "Framework",
+    "faq": "FAQ",
+    "community": "Community",
+    "github": "GitHub",
+    "about": "About",
+    "contactUs": "Contact Us",
+    "legal": "Legal",
     "privacy": "Privacy Policy",
-    "terms": "Terms of Service"
+    "terms": "Terms of Service",
+    "copyright": "© 2025 RWAI. All rights reserved.",
+    "followOnGitHub": "Follow on GitHub"
   }
 }
