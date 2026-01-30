@@ -22,6 +22,11 @@
 - **Title**: Featured AI Best Practices
 - **Subtitle**: Discover verified AI solutions for real-world scenarios
 
+### Configuration
+- **Arena Count**: 3
+- **Arena IDs**: 一周搭建企业级智能调研报告生成系统demo, 两天搭建业务看板及网站demo, 一周搭建文档审核与风控demo
+- **Display Fields**: status, title, industry, category, highlights
+
 ## Industries Section
 
 ### Content

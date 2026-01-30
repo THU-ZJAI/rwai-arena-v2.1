@@ -4,23 +4,17 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Arena } from '@/lib/types';
 import {
-  Construction,
-  Settings,
-  CheckCircle2,
   BarChart3,
-  Users,
   ArrowLeft,
-  Github,
   Mail,
   Star,
   Zap,
   DollarSign,
   Shield,
-  TrendingUp,
-  Cpu,
-  Users as UsersIcon,
+  CheckCircle2,
+  Settings,
+  Users,
   FileText,
-  ExternalLink
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -59,17 +53,17 @@ export function ArenaDetailClient({ arena, locale, arenaId, initialContent, hasC
   const tabs: { key: TabType; label: string; icon: any; color?: string }[] = [
     { key: 'overview', label: locale === 'zh' ? '概览' : 'Overview', icon: BarChart3 },
     { key: 'implementation', label: locale === 'zh' ? '实施指南' : 'Implementation', icon: Settings, color: 'purple' },
-    { key: 'requirements', label: locale === 'zh' ? '需求文档' : 'Requirements', icon: CheckCircle2, color: 'green' },
-    { key: 'validation-report', label: locale === 'zh' ? '验证报告' : 'Validation Report', icon: BarChart3, color: 'amber' },
+    { key: 'requirements', label: locale === 'zh' ? '需求文档' : 'Requirements', icon: FileText, color: 'green' },
+    { key: 'validation-report', label: locale === 'zh' ? '验证报告' : 'Validation Report', icon: CheckCircle2, color: 'amber' },
     { key: 'project-report', label: locale === 'zh' ? '项目报告' : 'Project Report', icon: Users, color: 'red' },
   ];
 
   // Extract metrics from arena
   const metrics = {
-    quality: arena.metrics?.quality || 95,
-    efficiency: arena.metrics?.efficiency || 88,
-    cost: arena.metrics?.cost || 92,
-    trust: arena.metrics?.trust || 90,
+    quality: arena.metrics?.quality || '较高',
+    speed: arena.metrics?.speed || '较快',
+    cost: arena.metrics?.cost || '较优',
+    security: arena.metrics?.security || '较高',
   };
 
   return (
@@ -101,10 +95,10 @@ export function ArenaDetailClient({ arena, locale, arenaId, initialContent, hasC
             <div className="flex items-start justify-between mb-6">
               <div className="flex-1">
                 <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-gray-900 mb-4">
-                  {arena.title[locale as keyof typeof arena.title]}
+                  {arena.title[locale as keyof typeof arena.title] || arena.title.zh}
                 </h1>
                 <p className="text-xl text-gray-600 leading-relaxed max-w-3xl">
-                  {arena.description[locale as keyof typeof arena.description]}
+                  {arena.highlights}
                 </p>
               </div>
 
@@ -127,9 +121,9 @@ export function ArenaDetailClient({ arena, locale, arenaId, initialContent, hasC
           >
             {[
               { name: locale === 'zh' ? '质量' : 'Quality', value: metrics.quality, icon: Star },
-              { name: locale === 'zh' ? '效率' : 'Efficiency', value: metrics.efficiency, icon: Zap },
+              { name: locale === 'zh' ? '速度' : 'Speed', value: metrics.speed, icon: Zap },
               { name: locale === 'zh' ? '成本' : 'Cost', value: metrics.cost, icon: DollarSign },
-              { name: locale === 'zh' ? '信任' : 'Trust', value: metrics.trust, icon: Shield },
+              { name: locale === 'zh' ? '安全' : 'Security', value: metrics.security, icon: Shield },
             ].map((metric, index) => (
               <motion.div
                 key={metric.name}
@@ -139,16 +133,8 @@ export function ArenaDetailClient({ arena, locale, arenaId, initialContent, hasC
                 className="flex flex-col items-center p-4 sm:p-6 rounded-xl bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow"
               >
                 <metric.icon className="h-5 w-5 text-primary mb-2" />
-                <div className="text-3xl sm:text-4xl font-bold text-gray-900 mb-1">
-                  {metric.value}%
-                </div>
-                <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden mt-3">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${metric.value}%` }}
-                    transition={{ duration: 1, ease: 'easeOut', delay: 0.5 }}
-                    className="h-full bg-primary rounded-full"
-                  />
+                <div className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">
+                  {metric.value}
                 </div>
                 <div className="text-sm font-medium text-gray-600 mt-2">
                   {metric.name}
@@ -165,16 +151,7 @@ export function ArenaDetailClient({ arena, locale, arenaId, initialContent, hasC
             className="flex flex-wrap gap-4"
           >
             <a
-              href={arena.github?.url || '#'}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded-lg bg-gray-900 px-6 py-3 text-base font-semibold text-white shadow-lg hover:bg-gray-800 transition-colors"
-            >
-              <Github className="h-5 w-5 mr-2" />
-              {locale === 'zh' ? '查看代码' : 'View on GitHub'}
-            </a>
-            <a
-              href={`mailto:contactmx@163.com?subject=Arena: ${arena.title[locale as keyof typeof arena.title]}`}
+              href={`mailto:contactmx@163.com?subject=Arena: ${arena.title[locale as keyof typeof arena.title] || arena.title.zh}`}
               className="inline-flex items-center justify-center rounded-lg border-2 border-primary bg-white px-6 py-3 text-base font-semibold text-primary hover:bg-primary-50 transition-colors"
             >
               <Mail className="h-5 w-5 mr-2" />
@@ -286,115 +263,6 @@ export function ArenaDetailClient({ arena, locale, arenaId, initialContent, hasC
 
           {/* Sidebar */}
           <div className="lg:col-span-1 space-y-6">
-            {/* Gap Analysis Card */}
-            <div className="rounded-xl border border-gray-200 bg-gradient-to-br from-slate-50 to-white p-6 shadow-sm">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10 text-primary">
-                  <TrendingUp className="h-5 w-5" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900">
-                  {locale === 'zh' ? '差距分析' : 'Gap Analysis'}
-                </h3>
-              </div>
-
-              <p className="text-sm text-gray-600 mb-4">
-                {locale === 'zh'
-                  ? '对比标准版与专家版的功能差异'
-                  : 'Compare features between standard and expert versions'
-                }
-              </p>
-
-              <div className="space-y-3 mb-4">
-                {[
-                  { name: locale === 'zh' ? '完整源代码' : 'Complete Source Code', standard: true, expert: true },
-                  { name: locale === 'zh' ? '部署指南' : 'Deployment Guide', standard: true, expert: true },
-                  { name: locale === 'zh' ? '专家支持' : 'Expert Support', standard: false, expert: true },
-                  { name: locale === 'zh' ? '定制开发' : 'Custom Development', standard: false, expert: true },
-                ].map((feature) => (
-                  <div key={feature.name} className="flex items-center justify-between py-2">
-                    <span className="text-sm font-medium text-gray-700">{feature.name}</span>
-                    <div className="flex gap-2">
-                      <span className={`text-xs px-2 py-1 rounded-full ${
-                        feature.standard
-                          ? 'bg-green-100 text-green-700'
-                          : 'bg-gray-100 text-gray-500'
-                      }`}>
-                        {locale === 'zh' ? '标准' : 'Standard'}
-                      </span>
-                      <span className="text-xs px-2 py-1 rounded-full bg-green-100 text-green-700">
-                        {locale === 'zh' ? '专家' : 'Expert'}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <a
-                href="mailto:contactmx@163.com?subject=Expert Version Inquiry"
-                className="block w-full text-center rounded-lg border-2 border-primary bg-white px-4 py-2 text-sm font-semibold text-primary hover:bg-primary-50 transition-colors"
-              >
-                {locale === 'zh' ? '联系获取专家版' : 'Contact for Expert Version'}
-              </a>
-            </div>
-
-            {/* Technical Details Card */}
-            <div className="rounded-xl border border-gray-200 bg-gradient-to-br from-slate-50 to-white p-6 shadow-sm">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10 text-primary">
-                  <Cpu className="h-5 w-5" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900">
-                  {locale === 'zh' ? '技术详情' : 'Technical Details'}
-                </h3>
-              </div>
-
-              <div className="mb-4">
-                <h4 className="text-sm font-medium text-gray-900 mb-2">
-                  {locale === 'zh' ? '技术栈' : 'Tech Stack'}
-                </h4>
-                <div className="flex flex-wrap gap-2">
-                  {['Next.js', 'TypeScript', 'Tailwind CSS', 'Claude API'].map((tech) => (
-                    <span
-                      key={tech}
-                      className="inline-flex items-center rounded-md bg-gray-100 px-2 py-1 text-xs font-medium text-gray-700"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="mb-4 pt-4 border-t border-gray-200">
-                <div className="flex items-center justify-between text-sm mb-2">
-                  <span className="font-medium text-gray-900">
-                    {locale === 'zh' ? '团队规模' : 'Team Size'}
-                  </span>
-                  <span className="text-gray-600">3-5 {locale === 'zh' ? '开发者' : 'developers'}</span>
-                </div>
-              </div>
-
-              <div className="pt-4 border-t border-gray-200">
-                <h4 className="text-sm font-medium text-gray-900 mb-3">
-                  {locale === 'zh' ? '文档链接' : 'Documentation'}
-                </h4>
-                <div className="space-y-2">
-                  {[
-                    { title: locale === 'zh' ? 'API 文档' : 'API Docs', href: '#' },
-                    { title: locale === 'zh' ? '架构图' : 'Architecture', href: '#' },
-                  ].map((doc) => (
-                    <a
-                      key={doc.title}
-                      href={doc.href}
-                      className="flex items-center gap-2 text-sm text-primary hover:text-primary-700"
-                    >
-                      <FileText className="h-4 w-4" />
-                      {doc.title}
-                      <ExternalLink className="h-3 w-3 ml-auto" />
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>

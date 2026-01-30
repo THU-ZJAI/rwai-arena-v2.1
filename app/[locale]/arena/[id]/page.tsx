@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { getArenaById } from '@/lib/data';
+import { getArenaById, getArenaByFolderId } from '@/lib/data';
 import { ArenaDetailClient } from './client-page';
 import { getArenaContent } from '@/lib/content';
 
@@ -9,7 +9,12 @@ export default async function ArenaDetailPage({
   params: Promise<{ locale: string; id: string }>;
 }) {
   const { locale, id } = await params;
-  const arena = getArenaById(id);
+
+  // Try to find arena by id first (for backward compatibility), then by folderId
+  let arena = getArenaById(id);
+  if (!arena) {
+    arena = getArenaByFolderId(id);
+  }
 
   if (!arena) {
     notFound();

@@ -1,7 +1,7 @@
 import { Button, Badge } from '@/components/ui';
 import { arenas, industries, categories } from '@/lib/data';
 import { Arena } from '@/lib/types';
-import { CheckCircle2, Target, Trophy, Users, Star, ArrowRight, Building2, ShoppingCart, GraduationCap, HeartPulse, Zap, Factory, Building } from 'lucide-react';
+import { CheckCircle2, Trophy, Star, ArrowRight, Building2, ShoppingCart, GraduationCap, HeartPulse, Zap, Factory, Building, Target, Users } from 'lucide-react';
 import Link from 'next/link';
 import { getHomepageSectionContent, parseHomepageSectionContent } from '@/lib/content';
 import { Suspense } from 'react';
@@ -44,12 +44,7 @@ export default async function HomePage({
       <Suspense fallback={<SectionSkeleton />}>
         <ApproachSection locale={locale} />
       </Suspense>
-      <Suspense fallback={<SectionSkeleton />}>
-        <PracticeIncludesSection locale={locale} />
-      </Suspense>
-      <Suspense fallback={<SectionSkeleton />}>
-        <CaseStudiesSection locale={locale} />
-      </Suspense>
+      {/* PracticeIncludesSection and CaseStudiesSection removed - sections not in content files */}
       <Suspense fallback={<SectionSkeleton />}>
         <TrustSection locale={locale} />
       </Suspense>
@@ -259,6 +254,7 @@ async function PartnersCarouselSection({ locale }: { locale: string }) {
                     width={160}
                     height={80}
                     className="object-contain max-w-full max-h-full"
+                    unoptimized
                   />
                 </div>
               ))}
@@ -275,6 +271,7 @@ async function PartnersCarouselSection({ locale }: { locale: string }) {
                     width={160}
                     height={80}
                     className="object-contain max-w-full max-h-full"
+                    unoptimized
                   />
                 </div>
               ))}
@@ -319,7 +316,21 @@ async function FeaturedArenasSection({ locale }: { locale: string }) {
   }
   const parsed = parseHomepageSectionContent(contentFile.content);
 
-  const featuredArenas = arenas.slice(0, 3);
+  // Read configuration from markdown
+  const arenaIdsStr = parsed['Arena IDs'] || '';
+  const displayFieldsStr = parsed['Display Fields'] || 'status, title, industry, category, highlights';
+
+  // Parse arena IDs
+  const arenaIds = arenaIdsStr.split(',').map((id: string) => id.trim()).filter((id: string) => id);
+
+  // Parse display fields
+  const displayFields = displayFieldsStr.split(',').map((field: string) => field.trim()).filter((field: string) => field);
+
+  // Filter arenas by IDs (fallback to first 3 if no IDs specified)
+  const featuredArenas = arenaIds.length > 0
+    ? arenas.filter(arena => arenaIds.includes(arena.id))
+    : arenas.slice(0, 3);
+
   const title = parsed['Title'];
   const subtitle = parsed['Subtitle'];
 
@@ -336,7 +347,7 @@ async function FeaturedArenasSection({ locale }: { locale: string }) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {featuredArenas.map((arena) => (
-            <ArenaCard key={arena.id} arena={arena} locale={locale} />
+            <ArenaCard key={arena.id} arena={arena} locale={locale} displayFields={displayFields} />
           ))}
         </div>
       </div>
@@ -344,48 +355,87 @@ async function FeaturedArenasSection({ locale }: { locale: string }) {
   );
 }
 
-function ArenaCard({ arena, locale }: { arena: Arena; locale: string }) {
-  const categoryLabel = categories[arena.category][locale === 'en' ? 'en' : 'zh'];
-  const industryLabel = industries[arena.industry][locale === 'en' ? 'en' : 'zh'];
-  const statusLabel = arena.status === 'verified' ? getLabel(locale, 'arena.status.verified') : getLabel(locale, 'arena.status.inArena');
-  const qualityLabel = getLabel(locale, 'arena.quality');
-  const efficiencyLabel = getLabel(locale, 'arena.efficiency');
+function ArenaCard({
+  arena,
+  locale,
+  displayFields = ['status', 'quality-badge', 'title', 'industry', 'category', 'highlights', 'quality-metric', 'speed-metric']
+}: {
+  arena: Arena;
+  locale: string;
+  displayFields?: string[];
+}) {
+  const isChina = locale === 'zh';
+  const statusLabel = arena.verificationStatus === '已验证'
+    ? (isChina ? '已验证' : 'Verified')
+    : (isChina ? '验证中' : 'In Verification');
+  const qualityLabel = isChina ? '质量' : 'Quality';
+  const speedLabel = isChina ? '速度' : 'Speed';
+
+  // Helper to check if field should be displayed
+  const shouldShow = (field: string) => displayFields.includes(field);
 
   return (
-    <Link href={`/${locale}/arena`} className="group block">
+    <Link href={`/${locale}/arena/${arena.folderId}`} className="group block">
       <div className="bg-bg-primary border border-gray-200 rounded-card p-card hover:shadow-card-hover transition-all duration-default hover:-translate-y-1 h-full flex flex-col">
-        <div className="flex justify-between items-start mb-4">
-          <Badge variant={arena.status === 'verified' ? 'verified' : 'in-arena'}>
-            {statusLabel}
-          </Badge>
-          <div className="text-xs text-text-secondary">
-            {arena.metrics.quality}% {qualityLabel}
+        {/* Status Badge and Quality Badge */}
+        {shouldShow('status') || shouldShow('quality-badge') ? (
+          <div className="flex justify-between items-start mb-4">
+            {shouldShow('status') && (
+              <Badge variant={arena.verificationStatus === '已验证' ? 'verified' : 'in-arena'}>
+                {statusLabel}
+              </Badge>
+            )}
+            {shouldShow('quality-badge') && (
+              <div className="text-xs text-text-secondary">
+                {arena.metrics.quality}
+              </div>
+            )}
           </div>
-        </div>
+        ) : null}
 
-        <h3 className="text-h3 text-text-primary mb-2 line-clamp-2 group-hover:text-primary transition-colors">
-          {arena.title[locale === 'en' ? 'en' : 'zh']}
-        </h3>
+        {/* Title */}
+        {shouldShow('title') && (
+          <h3 className="text-h3 text-text-primary mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+            {arena.title[locale as keyof typeof arena.title] || arena.title.zh}
+          </h3>
+        )}
 
-        <div className="flex gap-2 mb-3">
-          <Badge variant="industry">{industryLabel}</Badge>
-          <Badge variant="category">{categoryLabel}</Badge>
-        </div>
-
-        <p className="text-body-sm text-text-secondary mb-4 line-clamp-2">
-          {arena.description[locale === 'en' ? 'en' : 'zh']}
-        </p>
-
-        <div className="flex items-center gap-3 text-sm text-text-secondary">
-          <div className="flex items-center gap-1">
-            <Star className="w-3.5 h-3.5" />
-            <span>{qualityLabel}: {arena.metrics.quality}%</span>
+        {/* Industry and Category Badges */}
+        {shouldShow('industry') || shouldShow('category') ? (
+          <div className="flex gap-2 mb-3">
+            {shouldShow('industry') && (
+              <Badge variant="industry">{isChina ? arena.industry : arena.industryEn}</Badge>
+            )}
+            {shouldShow('category') && (
+              <Badge variant="category">{isChina ? arena.category : arena.categoryEn}</Badge>
+            )}
           </div>
-          <div className="flex items-center gap-1">
-            <Star className="w-3.5 h-3.5" />
-            <span>{efficiencyLabel}: {arena.metrics.efficiency}%</span>
+        ) : null}
+
+        {/* Highlights */}
+        {shouldShow('highlights') && (
+          <p className="text-body-sm text-text-secondary mb-4 line-clamp-2">
+            {isChina ? arena.highlights : arena.highlightsEn}
+          </p>
+        )}
+
+        {/* Metrics */}
+        {(shouldShow('quality-metric') || shouldShow('speed-metric')) && (
+          <div className="flex items-center gap-3 text-sm text-text-secondary">
+            {shouldShow('quality-metric') && (
+              <div className="flex items-center gap-1">
+                <Star className="w-3.5 h-3.5" />
+                <span>{qualityLabel}: {arena.metrics.quality}</span>
+              </div>
+            )}
+            {shouldShow('speed-metric') && (
+              <div className="flex items-center gap-1">
+                <Star className="w-3.5 h-3.5" />
+                <span>{speedLabel}: {arena.metrics.speed}</span>
+              </div>
+            )}
           </div>
-        </div>
+        )}
       </div>
     </Link>
   );
@@ -490,155 +540,6 @@ async function ApproachSection({ locale }: { locale: string }) {
               <p className="text-text-secondary">{step.description}</p>
             </div>
           ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/**
- * Parse practice includes content
- */
-function parsePracticeIncludesContent(markdown: string) {
-  const result: Array<{ title: string; description: string }> = [];
-
-  // Support English "Feature N", Chinese "特性 N" and "特点 N"
-  const featureSections = markdown.match(/### (Feature \d+|特性 \d+|特点 \d+)\n([\s\S]*?)(?=###\s|$)/g);
-  if (featureSections) {
-    featureSections.forEach((section) => {
-      const parsed = parseHomepageSectionContent(section);
-      result.push({
-        title: parsed['Title'] || parsed['标题'] || '',
-        description: parsed['Description'] || parsed['描述'] || '',
-      });
-    });
-  }
-
-  // Extract header subsection for title and subtitle
-  // Support both English "Content" and Chinese "内容"
-  const headerMatch = markdown.match(/### (Content|内容)\n([\s\S]*?)(?=### |$)/);
-  const headerParsed = headerMatch
-    ? parseHomepageSectionContent(headerMatch[0])
-    : {};
-
-  return {
-    title: headerParsed['Title'] || headerParsed['标题'],
-    subtitle: headerParsed['Subtitle'] || headerParsed['副标题'],
-    features: result,
-  };
-}
-
-async function PracticeIncludesSection({ locale }: { locale: string }) {
-  const contentFile = await getHomepageSectionContent('Practice Includes Section', locale);
-  if (!contentFile) {
-    return null; // Skip section if content not found
-  }
-  const content = parsePracticeIncludesContent(contentFile.content);
-
-  const icons = [<Target className="w-10 h-10" />, <Star className="w-10 h-10" />, <Users className="w-10 h-10" />, <CheckCircle2 className="w-10 h-10" />];
-
-  return (
-    <section className="py-section bg-bg-secondary">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-h1 text-text-primary mb-4">{content.title}</h2>
-          <p className="text-body-lg text-text-secondary">{content.subtitle}</p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {content.features.map((feature, index) => (
-            <div key={index} className="text-center">
-              <div className="flex justify-center mb-4 text-primary">{icons[index]}</div>
-              <h3 className="text-h3 text-text-primary mb-2">{feature.title}</h3>
-              <p className="text-body-sm text-text-secondary">{feature.description}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/**
- * Parse case studies content
- */
-function parseCaseStudiesContent(markdown: string) {
-  const parsed = parseHomepageSectionContent(markdown);
-
-  return {
-    title: parsed['Title'] || parsed['标题'],
-    subtitle: parsed['Subtitle'] || parsed['副标题'],
-    caseTitle: parsed['Title'] || parsed['Title (EN)'] || parsed['Title (ZH)'],
-    company: parsed['Company'] || parsed['Company (EN)'] || parsed['Company (ZH)'],
-    beforeLabel: parsed['Before Label'] || parsed['Before Label (EN)'],
-    beforeValue: parsed['Before Value'] || parsed['Before Value (EN)'],
-    afterLabel: parsed['After Label'] || parsed['After Label (EN)'],
-    afterValue: parsed['After Value'] || parsed['After Value (EN)'],
-    metric1Label: parsed['Metric 1 Label'],
-    metric1Value: parsed['Metric 1 Value'],
-    metric2Label: parsed['Metric 2 Label'],
-    metric2Value: parsed['Metric 2 Value'],
-  };
-}
-
-async function CaseStudiesSection({ locale }: { locale: string }) {
-  const contentFile = await getHomepageSectionContent('Case Studies Section', locale);
-  if (!contentFile) {
-    return null; // Skip section if content not found
-  }
-  const content = parseCaseStudiesContent(contentFile.content);
-
-  return (
-    <section className="py-section bg-bg-primary">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-h1 text-text-primary mb-4">{content.title}</h2>
-          <p className="text-body-lg text-text-secondary">{content.subtitle}</p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="bg-bg-secondary border border-gray-200 rounded-card p-8">
-            <h3 className="text-h3 text-text-primary mb-1">
-              {content.caseTitle}
-            </h3>
-            <p className="text-sm text-text-secondary mb-6">
-              {content.company}
-            </p>
-
-            <div className="grid grid-cols-2 gap-4 mb-6">
-              <div className="bg-bg-primary border border-gray-200 rounded-lg p-4 text-center">
-                <p className="text-sm font-medium text-text-secondary mb-1">
-                  {content.beforeLabel}
-                </p>
-                <p className="text-body-lg font-semibold text-text-primary">
-                  {content.beforeValue}
-                </p>
-              </div>
-              <div className="bg-success/10 border border-success rounded-lg p-4 text-center">
-                <p className="text-sm font-medium text-success mb-1">
-                  {content.afterLabel}
-                </p>
-                <p className="text-body-lg font-semibold text-success">
-                  {content.afterValue}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex gap-6">
-              <div>
-                <p className="text-3xl font-bold text-success">{content.metric1Value}</p>
-                <p className="text-sm text-text-secondary">
-                  {content.metric1Label}
-                </p>
-              </div>
-              <div>
-                <p className="text-3xl font-bold text-success">{content.metric2Value}</p>
-                <p className="text-sm text-text-secondary">
-                  {content.metric2Label}
-                </p>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>

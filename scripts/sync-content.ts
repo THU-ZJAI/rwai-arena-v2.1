@@ -629,10 +629,44 @@ function parseSimplePage(content: string, locale: 'en' | 'zh'): string {
   const result: string[] = [];
   let currentLangSection: 'en' | 'zh' | 'both' = 'both';
   let skipNextLine = false;
+  let titleProcessed = false;
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     const nextLine = i + 1 < lines.length ? lines[i + 1] : '';
+
+    // Handle double title at the beginning (e.g., "# 中文标题" then "# English Title")
+    if (!titleProcessed && line.match(/^#\s+/)) {
+      // Check if the next line is also a title
+      if (i + 1 < lines.length && lines[i + 1].match(/^#\s+/)) {
+        // Two consecutive title lines - pick the appropriate one
+        if (locale === 'en') {
+          // Check which line has more English content
+          const currentIsEn = isEnglish(line) || !isChinese(line);
+          const nextIsEn = isEnglish(lines[i + 1]) || !isChinese(lines[i + 1]);
+          if (nextIsEn) {
+            result.push(lines[i + 1]);
+            i++; // Skip the next line
+          } else if (currentIsEn) {
+            result.push(line);
+          }
+        } else {
+          // For Chinese, pick the line with Chinese content
+          const currentHasZh = isChinese(line);
+          const nextHasZh = isChinese(lines[i + 1]);
+          if (nextHasZh) {
+            result.push(lines[i + 1]);
+            i++; // Skip the next line
+          } else if (currentHasZh) {
+            result.push(line);
+          }
+        }
+        titleProcessed = true;
+        continue;
+      } else {
+        // Single title line, process it normally below
+      }
+    }
 
     // Skip team notes
     if (line.includes('## Team') || line.includes('## Notes') || line.includes('## Notes for Content Team')) {
@@ -649,17 +683,96 @@ function parseSimplePage(content: string, locale: 'en' | 'zh'): string {
       continue;
     }
 
-    // Handle section headers (## level) - reset language section
+    // Handle section headers (## level) - reset language section and extract language-specific title
     if (line.match(/^##\s+/)) {
       currentLangSection = 'both';
-      // Include section headers for both languages (they're typically bilingual or have consistent keys)
-      result.push(line);
+      // Extract language-specific title from bilingual headers
+      const headerMatch = line.match(/^##\s+(.+)/);
+      if (headerMatch) {
+        const text = headerMatch[1];
+        if (locale === 'en') {
+          // Extract English part from bilingual headers like "## 1. 业务亮点 Business Highlights"
+          const englishPart = text.match(/([a-zA-Z0-9\s\.\-]+)$/);
+          if (englishPart) {
+            // Also check if there's a number prefix
+            const numberPrefix = text.match(/^(\d+\.\s+)/);
+            if (numberPrefix) {
+              result.push(`## ${numberPrefix[1]}${englishPart[1].trim()}`);
+            } else {
+              result.push(`## ${englishPart[1].trim()}`);
+            }
+          } else {
+            result.push(line);
+          }
+        } else {
+          // Extract Chinese part from bilingual headers
+          const chinesePart = text.match(/[\u4e00-\u9fa5\u3000-\u303f\uff00-\uffef]+/g);
+          if (chinesePart && chinesePart.length > 0) {
+            // Also check if there's a number prefix
+            const numberPrefix = text.match(/^(\d+\.\s+)/);
+            if (numberPrefix) {
+              result.push(`## ${numberPrefix[1]}${chinesePart.join('')}`);
+            } else {
+              result.push(`## ${chinesePart.join('')}`);
+            }
+          } else {
+            result.push(line);
+          }
+        }
+      }
       continue;
     }
 
     // Skip empty lines
     if (line.trim() === '') {
       result.push('');
+      continue;
+    }
+
+    // Handle sub-subsection headers (#### level)
+    if (line.match(/^####\s+/)) {
+      const headerMatch = line.match(/^(####\s+)(.+)/);
+      if (headerMatch) {
+        const level = headerMatch[1];
+        const text = headerMatch[2];
+
+        // Skip language markers like "#### English" and "#### 中文"
+        if (text === 'English' || text === '中文' || text === 'English Content' || text === 'Chinese Content') {
+          continue;
+        }
+
+        // Extract language-appropriate header text
+        if (locale === 'en') {
+          // For English: extract English part from bilingual headers
+          const englishPart = text.match(/([a-zA-Z0-9\s\.\-]+)$/);
+          if (englishPart) {
+            // Check if there's a number prefix
+            const numberPrefix = text.match(/^(\d+\.\d+\.\d+\s+)/);
+            if (numberPrefix) {
+              result.push(`${level}${numberPrefix[1]}${englishPart[1].trim()}`);
+            } else {
+              result.push(`${level}${englishPart[1].trim()}`);
+            }
+          } else if (!isChinese(text)) {
+            result.push(line);
+          }
+        } else {
+          // For Chinese: extract Chinese part from bilingual headers
+          const chinesePart = text.match(/[\u4e00-\u9fa5\u3000-\u303f\uff00-\uffef]+/g);
+          if (chinesePart && chinesePart.length > 0) {
+            // Check if there's a number prefix
+            const numberPrefix = text.match(/^(\d+\.\d+\.\d+\s+)/);
+            if (numberPrefix) {
+              result.push(`${level}${numberPrefix[1]}${chinesePart.join('')}`);
+            } else {
+              result.push(`${level}${chinesePart.join('')}`);
+            }
+          } else if (isEnglish(text) && !text.includes(':')) {
+            // Pure English header, include it
+            result.push(line);
+          }
+        }
+      }
       continue;
     }
 
@@ -675,20 +788,52 @@ function parseSimplePage(content: string, locale: 'en' | 'zh'): string {
           continue;
         }
 
+        // Check if next line has translation
+        if (i + 1 < lines.length) {
+          const nextLine = lines[i + 1];
+          // If next line is "#### English" or "#### 中文", use it to determine which header to keep
+          if (nextLine.trim() === '#### English') {
+            if (locale === 'en') {
+              // Extract English part from header like "### 2.1 概况 Overview"
+              const englishPart = text.match(/([a-zA-Z0-9\s\.\-]+)$/);
+              if (englishPart) {
+                result.push(`${level}${englishPart[1].trim()}`);
+              } else {
+                result.push(line);
+              }
+            }
+            i++; // Skip the language marker line
+            continue;
+          }
+          if (nextLine.trim() === '#### 中文') {
+            if (locale === 'zh') {
+              // Extract Chinese part from header like "### 2.1 概况 Overview"
+              const chinesePart = text.match(/[\u4e00-\u9fa5]+/);
+              if (chinesePart) {
+                result.push(`${level}${chinesePart[0]}`);
+              } else {
+                result.push(line);
+              }
+            }
+            i++; // Skip the language marker line
+            continue;
+          }
+        }
+
         // Extract language-appropriate header text
         if (locale === 'en') {
-          // For English: prefer English text, but include if no Chinese
-          const englishPart = text.match(/^([a-zA-Z0-9\s\(\)\-\,\.\'\"\:•⭐⚡💰🔒]+)/);
+          // For English: extract English part from bilingual headers
+          const englishPart = text.match(/([a-zA-Z0-9\s\.\-]+)$/);
           if (englishPart) {
             result.push(`${level}${englishPart[1].trim()}`);
           } else if (!isChinese(text)) {
             result.push(line);
           }
         } else {
-          // For Chinese: prefer Chinese text
-          const chineseChars = text.match(/[\u4e00-\u9fa5]+/g);
-          if (chineseChars && chineseChars.length > 0) {
-            result.push(`${level}${text.trim()}`);
+          // For Chinese: extract Chinese part from bilingual headers
+          const chinesePart = text.match(/[\u4e00-\u9fa5]+/);
+          if (chinesePart) {
+            result.push(`${level}${chinesePart[0]}`);
           } else if (isEnglish(text) && !text.includes(':')) {
             // Pure English header, include it
             result.push(line);
@@ -726,9 +871,32 @@ function parseSimplePage(content: string, locale: 'en' | 'zh'): string {
         if (isChinese(line) && !/[a-zA-Z]/.test(line)) {
           continue;
         }
-        // Clean Chinese annotations from English content
+
+        // Handle bilingual field names like "**编号 Case Number**: value"
+        if (line.match(/^\*\*/)) {
+          // First try bilingual format: "**中文 English**: value" (first part MUST contain Chinese)
+          const bilingualMatch = line.match(/^\*\*([\u4e00-\u9fa5\u3000-\u303f\uff00-\uffef\s]+)\s+([a-zA-Z0-9\s\(\)\-]+)\*\*\s*[:：]\s*(.+)/);
+          if (bilingualMatch) {
+            const [, zhPart, enPart, value] = bilingualMatch;
+            // Use the English field name
+            result.push(`**${enPart.trim()}**: ${value}`);
+            continue;
+          }
+          // If no bilingual format, check for pure English field name and keep it as is
+          const englishFieldMatch = line.match(/^\*\*([a-zA-Z0-9\s\(\)\-]+)\*\*\s*[:：]\s*(.+)/);
+          if (englishFieldMatch) {
+            // Keep English field names as-is
+            result.push(line);
+            continue;
+          }
+          // If neither pattern matched, skip this line (it's likely Chinese-only)
+          continue;
+        }
+
+        // Clean Chinese annotations from English content (but NOT from field names we just processed)
         let cleaned = line.replace(/（[^）]+）/g, '').trim();
         cleaned = cleaned.replace(/[\u4e00-\u9fa5]+/g, '').trim();
+        cleaned = cleaned.replace(/\s+/g, ' ').trim(); // Clean up extra spaces
         if (cleaned) {
           result.push(cleaned);
         } else if (line.trim() === '') {
@@ -743,6 +911,27 @@ function parseSimplePage(content: string, locale: 'en' | 'zh'): string {
       }
       // Include Chinese content or content in 'both' sections
       if (currentLangSection === 'zh' || currentLangSection === 'both') {
+        // Handle bilingual field names like "**编号 Case Number**: value"
+        if (line.match(/^\*\*/)) {
+          // First try bilingual format: "**中文 English**: value" (first part MUST contain Chinese)
+          const bilingualMatch = line.match(/^\*\*([\u4e00-\u9fa5\u3000-\u303f\uff00-\uffef\s]+)\s+([a-zA-Z0-9\s\(\)\-]+)\*\*\s*[:：]\s*(.+)/);
+          if (bilingualMatch) {
+            const [, zhPart, enPart, value] = bilingualMatch;
+            // Use the Chinese field name
+            result.push(`**${zhPart.trim()}**: ${value}`);
+            continue;
+          }
+          // If no bilingual format, check for pure Chinese field name
+          const chineseFieldMatch = line.match(/^\*\*([\u4e00-\u9fa5\u3000-\u303f\uff00-\uffef\s\(\)\-]+)\*\*\s*[:：]\s*(.+)/);
+          if (chineseFieldMatch) {
+            // Keep Chinese field names as-is
+            result.push(line);
+            continue;
+          }
+          // If neither pattern matched, skip this line (it's likely English-only)
+          continue;
+        }
+
         // Extract Chinese from mixed content
         if (line.includes('（中文：')) {
           const match = line.match(/（中文：([^）]+)）/);
@@ -768,11 +957,20 @@ function parseSimplePage(content: string, locale: 'en' | 'zh'): string {
  * Process a single raw file and generate .en.md and .zh.md
  */
 function processRawFile(rawFilePath: string, contentDir: string) {
+  const fileName = path.basename(rawFilePath, '.raw.md');
+  const dirName = path.dirname(rawFilePath).replace(contentDir + path.sep, '');
+
+  // Skip Arena page.raw.md - it's handled by sync-arena-list.ts
+  if (dirName === 'Arena' && fileName === 'page') {
+    console.log(`Processing: ${rawFilePath}`);
+    console.log(`  Skipped: Arena page.raw.md is handled by sync-arena-list.ts`);
+    console.log('');
+    return;
+  }
+
   console.log(`Processing: ${rawFilePath}`);
 
   const rawContent = fs.readFileSync(rawFilePath, 'utf-8');
-  const fileName = path.basename(rawFilePath, '.raw.md');
-  const dirName = path.dirname(rawFilePath).replace(contentDir + path.sep, '');
 
   let enContent: string;
   let zhContent: string;
@@ -808,6 +1006,7 @@ function processRawFile(rawFilePath: string, contentDir: string) {
   const zhPath = path.join(contentDir, dirName, `${fileName}.zh.md`);
   fs.writeFileSync(zhPath, zhContent, 'utf-8');
   console.log(`  Generated: ${zhPath}`);
+  console.log('');
 }
 
 /**

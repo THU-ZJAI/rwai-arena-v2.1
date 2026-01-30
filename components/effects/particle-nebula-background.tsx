@@ -1,21 +1,54 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+
 export function ParticleNebulaBackground() {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // Generate deterministic random values based on index
+  const getPseudoRandom = (index: number) => {
+    const x = Math.sin(index * 12.9898 + 78.233) * 43758.5453;
+    return x - Math.floor(x);
+  };
+
+  const particles = [...Array(60)].map((_, i) => ({
+    id: i,
+    left: getPseudoRandom(i) * 100,
+    top: getPseudoRandom(i + 100) * 100,
+    width: 2 + getPseudoRandom(i + 200) * 4,
+    height: 2 + getPseudoRandom(i + 300) * 4,
+    animationDelay: getPseudoRandom(i + 400) * 5,
+    animationDuration: 3 + getPseudoRandom(i + 500) * 4,
+  }));
+
+  // Don't render particles on server - only render gradient background
+  if (!isClient) {
+    return (
+      <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-br from-white via-blue-50 to-white"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
       <div className="absolute inset-0 bg-gradient-to-br from-white via-blue-50 to-white"></div>
       <div className="absolute inset-0">
-        {[...Array(60)].map((_, i) => (
+        {particles.map((p) => (
           <div
-            key={i}
+            key={p.id}
             className="particle-blue"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              width: `${2 + Math.random() * 4}px`,
-              height: `${2 + Math.random() * 4}px`,
-              animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${3 + Math.random() * 4}s`
+              left: `${p.left}%`,
+              top: `${p.top}%`,
+              width: `${p.width}px`,
+              height: `${p.height}px`,
+              animationDelay: `${p.animationDelay}s`,
+              animationDuration: `${p.animationDuration}s`,
             }}
           />
         ))}

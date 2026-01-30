@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git pull:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npm run sync-content:*)",
+      "Bash(npm run build:*)",
+      "Bash(timeout:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push)",
+      "Bash(taskkill:*)",
+      "Bash(if exist \".next\\\\dev\\\\lock\" del:*)",
+      "Bash(npx -y mammoth extract:*)",
+      "Bash(unzip:*)",
+      "Bash(python:*)",
+      "Bash(ls:*)",
+      "Bash(git push:*)",
+      "Bash(curl:*)",
+      "Bash(dir:*)",
+      "Bash(npx tsc:*)",
+      "mcp__ide__executeCode",
+      "Bash(pip install:*)",
+      "Bash(del:*)",
+      "Bash(npm install:*)",
+      "Bash(npx tsx:*)",
+      "Bash(npm run sync-arena-list:*)",
+      "Bash(ping:*)",
+      "Bash(chcp:*)",
+      "Bash(node:*)",
+      "mcp__ide__getDiagnostics",
+      "Bash(npx:*)"
+    ]
+  }
+}

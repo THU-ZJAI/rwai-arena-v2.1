@@ -11,6 +11,7 @@
 
 This checklist covers all aspects we've encountered during development:
 - ✅ **CRITICAL**: Source of Truth Verification (PRD/Content as single source)
+- ✅ **CRITICAL**: Content-to-Component Mapping Verification
 - ✅ Bilingual content integrity
 - ✅ Visual design consistency
 - ✅ Component implementation
@@ -580,17 +581,19 @@ This checklist covers all aspects we've encountered during development:
 
 ### Final Checks Before Deploy ✅
 
-**CRITICAL GATE - Source of Truth Verification:**
+**CRITICAL GATES:**
 - [ ] **Section 6.0 (Source of Truth)**: ALL items checked - No hardcoded content in code
+- [ ] **Section 12 (Content-to-Component Mapping)**: ALL items checked - No console errors
 - [ ] All content originates from `Content/*.raw.md` files
 - [ ] All design specs documented in `PRD/Design/` files
 - [ ] No magic values or hardcoded strings in components
 - [ ] `lib/data.ts` entries match `Content/Arena/` directories
+- [ ] No "Section not found" errors in browser console
 
 **Standard Checks:**
 - [ ] All other checklist items above completed
 - [ ] Build successful (`npm run build`)
-- [ ] No console errors in browser
+- [ ] No console errors in browser (check all pages)
 - [ ] All user flows tested
 - [ ] Both languages tested
 - [ ] Responsive design verified
@@ -1115,6 +1118,118 @@ When providing feedback, use this format:
 
 ---
 
+## 12. Content-to-Component Mapping Verification ✅ **CRITICAL**
+
+> **Purpose**: Ensure all components only reference content sections that exist in markdown files.
+>
+> **Common Issue**: Console errors like `[getHomepageSectionContent] Section not found: section="Practice Includes Section"`
+
+### 12.1 Section Mapping Consistency ✅
+
+- [ ] **Check component calls match content files**
+  - [ ] Review all `getHomepageSectionContent()` calls in components
+  - [ ] Verify each section key exists in `HOMEPAGE_SECTION_HEADERS` (lib/content.ts)
+  - [ ] Verify each section header exists in corresponding .en.md and .zh.md files
+  - [ ] No orphaned section calls (sections called but not defined in content files)
+
+- [ ] **Check HOMEPAGE_SECTION_HEADERS completeness**
+  - [ ] All entries in `HOMEPAGE_SECTION_HEADERS` must have:
+    - English header matching `homepage.en.md` exactly
+    - Chinese header matching `homepage.zh.md` exactly
+  - [ ] Remove entries for sections that don't exist in content files
+  - [ ] Add entries for any new sections added to content files
+
+- [ ] **Verify section header exact matching**
+  - [ ] English: `## Hero Section` must match `HOMEPAGE_SECTION_HEADERS['Hero Section'].en`
+  - [ ] Chinese: `## 英雄区` must match `HOMEPAGE_SECTION_HEADERS['Hero Section'].zh`
+  - [ ] No trailing spaces in headers
+  - [ No case mismatches (e.g., "hero section" vs "Hero Section")
+
+### 12.2 Console Error Detection ✅
+
+- [ ] **Check for Section not found errors**
+  - [ ] Open browser DevTools Console
+  - [ ] Navigate to all pages (homepage, arena, about, faq, framework)
+  - [ ] Look for `[getHomepageSectionContent] Section not found` errors
+  - [ ] Look for `[getContentFile] Content file not found` errors
+
+- [ ] **Check for getContent errors**
+  - [ ] All `getContentFile()` calls must reference existing directories
+  - [ ] Format: `getContentFile('ContentType', 'fileName', locale)`
+  - [ ] Verify directory exists: `Content/ContentType/fileName.raw.md`
+
+### 12.3 Unused Code Cleanup ✅
+
+- [ ] **Remove unused component functions**
+  - [ ] If a section is removed from content, remove its component function
+  - [ ] If a section is removed from content, remove it from JSX
+  - [ ] Remove Suspense wrappers for removed sections
+  - [ ] Remove parser functions for removed sections
+
+- [ ] **Remove unused imports**
+  - [ ] After removing components, check for unused icon imports
+  - [ ] Check for unused utility imports
+  - [ ] Run `npx tsc --noEmit` to catch unused imports
+
+### 12.4 Automated Verification Commands ✅
+
+```bash
+# Find all getHomepageSectionContent calls
+grep -r "getHomepageSectionContent" app/ --include="*.tsx" | grep -o "'[^']*'"
+
+# Find all HOMEPAGE_SECTION_HEADERS keys
+grep -A 20 "HOMEPAGE_SECTION_HEADERS" lib/content.ts | grep "'" | grep -v "//"
+
+# Find all ## headers in homepage content
+grep "^## " Content/Homepage/homepage.en.md
+grep "^## " Content/Homepage/homepage.zh.md
+
+# Compare and identify mismatches (manual review required)
+```
+
+### 12.5 Common Mapping Errors ✅
+
+**Error 1: Component calls section not in content file**
+- [ ] **Detection**: Console shows `Section not found` error
+- [ ] **Fix Options**:
+  - [ ] Add missing section to content files (.raw.md, run sync-content)
+  - [ ] Remove the component call from JSX if section not needed
+  - [ ] Remove section from HOMEPAGE_SECTION_HEADERS if not used
+- [ ] **Validation**: No console errors on page load
+
+**Error 2: Section header mismatch**
+- [ ] **Detection**: Section exists but content returns empty
+- [ ] **Fix**:
+  - [ ] Check header spelling in content file vs HOMEPAGE_SECTION_HEADERS
+  - [ ] Ensure exact match (including spaces, case)
+  - [ ] Check for hidden characters (zero-width spaces, etc.)
+- [ ] **Validation**: Content displays correctly on page
+
+**Error 3: Orphaned HOMEPAGE_SECTION_HEADERS entries**
+- [ ] **Detection**: Entry in HOMEPAGE_SECTION_HEADERS but no component uses it
+- [ ] **Fix**: Remove unused entry from HOMEPAGE_SECTION_HEADERS
+- [ ] **Validation**: HOMEPAGE_SECTION_HEADERS only contains used sections
+
+**Error 4: Component function exists but not called in JSX**
+- [ ] **Detection**: Function defined but never used in return statement
+- [ ] **Fix**:
+  - [ ] Add component to JSX if needed
+  - [ ] Remove function definition if not needed
+- [ ] **Validation**: All defined functions are used
+
+### 12.6 Pre-Deployment Mapping Checklist ✅
+
+Before each deployment, verify:
+
+- [ ] No console errors on any page (homepage, arena, about, faq, framework)
+- [ ] All sections in HOMEPAGE_SECTION_HEADERS exist in content files
+- [ ] All `getHomepageSectionContent()` calls use valid section keys
+- [ ] No orphaned component functions or parser functions
+- [ ] Build succeeds with `npm run build`
+- [ ] Type checking passes with `npx tsc --noEmit`
+
+---
+
 ## Appendix: Quick Commands
 
 ```bash
@@ -1139,8 +1254,8 @@ npx prettier --check .
 
 ---
 
-**Checklist Version**: 1.0
-**Last Updated**: 2025-01-29
+**Checklist Version**: 1.1
+**Last Updated**: 2025-01-30
 **Maintained By**: RWAI Development Team
 
 ---

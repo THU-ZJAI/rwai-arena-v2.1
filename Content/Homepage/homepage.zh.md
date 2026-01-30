@@ -22,6 +22,11 @@
 - **Title**: 精选 AI 最佳实践
 - **Subtitle**: 发现真实场景的验证AI解决方案
 
+### Configuration
+- **Arena Count**: 3
+- **Arena IDs**: 一周搭建企业级智能调研报告生成系统demo, 两天搭建业务看板及网站demo, 一周搭建文档审核与风控demo
+- **Display Fields**: status, title, industry, category, highlights
+
 ## 行业区
 
 ### 内容

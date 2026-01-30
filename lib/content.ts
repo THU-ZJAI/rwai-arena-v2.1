@@ -86,7 +86,7 @@ export function getArenaIds(): string[] {
 
 /**
  * Get arena detail content
- * @param arenaId - Arena ID (folder name)
+ * @param arenaId - Arena ID (folder name, e.g., '1-intelligent-research-system')
  * @param pageType - Page type (overview, implementation, requirements, validation-report, project-report)
  * @param locale - Locale
  */
@@ -95,7 +95,7 @@ export async function getArenaContent(
   pageType: string,
   locale: string
 ): Promise<ContentFile | null> {
-  return getContentFile(`Arena/${arenaId}`, pageType, locale);
+  return getContentFile(`Arena/All Arenas/${arenaId}`, pageType, locale);
 }
 
 /**
@@ -120,8 +120,6 @@ const HOMEPAGE_SECTION_HEADERS: Record<string, Record<string, string>> = {
   'Featured Arenas Section': { en: 'Featured Arenas Section', zh: '精选实践区' },
   'Industries Section': { en: 'Industries Section', zh: '行业区' },
   'Approach Section': { en: 'Approach Section', zh: '方法区' },
-  'Practice Includes Section': { en: 'Practice Includes Section', zh: '实践包含区' },
-  'Case Studies Section': { en: 'Case Studies Section', zh: '案例研究区' },
   'Trust Section': { en: 'Trust Section', zh: '信任区' },
   'Final CTA Section': { en: 'Final CTA Section', zh: '最终行动区' },
 };
