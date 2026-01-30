@@ -15,117 +15,72 @@
 
 ### Category 1: About RWAI Arena（关于RWAI Arena）
 
-#### Q1: What is RWAI Arena?
-**中文**: RWAI Arena是什么？
+#### Q1: What is Real-World AI?
+**中文**: Real-World AI是什么？
 
-**English Answer**: RWAI Arena is an open-source platform dedicated to finding and verifying the best AI practices for real-world business scenarios. We test AI solutions in actual environments and recommend only verified best practices.
+**English Answer**: Real-World AI is an academic open-source project focused on AI implementation in real-world scenarios. Currently, it primarily shares best practice cases for solving various AI implementation problems in real-world scenarios through open-source code, documentation, and associated resource links. The project is currently in beta, and we welcome your trial and feedback.
 
-**中文回答**: RWAI Arena是一个致力于寻找和验证真实业务场景最佳AI实践的开源平台。我们在实际环境中测试AI解决方案，仅推荐经过验证的最佳实践。
-
----
-
-#### Q2: How does the Arena mechanism work?
-**中文**: Arena机制如何运作？
-
-**English Answer**: The Arena mechanism follows three steps: (1) Define real-world scenarios, (2) Best practices compete under identical conditions, (3) Verify and recommend the best solution based on test results.
-
-**中文回答**: Arena机制遵循三个步骤：(1) 定义真实场景，(2) 最佳实践在相同条件下竞争，(3) 基于测试结果验证并推荐最佳方案。
+**中文回答**: Real-World AI是一个学术性开源项目，专注真实场景的AI落地。目前主要通过开源代码、文档及其关联的其他资源链接，分享解决真实场景AI落地各种问题的最佳实践案例。目前项目为内测版本，欢迎大家试用和反馈意见。
 
 ---
 
-#### Q3: What makes RWAI different from other AI evaluation platforms?
-**中文**: RWAI与其他AI评估平台有何不同？
+#### Q2: What is the Real-World AI Arena? Why evaluate best practices through an "Arena"?
+**中文**: Real-World AI的Arena是什么？为什么以"擂台"的方式评选最佳实践？
 
-**English Answer**: Unlike academic benchmarks, RWAI focuses on real-world business scenarios. We evaluate complete implementations rather than just model performance, considering factors like cost, deployment complexity, and operational requirements.
+**English Answer**: In the process of AI implementation, we most often encounter two questions: How can I solve the problem in my scenario with AI, and how to quickly verify the results? What solution is best/most suitable for me? We take some common scenarios of AI implementation as "Arenas", continuously searching for best practices (SOTA) amid evolving AI technologies and applications, and selecting "champions" for specific scenarios. Through "Tsinghua Select", we solve the problems of technology selection and trial-and-error costs. Real-world AI implementation evaluation criteria are complex and difficult to have absolute scores like academic benchmarks, so we don't rank, only comprehensively evaluate best practices.
 
-**中文回答**: 与学术基准不同，RWAI专注于真实业务场景。我们评估完整的实施方案而非仅模型性能，考虑成本、部署复杂度和运营需求等因素。
-
----
-
-### Category 2: Participation（参与方式）
-
-#### Q4: How can I submit my AI practice to the Arena?
-**中文**: 如何向Arena提交我的AI实践？
-
-**English Answer**: You can submit your AI practice through our GitHub repository. Prepare your code, documentation, and deployment guide, then submit a pull request with complete information about your solution.
-
-**中文回答**: 您可以通过我们的GitHub仓库提交AI实践。准备您的代码、文档和部署指南，然后提交包含完整解决方案信息的拉取请求。
+**中文回答**: 在AI落地的过程中，我们最常遇到的两个问题是：我这个场景的问题如何用AI解决，如何快速落地验证效果？什么样的解决方案是最好/最适合我的？我们将AI落地的一些常见场景作为"擂台"，在不断更新的AI技术和应用中寻找最佳实践（SOTA），并评选特定场景的"擂主"。通过"清华严选"，解决技术选型和试错成本问题。真实场景的AI落地评判标准较为复杂，很难像学术榜单一样有绝对的分值，所以我们不做排名，只综合评定最佳实践。
 
 ---
 
-#### Q5: Can I participate if I'm not a developer?
-**中文**: 如果我不是开发者，可以参与吗？
+#### Q3: What problems does Real-World AI solve? How is it different from other open-source projects like GitHub and Huggingface?
+**中文**: Real-World AI解决什么问题？和Github、Huggingface等其他的开源项目有什么区别？
 
-**English Answer**: Absolutely! You can participate by voting on solutions, providing feedback, sharing your use cases, or helping improve documentation. Community contributions are valuable in many ways.
+**English Answer**: Currently, AI-related open-source communities have rich open-source ecosystems, mainly focusing on code open-sourcing and practice sharing. However, AI implementation is a complex and enormous project, with core difficulties in human-AI interaction and practice, including: business requirement guidance and refinement, expert knowledge input, technical solution design, business application processes, etc. Therefore, having only AI technology or code is not enough. We attempt to model and restore the "Human-in-the-Loop" (HITL) system of AI implementation, ensuring verifiability, practicability, and replicability, completing the "last mile" of AI implementation.
 
-**中文回答**: 当然可以！您可以通过对方案投票、提供反馈、分享用例或帮助改进文档来参与。社区贡献在许多方面都很有价值。
-
----
-
-#### Q6: How are Arena solutions evaluated?
-**中文**: Arena的解决方案如何评估？
-
-**English Answer**: Solutions are evaluated across four dimensions: Quality (accuracy), Efficiency (speed and resource usage), Cost (deployment and operation expenses), and Trust (security and compliance).
-
-**中文回答**: 解决方案从四个维度评估：质量（准确性）、效率（速度和资源使用）、成本（部署和运营费用）、信任（安全性和合规性）。
+**中文回答**: 目前AI相关的开源社区有很丰富的开源生态，以代码开源和实践分享为主。然而AI落地是个复杂而浩大的工程，核心难点在人与AI的交互和实践，包括：业务需求的引导和细化、专家知识的输入、技术方案的设计、业务应用的流程等。因此，仅有AI技术或代码是不够的。我们尝试建模和还原AI落地的"人在回路"（HITL）系统，确保可验证、可实践、可复刻，走通AI落地的"最后一公里"。
 
 ---
 
-### Category 3: Technical Questions（技术问题）
+### Category 2: Resources and Users（资源和用户）
 
-#### Q7: What technologies are used in RWAI Arena?
-**中文**: RWAI Arena使用哪些技术？
+#### Q4: What resources can I get from Real-World AI?
+**中文**: 我能在Real-World AI中获得哪些资源？
 
-**English Answer**: RWAI Arena is built with Next.js 16+, TypeScript, Tailwind CSS, and next-intl for internationalization. We use Framer Motion for animations and Recharts for data visualization.
+**English Answer**: You can understand, participate in, and share various best practice solutions for real-world scenarios based on the latest AI technologies in Real-World AI.
 
-**中文回答**: RWAI Arena使用Next.js 16+、TypeScript、Tailwind CSS和next-intl进行国际化构建。我们使用Framer Motion进行动画，使用Recharts进行数据可视化。
-
----
-
-#### Q8: Is RWAI Arena open source?
-**中文**: RWAI Arena是开源的吗？
-
-**English Answer**: Yes, RWAI Arena is completely open source. All code, practices, and documentation are available on our GitHub repository under an open-source license.
-
-**中文回答**: 是的，RWAI Arena完全开源。所有代码、实践和文档都在我们的GitHub仓库中以开源许可证提供。
+**中文回答**: 您能在Real-World AI中了解、参与、分享，基于最新AI技术的各类真实场景最佳实践方案。
 
 ---
 
-#### Q9: Can I deploy RWAI Arena for my own organization?
-**中文**: 可以为自己的组织部署RWAI Arena吗？
+#### Q5: Who are the user groups of Real-World AI? Can I use it if I'm not a programmer or don't understand algorithms?
+**中文**: Real-World AI的用户群体有哪些？我不是程序员也不懂算法，可以使用吗？
 
-**English Answer**: Yes, RWAI Arena is designed to be self-hostable. You can deploy it on your own infrastructure following our deployment guide available in the repository.
+**English Answer**: Real-World AI aims to help as many partners as possible related to AI implementation get help and participate in co-construction. Leaders and decision-makers can understand the latest technology development trends and real cases in industrial applications. Business experts can understand, reference, and practice the full process of rapid AI implementation in their own industries. Technical developers can understand and replicate the actual effects and best cases of latest technologies applied in different scenarios. Even without understanding algorithms or knowing how to write code, you can find many low-barrier, zero/low-code practice solutions.
 
-**中文回答**: 可以，RWAI Arena设计为可自托管。您可以根据仓库中提供的部署指南在自己的基础设施上部署。
-
----
-
-### Category 4: Licensing and Usage（许可和使用）
-
-#### Q10: What license does RWAI Arena use?
-**中文**: RWAI Arena使用什么许可证？
-
-**English Answer**: RWAI Arena uses the MIT License for the platform code. Individual AI practices may have their own licenses, which are clearly indicated in each practice's repository.
-
-**中文回答**: RWAI Arena平台代码使用MIT许可证。单个AI实践可能有自己的许可证，在每个实践的仓库中明确标示。
+**中文回答**: Real-World AI的目的是让尽可能多和AI落地相关的伙伴获得帮助、参与共建。领导决策者可以了解最新的技术发展趋势和在产业应用的真实案例。业务专家可以了解、参考和实践在自身行业快速搭建AI的落地全流程。技术开发者可以了解、复刻在不同场景应用最新技术的实际效果和最佳案例。即使不懂算法、不会写代码，也能找到许多低门槛、零/低代码的实践方案。
 
 ---
 
-#### Q11: Can I use RWAI Arena for commercial purposes?
-**中文**: 可以将RWAI Arena用于商业目的吗？
+### Category 3: Best Practices（最佳实践）
 
-**English Answer**: Yes, both the RWAI Arena platform and the verified practices can be used for commercial purposes. Please check individual practice licenses for specific terms.
+#### Q6: How do you define and evaluate "best practices"?
+**中文**: 如何定义和评价"最佳实践"？
 
-**中文回答**: 可以，RWAI Arena平台和验证过的实践都可以用于商业目的。具体条款请查看各个实践的许可证。
+**English Answer**: As a team that has been doing industrial AI practice work for a long time, we believe that best practices for real-world AI should first start from the goals of real-world scenarios, clearly defining the value that AI implementation can bring to the industry, such as: compliance and security, organizational adaptability, system adaptability as basic requirements, and of course business effect, implementation cost, implementation cycle as effect indicators. In industrial AI practice, we will choose some representative and universal scenarios with clear interfaces to common systems, define the business effect indicators of this scenario, and look for best practices.
+
+**中文回答**: 作为长期做产业AI实践工作的团队，我们认为，真实世界AI的最佳实践首先应该从真实场景的目标出发，清晰定义AI落地能够为产业带来的价值，比如：安全合规、组织适配、系统适配这些基础要求，当然也有业务效果、实施成本、实施周期这些效果指标。在产业AI的实践中，我们会选择一些有代表性和通用性、并与常见系统接口较清晰的场景，定义这个场景的业务效果指标，并寻找最佳实践。
 
 ---
 
-#### Q12: How do I cite RWAI Arena in academic work?
-**中文**: 在学术工作中如何引用RWAI Arena？
+### Category 4: Participation（参与方式）
 
-**English Answer**: When citing RWAI Arena, please use the following format: "RWAI Arena: Real-World AI Best Practices Platform. https://rwai-arena.org"
+#### Q7: I want to participate in building Real-World AI, what can I do?
+**中文**: 我想参与建设Real-World AI，可以怎么做？
 
-**中文回答**: 引用RWAI Arena时，请使用以下格式："RWAI Arena: 现实世界AI最佳实践平台. https://rwai-arena.org"
+**English Answer**: We welcome your interest and willingness! Currently, there are three ways to cooperate with us: 1. You can submit your work - please see our submission guidelines. 2. If you have highly customized requirements or willingness for deep cooperation, please contact us. 3. You can also submit feedback, suggestions, and opinions to us - please contact us.
+
+**中文回答**: 欢迎您的兴趣与意愿！目前有三种途径与我们合作：1. 您可以投稿，详见投稿与反馈。2. 您如果有高度定制的需求或深度合作意愿，请联系我们。3. 您也可以向我们提交反馈建议与意见，请联系我们。
 
 ---
 
@@ -137,7 +92,7 @@
 
 ### Contact Methods
 - **GitHub**: https://github.com/THU-ZJAI/Real-World-AI
-- **Email**: contact@rwai-arena.org
+- **Email**: contactmx@163.com
 
 ---
 

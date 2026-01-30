@@ -1,7 +1,8 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useState, useMemo, use } from 'react';
+import { useState, useMemo, use, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Badge, RadarChart } from '@/components/ui';
 import { arenas, categories, industries } from '@/lib/data';
 import { Arena, Category, Industry } from '@/lib/types';
@@ -10,10 +11,26 @@ import Link from 'next/link';
 
 export default function ArenaPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = use(params);
+  const searchParams = useSearchParams();
   const t = useTranslations('arena');
+
+  // Initialize state from URL query parameters
   const [selectedCategory, setSelectedCategory] = useState<Category | 'all'>('all');
   const [selectedIndustry, setSelectedIndustry] = useState<Industry | 'all'>('all');
   const [sortBy, setSortBy] = useState<'quality' | 'efficiency' | 'cost' | 'trust' | 'stars'>('quality');
+
+  // Read URL query parameters and update filters
+  useEffect(() => {
+    const industryParam = searchParams.get('industry');
+    const categoryParam = searchParams.get('category');
+
+    if (industryParam && industryParam in industries) {
+      setSelectedIndustry(industryParam as Industry);
+    }
+    if (categoryParam && categoryParam in categories) {
+      setSelectedCategory(categoryParam as Category);
+    }
+  }, [searchParams]);
 
   // Filter and sort arenas
   const filteredArenas = useMemo(() => {
@@ -66,10 +83,10 @@ export default function ArenaPage({ params }: { params: Promise<{ locale: string
                 onChange={(e) => setSelectedCategory(e.target.value as Category | 'all')}
                 className="w-full px-4 py-2 border border-gray-200 rounded-button focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
               >
-                <option value="all">All Categories</option>
-                {Object.entries(categories).map(([key, { en }]) => (
+                <option value="all">{t('allCategories')}</option>
+                {Object.entries(categories).map(([key, labels]) => (
                   <option key={key} value={key}>
-                    {en}
+                    {labels[locale as keyof typeof labels]}
                   </option>
                 ))}
               </select>
@@ -85,10 +102,10 @@ export default function ArenaPage({ params }: { params: Promise<{ locale: string
                 onChange={(e) => setSelectedIndustry(e.target.value as Industry | 'all')}
                 className="w-full px-4 py-2 border border-gray-200 rounded-button focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
               >
-                <option value="all">All Industries</option>
-                {Object.entries(industries).map(([key, { en }]) => (
+                <option value="all">{t('allIndustries')}</option>
+                {Object.entries(industries).map(([key, labels]) => (
                   <option key={key} value={key}>
-                    {en}
+                    {labels[locale as keyof typeof labels]}
                   </option>
                 ))}
               </select>

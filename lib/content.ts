@@ -22,18 +22,16 @@ export async function getContentFile(
     const contentDir = path.join(process.cwd(), 'Content', contentType);
     const filePath = path.join(contentDir, `${fileName}.${locale}.md`);
 
+    console.log(`[getContentFile] Looking for: ${filePath}`);
+
     // Check if file exists
     if (!fs.existsSync(filePath)) {
-      // Try fallback to English if locale-specific file doesn't exist
-      const enFilePath = path.join(contentDir, `${fileName}.en.md`);
-      if (fs.existsSync(enFilePath)) {
-        const content = fs.readFileSync(enFilePath, 'utf-8');
-        return { content };
-      }
+      console.error(`[getContentFile] File not found: ${filePath}`);
       return null;
     }
 
     const content = fs.readFileSync(filePath, 'utf-8');
+    console.log(`[getContentFile] Found file, content length: ${content.length}`);
 
     // Parse frontmatter if exists (between first --- and second ---)
     let frontmatter: Record<string, any> | undefined;
@@ -139,22 +137,48 @@ export async function getHomepageSectionContent(
   locale: string
 ): Promise<ContentFile | null> {
   const contentFile = await getContentFile('Homepage', 'homepage', locale);
-  if (!contentFile) return null;
+  if (!contentFile) {
+    console.error(`[getHomepageSectionContent] Content file not found for locale=${locale}`);
+    return null;
+  }
 
   const sectionHeader =
     HOMEPAGE_SECTION_HEADERS[section]?.[locale] ?? section;
-  const escaped = sectionHeader.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const sectionRegex = new RegExp(
-    `## ${escaped}[\\s\\S]*?(?=##\\s|$)`,
-    'i'
-  );
-  const sectionMatch = contentFile.content.match(sectionRegex);
 
-  if (sectionMatch) {
-    return { content: sectionMatch[0] };
+  // Split by ## headers at the start of a line
+  const lines = contentFile.content.split('\n');
+  let sectionStart = -1;
+  let sectionEnd = lines.length;
+
+  for (let i = 0; i < lines.length; i++) {
+    // Check if this line is a section header (## at start, not ###)
+    if (lines[i].startsWith('## ') && !lines[i].startsWith('### ')) {
+      const currentHeader = lines[i].substring(3).trim(); // Remove "## " and trim
+      if (currentHeader === sectionHeader && sectionStart === -1) {
+        sectionStart = i;
+      } else if (sectionStart !== -1) {
+        // Found the next section, this is our end
+        sectionEnd = i;
+        break;
+      }
+    }
   }
 
-  return null;
+  if (sectionStart === -1) {
+    console.error(`[getHomepageSectionContent] Section not found: section="${section}", locale="${locale}", header="${sectionHeader}"`);
+    // Log all ## headers for debugging
+    const allHeaders = lines.filter(line => line.startsWith('## ')).map(line => `"${line.substring(3).trim()}"`);
+    console.error(`[getHomepageSectionContent] Available headers:`, allHeaders.join(', '));
+    return null;
+  }
+
+  console.log(`[getHomepageSectionContent] Found section: "${sectionHeader}" from line ${sectionStart} to ${sectionEnd}`);
+
+  // Extract the section content (from header to before next section)
+  const sectionLines = lines.slice(sectionStart, sectionEnd);
+  const sectionContent = sectionLines.join('\n');
+
+  return { content: sectionContent };
 }
 
 /**

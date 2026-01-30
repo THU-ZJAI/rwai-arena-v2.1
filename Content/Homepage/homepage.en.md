@@ -26,7 +26,7 @@
 
 ### Content
 - **Title**: Explore by Industry
-- **Subtitle**: Covering 6 industries, 14+ verified AI solutions
+- **Subtitle**: Covering 6 industries, 10+ verified AI solutions
 
 ## Approach Section
 
@@ -46,46 +46,6 @@
 - **Title**: Verify and Recommend Best
 - **Description**: Select the optimal solution based on test results, provide complete code and deployment guides.
 
-## Practice Includes Section
-
-### Header
-- **Title**: Every Practice Includes
-- **Subtitle**: Complete production-ready solutions, ready for immediate deployment
-
-### Feature 1
-- **Title**: Live Demo
-- **Description**: Experience actual results online
-
-### Feature 2
-- **Title**: Complete Source Code
-- **Description**: Open source, auditable, customizable
-
-### Feature 3
-- **Title**: Deployment Guide
-- **Description**: Deploy in 1-3 days
-
-### Feature 4
-- **Title**: Performance Report
-- **Description**: Real test data
-
-## Case Studies Section
-
-### Header
-- **Title**: Case Studies
-- **Subtitle**: Real Companies, Real Results
-
-### Case Study 1
-- **Title**: NL2SQL Financial Reports
-- **Company**: Major Bank
-- **Before Label**: Before
-- **Before Value**: Manual: 2 hours
-- **After Label**: After
-- **After Value**: AI: 5 minutes
-- **Metric 1 Label**: Efficiency
-- **Metric 1 Value**: 24x
-- **Metric 2 Label**: Accuracy
-- **Metric 2 Value**: 95%
-
 ## Trust Section
 
 ### Header
@@ -93,7 +53,7 @@
 
 ### Trust Point 1
 - **Title**: Verified
-- **Description**: All solutions tested in real scenarios with traceable data
+- **Description**: All practices verified in real-world scenarios with traceable data and workflow
 
 ### Trust Point 2
 - **Title**: Expert Team
@@ -101,13 +61,13 @@
 
 ### Trust Point 3
 - **Title**: Replicable
-- **Description**: All solutions tested in real scenarios with traceable practice
+- **Description**: All practices recorded with open-source code, solutions and documents to fully replicate
 
 ## Final CTA Section
 
 ### Content
-- **Title**: Ready to Find Your AI Solution?
-- **Description**: Browse verified AI blueprints, or join the developer community to contribute
-- **Primary Button**: Browse Blueprints
+- **Title**: Ready to Find Your AI Best Practice?
+- **Description**: Browse verified AI best practices, or join the developer community to contribute
+- **Primary Button**: Browse Best Practices
 - **Secondary Button**: GitHub
 - **Beta Note**: Currently in beta testing, we welcome your feedback and suggestions

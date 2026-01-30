@@ -321,7 +321,7 @@ export default function FrameworkPage() {
             <div className="grid gap-4 sm:grid-cols-2">
               {[
                 isChina ? '提交您的AI实践到擂台竞争' : 'Submit your AI practice to compete in the Arena',
-                isChina ? '对现有方案投票并提供反馈' : 'Vote and provide feedback on existing solutions',
+                isChina ? '对现有方案提供反馈' : 'Provide feedback on existing solutions',
                 isChina ? '在GitHub上贡献代码和改进' : 'Contribute code and improvements on GitHub',
                 isChina ? '与社区分享您的经验' : 'Share your experience with the community',
               ].map((item, idx) => (

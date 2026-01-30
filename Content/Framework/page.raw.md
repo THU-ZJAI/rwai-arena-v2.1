@@ -128,9 +128,9 @@ Each AI practice is evaluated across four dimensions: Quality, Efficiency, Cost,
 **English**: Submit your AI practice to compete in the Arena
 **Chinese**: 提交您的AI实践到擂台竞争
 
-### Vote and Provide Feedback
-**English**: Vote and provide feedback on existing solutions
-**Chinese**: 对现有方案投票并提供反馈
+### Provide Feedback
+**English**: Provide feedback on existing practices
+**Chinese**: 对现有实践提供反馈
 
 ### Contribute on GitHub
 **English**: Contribute code and improvements on GitHub

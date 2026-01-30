@@ -6,6 +6,17 @@ import Link from 'next/link';
 import { getHomepageSectionContent, parseHomepageSectionContent } from '@/lib/content';
 import { Suspense } from 'react';
 
+// Helper function to get localized labels (fallback to content files for consistency)
+function getLabel(locale: string, key: string): string {
+  const labels: Record<string, Record<string, string>> = {
+    'arena.status.verified': { en: 'Verified', zh: '已验证' },
+    'arena.status.inArena': { en: 'In Arena', zh: '竞技中' },
+    'arena.quality': { en: 'Quality', zh: '质量' },
+    'arena.efficiency': { en: 'Efficiency', zh: '效率' },
+  };
+  return labels[key]?.[locale] || labels[key]?.['en'] || key;
+}
+
 export default async function HomePage({
   params,
 }: {
@@ -84,36 +95,36 @@ function parseHeroContent(markdown: string) {
 
   // Parse badges - support both English "Badges" and Chinese "徽章"
   const badgesSection = markdown.match(/### (Badges|徽章)\n([\s\S]*?)(?=###|$)/);
-  let badges = 'Open Source • Verified • Replicable';
+  let badges = '';
   if (badgesSection) {
     const badgeItems = badgesSection[2].split('\n')
       .filter(line => line.trim().startsWith('-'))
-      .map(line => line.replace(/-\s*\*\*[^\*]+\*\*\s*:\s*/, '').trim()); // Remove "**Badge**: " prefix
+      .map(line => line.replace(/-\s*\*\*[^\*]+\*\*\s*[:：]\s*/, '').trim()); // Remove "**Badge**: " prefix (support both : and ：)
     badges = badgeItems.filter(item => item.length > 0).join(' • ');
   }
 
   return {
     badges,
-    title: parsed['Title'] || parsed['标题'] || 'Which AI Actually Works?',
-    subtitle: parsed['Subtitle'] || parsed['副标题'] || 'We run them in Real World. Recommend only the Best Practice.',
-    description: parsed['Description'] || parsed['描述'] || 'Test AI practice in real-world scenarios. Locate only the best-proven practice and open-source everything.',
-    primaryCta: parsed['Primary'] || 'Find AI Best Practice',
-    secondaryCta: parsed['Secondary'] || 'About RWAI',
+    title: parsed['Title'] || parsed['标题'],
+    subtitle: parsed['Subtitle'] || parsed['副标题'],
+    description: parsed['Description'] || parsed['描述'],
+    primaryCta: parsed['Primary'] || parsed['主要按钮'],
+    secondaryCta: parsed['Secondary'] || parsed['次要按钮'],
   };
 }
 
 async function HeroSection({ locale }: { locale: string }) {
   const contentFile = await getHomepageSectionContent('Hero Section', locale);
-  const content = contentFile ? parseHeroContent(contentFile.content) : {
-    badges: locale === 'zh' ? '开源 • 已验证 • 可复制' : 'Open Source • Verified • Replicable',
-    title: locale === 'zh' ? 'AI实战，谁是最佳？' : 'Which AI Actually Works?',
-    subtitle: locale === 'zh' ? '跑通AI落地的最佳实践' : 'We run them in Real World. Recommend only the Best Practice.',
-    description: locale === 'zh'
-      ? '在真实场景下验证AI落地的最佳实践，不仅开源代码，也开源可复刻的实践路径'
-      : 'Test AI practice in real-world scenarios. Locate only the best-proven practice and open-source everything.',
-    primaryCta: locale === 'zh' ? '寻找AI最佳实践' : 'Find AI Best Practice',
-    secondaryCta: locale === 'zh' ? '关于RWAI' : 'About RWAI',
-  };
+  if (!contentFile) {
+    return (
+      <section className="relative overflow-hidden bg-gradient-to-b from-bg-secondary to-bg-primary py-section">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+          <p className="text-red-500">Error: Hero Section content not found for locale "{locale}". Please run sync-content or check Content/Homepage/homepage.{locale}.md</p>
+        </div>
+      </section>
+    );
+  }
+  const content = parseHeroContent(contentFile.content);
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-bg-secondary to-bg-primary py-section">
@@ -151,11 +162,14 @@ async function HeroSection({ locale }: { locale: string }) {
 
 async function FeaturedArenasSection({ locale }: { locale: string }) {
   const contentFile = await getHomepageSectionContent('Featured Arenas Section', locale);
-  const parsed = contentFile ? parseHomepageSectionContent(contentFile.content) : {};
+  if (!contentFile) {
+    return null; // Skip section if content not found
+  }
+  const parsed = parseHomepageSectionContent(contentFile.content);
 
   const featuredArenas = arenas.slice(0, 3);
-  const title = parsed['Title'] || (locale === 'zh' ? '精选 AI 最佳实践' : 'Featured AI Best Practices');
-  const subtitle = parsed['Subtitle'] || (locale === 'zh' ? '发现真实场景的验证AI解决方案' : 'Discover verified AI solutions for real-world scenarios');
+  const title = parsed['Title'];
+  const subtitle = parsed['Subtitle'];
 
   return (
     <section className="py-section bg-bg-primary">
@@ -180,16 +194,19 @@ async function FeaturedArenasSection({ locale }: { locale: string }) {
 function ArenaCard({ arena, locale }: { arena: Arena; locale: string }) {
   const categoryLabel = categories[arena.category][locale === 'en' ? 'en' : 'zh'];
   const industryLabel = industries[arena.industry][locale === 'en' ? 'en' : 'zh'];
+  const statusLabel = arena.status === 'verified' ? getLabel(locale, 'arena.status.verified') : getLabel(locale, 'arena.status.inArena');
+  const qualityLabel = getLabel(locale, 'arena.quality');
+  const efficiencyLabel = getLabel(locale, 'arena.efficiency');
 
   return (
     <Link href={`/${locale}/arena`} className="group block">
       <div className="bg-bg-primary border border-gray-200 rounded-card p-card hover:shadow-card-hover transition-all duration-default hover:-translate-y-1 h-full flex flex-col">
         <div className="flex justify-between items-start mb-4">
           <Badge variant={arena.status === 'verified' ? 'verified' : 'in-arena'}>
-            {arena.status === 'verified' ? 'Verified' : 'In Arena'}
+            {statusLabel}
           </Badge>
           <div className="text-xs text-text-secondary">
-            {arena.metrics.quality}% Quality
+            {arena.metrics.quality}% {qualityLabel}
           </div>
         </div>
 
@@ -209,11 +226,11 @@ function ArenaCard({ arena, locale }: { arena: Arena; locale: string }) {
         <div className="flex items-center gap-3 text-sm text-text-secondary">
           <div className="flex items-center gap-1">
             <Star className="w-3.5 h-3.5" />
-            <span>Quality: {arena.metrics.quality}%</span>
+            <span>{qualityLabel}: {arena.metrics.quality}%</span>
           </div>
           <div className="flex items-center gap-1">
             <Star className="w-3.5 h-3.5" />
-            <span>Efficiency: {arena.metrics.efficiency}%</span>
+            <span>{efficiencyLabel}: {arena.metrics.efficiency}%</span>
           </div>
         </div>
       </div>
@@ -223,10 +240,13 @@ function ArenaCard({ arena, locale }: { arena: Arena; locale: string }) {
 
 async function IndustriesSection({ locale }: { locale: string }) {
   const contentFile = await getHomepageSectionContent('Industries Section', locale);
-  const parsed = contentFile ? parseHomepageSectionContent(contentFile.content) : {};
+  if (!contentFile) {
+    return null; // Skip section if content not found
+  }
+  const parsed = parseHomepageSectionContent(contentFile.content);
 
-  const title = parsed['Title'] || (locale === 'zh' ? '按行业探索' : 'Explore by Industry');
-  const subtitle = parsed['Subtitle'] || (locale === 'zh' ? '覆盖6个行业，14+个验证AI解决方案' : 'Covering 6 industries, 14+ verified AI solutions');
+  const title = parsed['Title'];
+  const subtitle = parsed['Subtitle'];
 
   return (
     <section className="py-section bg-bg-secondary">
@@ -261,7 +281,12 @@ async function IndustriesSection({ locale }: { locale: string }) {
  * Parse approach content
  */
 function parseApproachContent(markdown: string) {
-  const parsed = parseHomepageSectionContent(markdown);
+  // First, extract the Header subsection for title and description
+  // Support both English "Header" and Chinese "标题区"
+  const headerMatch = markdown.match(/### (Header|标题区)\n([\s\S]*?)(?=### |$)/);
+  const headerParsed = headerMatch
+    ? parseHomepageSectionContent(headerMatch[0])
+    : {};
 
   const result: Record<string, { title: string; description: string }> = {};
 
@@ -278,25 +303,18 @@ function parseApproachContent(markdown: string) {
   }
 
   return {
-    title: parsed['Title'] || parsed['标题'] || 'Real Scenarios • Fair Competition • Single Best',
-    description: parsed['Description'] || parsed['描述'] || 'Through the "Arena" mechanism, we fairly test AI practices in real business scenarios and recommend only verified best practices.',
+    title: headerParsed['Title'] || headerParsed['标题'],
+    description: headerParsed['Description'] || headerParsed['描述'],
     steps: result,
   };
 }
 
 async function ApproachSection({ locale }: { locale: string }) {
   const contentFile = await getHomepageSectionContent('Approach Section', locale);
-  const content = contentFile ? parseApproachContent(contentFile.content) : {
-    title: locale === 'zh' ? '真实场景 • 公平竞争 • 唯一最佳' : 'Real Scenarios • Fair Competition • Single Best',
-    description: locale === 'zh'
-      ? '通过"Arena"机制，我们在真实业务场景中公平测试AI实践，只推荐验证的最佳实践。'
-      : 'Through the "Arena" mechanism, we fairly test AI practices in real business scenarios and recommend only verified best practices.',
-    steps: {
-      step1: { title: locale === 'zh' ? '定义真实场景' : 'Define Real-world Scenarios', description: locale === 'zh' ? '选择具体的现实问题并建立明确的成功标准和评估框架。' : 'Select specific real-world problems and establish clear success criteria and evaluation frameworks.' },
-      step2: { title: locale === 'zh' ? '最佳实践竞争' : 'Best Practices Compete', description: locale === 'zh' ? '多种解决方案在相同条件下使用真实数据和统一标准进行测试。' : 'Multiple solutions tested under identical conditions using real data and unified standards.' },
-      step3: { title: locale === 'zh' ? '验证并推荐最佳' : 'Verify and Recommend Best', description: locale === 'zh' ? '根据测试结果选择最优解决方案，提供完整代码和部署指南。' : 'Select the optimal solution based on test results, provide complete code and deployment guides.' },
-    },
-  };
+  if (!contentFile) {
+    return null; // Skip section if content not found
+  }
+  const content = parseApproachContent(contentFile.content);
 
   const icons = [<Target className="w-8 h-8" />, <Trophy className="w-8 h-8" />, <CheckCircle2 className="w-8 h-8" />];
 
@@ -343,25 +361,26 @@ function parsePracticeIncludesContent(markdown: string) {
     });
   }
 
+  // Extract header subsection for title and subtitle
+  // Support both English "Content" and Chinese "内容"
+  const headerMatch = markdown.match(/### (Content|内容)\n([\s\S]*?)(?=### |$)/);
+  const headerParsed = headerMatch
+    ? parseHomepageSectionContent(headerMatch[0])
+    : {};
+
   return {
-    title: parseHomepageSectionContent(markdown)['Title'] || parseHomepageSectionContent(markdown)['标题'] || 'Every Practice Includes',
-    subtitle: parseHomepageSectionContent(markdown)['Subtitle'] || parseHomepageSectionContent(markdown)['副标题'] || 'Complete production-ready solutions, ready for immediate deployment',
+    title: headerParsed['Title'] || headerParsed['标题'],
+    subtitle: headerParsed['Subtitle'] || headerParsed['副标题'],
     features: result,
   };
 }
 
 async function PracticeIncludesSection({ locale }: { locale: string }) {
   const contentFile = await getHomepageSectionContent('Practice Includes Section', locale);
-  const content = contentFile ? parsePracticeIncludesContent(contentFile.content) : {
-    title: locale === 'zh' ? '每个实践包含' : 'Every Practice Includes',
-    subtitle: locale === 'zh' ? '完整的生产就绪解决方案，可立即部署' : 'Complete production-ready solutions, ready for immediate deployment',
-    features: [
-      { title: locale === 'zh' ? '在线演示' : 'Live Demo', description: locale === 'zh' ? '在线体验实际效果' : 'Experience actual results online' },
-      { title: locale === 'zh' ? '完整源代码' : 'Complete Source Code', description: locale === 'zh' ? '开源、可审计、可定制' : 'Open source, auditable, customizable' },
-      { title: locale === 'zh' ? '部署指南' : 'Deployment Guide', description: locale === 'zh' ? '1-3天内完成部署' : 'Deploy in 1-3 days' },
-      { title: locale === 'zh' ? '性能报告' : 'Performance Report', description: locale === 'zh' ? '真实测试数据' : 'Real test data' },
-    ],
-  };
+  if (!contentFile) {
+    return null; // Skip section if content not found
+  }
+  const content = parsePracticeIncludesContent(contentFile.content);
 
   const icons = [<Target className="w-10 h-10" />, <Star className="w-10 h-10" />, <Users className="w-10 h-10" />, <CheckCircle2 className="w-10 h-10" />];
 
@@ -394,37 +413,27 @@ function parseCaseStudiesContent(markdown: string) {
   const parsed = parseHomepageSectionContent(markdown);
 
   return {
-    title: parsed['Title'] || parsed['标题'] || 'Case Studies',
-    subtitle: parsed['Subtitle'] || parsed['副标题'] || 'Real Companies, Real Results',
-    caseTitle: parsed['Title (EN)'] || parsed['Title (ZH)'] || 'NL2SQL Financial Reports',
-    company: parsed['Company'] || parsed['Company (EN)'] || parsed['Company (ZH)'] || 'Major Bank',
-    beforeLabel: parsed['Before Label'] || parsed['Before Label (EN)'] || 'Before',
-    beforeValue: parsed['Before Value'] || parsed['Before Value (EN)'] || 'Manual: 2 hours',
-    afterLabel: parsed['After Label'] || parsed['After Label (EN)'] || 'After',
-    afterValue: parsed['After Value'] || parsed['After Value (EN)'] || 'AI: 5 minutes',
-    metric1Label: parsed['Metric 1 Label'] || 'Efficiency',
-    metric1Value: parsed['Metric 1 Value'] || '24x',
-    metric2Label: parsed['Metric 2 Label'] || 'Accuracy',
-    metric2Value: parsed['Metric 2 Value'] || '95%',
+    title: parsed['Title'] || parsed['标题'],
+    subtitle: parsed['Subtitle'] || parsed['副标题'],
+    caseTitle: parsed['Title'] || parsed['Title (EN)'] || parsed['Title (ZH)'],
+    company: parsed['Company'] || parsed['Company (EN)'] || parsed['Company (ZH)'],
+    beforeLabel: parsed['Before Label'] || parsed['Before Label (EN)'],
+    beforeValue: parsed['Before Value'] || parsed['Before Value (EN)'],
+    afterLabel: parsed['After Label'] || parsed['After Label (EN)'],
+    afterValue: parsed['After Value'] || parsed['After Value (EN)'],
+    metric1Label: parsed['Metric 1 Label'],
+    metric1Value: parsed['Metric 1 Value'],
+    metric2Label: parsed['Metric 2 Label'],
+    metric2Value: parsed['Metric 2 Value'],
   };
 }
 
 async function CaseStudiesSection({ locale }: { locale: string }) {
   const contentFile = await getHomepageSectionContent('Case Studies Section', locale);
-  const content = contentFile ? parseCaseStudiesContent(contentFile.content) : {
-    title: locale === 'zh' ? '案例研究' : 'Case Studies',
-    subtitle: locale === 'zh' ? '真实公司，真实成果' : 'Real Companies, Real Results',
-    caseTitle: locale === 'zh' ? 'NL2SQL财务报告' : 'NL2SQL Financial Reports',
-    company: locale === 'zh' ? '大型银行' : 'Major Bank',
-    beforeLabel: locale === 'zh' ? '之前' : 'Before',
-    beforeValue: locale === 'zh' ? '手动：2小时' : 'Manual: 2 hours',
-    afterLabel: locale === 'zh' ? '之后' : 'After',
-    afterValue: locale === 'zh' ? 'AI: 5 分钟' : 'AI: 5 minutes',
-    metric1Label: locale === 'zh' ? '效率' : 'Efficiency',
-    metric1Value: '24x',
-    metric2Label: locale === 'zh' ? '准确率' : 'Accuracy',
-    metric2Value: '95%',
-  };
+  if (!contentFile) {
+    return null; // Skip section if content not found
+  }
+  const content = parseCaseStudiesContent(contentFile.content);
 
   return (
     <section className="py-section bg-bg-primary">
@@ -501,24 +510,25 @@ function parseTrustContent(markdown: string) {
     });
   }
 
-  const headerParsed = parseHomepageSectionContent(markdown);
+  // Extract header subsection for title
+  // Support both English "Header" and Chinese "标题区"
+  const headerMatch = markdown.match(/### (Header|标题区)\n([\s\S]*?)(?=### |$)/);
+  const headerParsed = headerMatch
+    ? parseHomepageSectionContent(headerMatch[0])
+    : {};
 
   return {
-    title: headerParsed['Title'] || headerParsed['标题'] || 'Why Trust RWAI',
+    title: headerParsed['Title'] || headerParsed['标题'],
     points: result,
   };
 }
 
 async function TrustSection({ locale }: { locale: string }) {
   const contentFile = await getHomepageSectionContent('Trust Section', locale);
-  const content = contentFile ? parseTrustContent(contentFile.content) : {
-    title: locale === 'zh' ? '为什么信任RWAI' : 'Why Trust RWAI',
-    points: [
-      { title: locale === 'zh' ? '已验证' : 'Verified', description: locale === 'zh' ? '所有解决方案在真实场景中测试，数据可追溯' : 'All solutions tested in real scenarios with traceable data' },
-      { title: locale === 'zh' ? '专家团队' : 'Expert Team', description: locale === 'zh' ? '来自清华、牛津和财富500强公司的AI专家' : 'AI experts from Tsinghua, Oxford and Fortune 500 Companies' },
-      { title: locale === 'zh' ? '可复制' : 'Replicable', description: locale === 'zh' ? '所有解决方案在真实场景中测试，实践可追溯' : 'All solutions tested in real scenarios with traceable practice' },
-    ],
-  };
+  if (!contentFile) {
+    return null; // Skip section if content not found
+  }
+  const content = parseTrustContent(contentFile.content);
 
   const icons = [<CheckCircle2 className="w-14 h-14" />, <Users className="w-14 h-14" />, <Star className="w-14 h-14" />];
 
@@ -552,16 +562,15 @@ function parseFinalCtaContent(markdown: string) {
 
 async function FinalCtaSection({ locale }: { locale: string }) {
   const contentFile = await getHomepageSectionContent('Final CTA Section', locale);
-  const parsed = contentFile ? parseFinalCtaContent(contentFile.content) : {};
+  if (!contentFile) {
+    return null; // Skip section if content not found
+  }
+  const parsed = parseFinalCtaContent(contentFile.content);
 
-  const title = parsed['Title'] || (locale === 'zh' ? '准备找到您的AI解决方案？' : 'Ready to Find Your AI Solution?');
-  const description = parsed['Description'] || (locale === 'zh'
-    ? '浏览验证的AI蓝图，或加入开发者社区做出贡献'
-    : 'Browse verified AI blueprints, or join the developer community to contribute');
-  const primaryButton = parsed['Primary Button'] || (locale === 'zh' ? '浏览蓝图' : 'Browse Blueprints');
-  const betaNote = parsed['Beta Note'] || (locale === 'zh'
-    ? '目前正在beta测试中，欢迎您的反馈和建议'
-    : 'Currently in beta testing, we welcome your feedback and suggestions');
+  const title = parsed['Title'];
+  const description = parsed['Description'];
+  const primaryButton = parsed['Primary Button'];
+  const betaNote = parsed['Beta Note'];
 
   return (
     <section className="py-section bg-gradient-to-br from-primary to-accent text-white">

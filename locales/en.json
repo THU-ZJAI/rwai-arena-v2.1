@@ -97,6 +97,8 @@
   "arena": {
     "title": "AI Best Practices Arena",
     "subtitle": "Discover and verify the best AI implementations",
+    "allCategories": "All Categories",
+    "allIndustries": "All Industries",
     "filterByCategory": "Filter by Category",
     "filterByIndustry": "Filter by Industry",
     "sortBy": "Sort by",

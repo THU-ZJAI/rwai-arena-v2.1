@@ -174,7 +174,7 @@ export function ArenaDetailClient({ arena, locale, arenaId, initialContent, hasC
               {locale === 'zh' ? '查看代码' : 'View on GitHub'}
             </a>
             <a
-              href={`mailto:contact@rwai.ai?subject=Arena: ${arena.title[locale as keyof typeof arena.title]}`}
+              href={`mailto:contactmx@163.com?subject=Arena: ${arena.title[locale as keyof typeof arena.title]}`}
               className="inline-flex items-center justify-center rounded-lg border-2 border-primary bg-white px-6 py-3 text-base font-semibold text-primary hover:bg-primary-50 transition-colors"
             >
               <Mail className="h-5 w-5 mr-2" />
@@ -330,7 +330,7 @@ export function ArenaDetailClient({ arena, locale, arenaId, initialContent, hasC
               </div>
 
               <a
-                href="mailto:contact@rwai.ai?subject=Expert Version Inquiry"
+                href="mailto:contactmx@163.com?subject=Expert Version Inquiry"
                 className="block w-full text-center rounded-lg border-2 border-primary bg-white px-4 py-2 text-sm font-semibold text-primary hover:bg-primary-50 transition-colors"
               >
                 {locale === 'zh' ? '联系获取专家版' : 'Contact for Expert Version'}

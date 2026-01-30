@@ -1,8 +1,10 @@
-# Intelligent Research
+# Intelligent Research & Report Generation System
 
 **Case Number**: Case251120Y01 **Build Time**: 1 week **Status**: ✅ Verified
 
-## Overview
+---
+
+## Overview 概述
 
 This blueprint implements an **AI-powered intelligent research and report generation system** achieving **51.86 score (ranked #2 globally)** in DeepResearch benchmarks. Only 1.5% gap from #1 (tavily-research) and 6.6% ahead of #3 (gpt-researcher). Delivers **95% reduction** in manual research labor with **≤15 min** report generation, 33% faster than salesforce-air.
 
@@ -12,9 +14,10 @@ This blueprint implements an **AI-powered intelligent research and report genera
 - ✅ ≤15 min report generation time
 - ✅ 33% faster than closest competitor
 
-## Key Metrics
+## Key Metrics 关键指标
 
 | Metric | Value | Benchmark |
+|--------|-------|-----------|
 | **DeepResearch Score** | 51.86 | Ranked #2 (as of 2024-12-24) |
 | **vs #1** | -1.5% | 51.97 vs 51.86 |
 | **vs #3** | +6.6% | 51.86 vs 48.64 |
@@ -22,18 +25,19 @@ This blueprint implements an **AI-powered intelligent research and report genera
 | **Labor Reduction** | 95% | Manual effort saved |
 | **Report Generation** | ≤15 min | Query to final report |
 
-## Deployment Options
+## Deployment Options 部署选项
 
 **Deployment Modes**:
 
 | Mode | Description | Best For |
+|------|-------------|----------|
 | **Cloud API** | Hosted Claude Code + MCP services | Quick start, low infrastructure |
 | **On-Premise** | Self-hosted Claude Code + private MCP servers | Data privacy, custom integration |
 | **Hybrid** | Claude Code cloud + selective on-premise MCPs | Balance of convenience and control |
 
 **Current Implementation**: Cloud API (upgradable to on-premise)
 
-## Business Value
+## Business Value 商业价值
 
 ### ROI Highlights
 
@@ -50,14 +54,19 @@ This blueprint implements an **AI-powered intelligent research and report genera
 - **Academic Research**: Literature review, research status
 - **Strategic Analysis**: Industry trends, technology roadmap
 
-## Technical Architecture
+## Technical Architecture 技术架构
 
 ### System Workflow
 
+```
 User Query → Claude Code (MCP) → Multi-Source Data Collection
+↓
 DeepResearch Engine
+↓
 Report Generation (MD/Word/PDF)
+↓
 Human Review → Final Output
+```
 
 ### Tech Stack
 
@@ -67,7 +76,7 @@ Human Review → Final Output
 - **Output Formats**: Markdown, Word, PDF
 - **Deployment**: Docker containerized, cloud/on-prem
 
-## Demo
+## Demo 演示
 
 **Video Demo**: Coming Soon
 
@@ -75,7 +84,7 @@ Human Review → Final Output
 - **Current**: Access via Claude Code CLI
 - **Coming**: Web-based interactive interface
 
-## Quick Start
+## Quick Start 快速开始
 
 ### Prerequisites
 
@@ -89,13 +98,15 @@ Human Review → Final Output
 2. **Configure API**: Set up Anthropic API key
 3. **Run Research**: Execute query, generate report
 
-## View Full Documentation
+### 3
+
+## View Full Documentation 查看完整文档
 
 Explore detailed technical implementation, validation requirements, test reports, and project planning.
 
 [Implementation](#implementation) [Requirements](#requirements) [Validation Report](#validation-report) [Project Report](#project-report)
 
-## Business Case
+## Business Case 商业案例
 
 **Reduce research labor by 95% with faster report generation**
 

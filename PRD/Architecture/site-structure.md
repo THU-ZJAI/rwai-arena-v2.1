@@ -36,7 +36,7 @@ Root (/)
 ├── Homepage (/en, /zh)
 │   ├── Hero Section
 │   ├── Featured Arenas
-│   ├── Industries Grid
+│   ├── Industries Grid (each industry card links to /arena?industry={id})
 │   ├── Approach (3 Steps)
 │   ├── Practice Includes
 │   ├── Case Studies
@@ -46,6 +46,7 @@ Root (/)
 ├── Arena (/arena)
 │   ├── Page Header
 │   ├── Filters (Category × Industry)
+│   │   └── URL query parameters supported: ?industry={id}&category={id}
 │   ├── Sort Options
 │   └── Arena Cards Grid
 │
@@ -324,6 +325,27 @@ interface ArenaParams {
   id: string  // Arena ID
 }
 ```
+
+### 4.4 Arena页面URL查询参数
+
+Arena页面支持通过URL查询参数进行预筛选：
+
+```typescript
+// URL查询参数
+interface ArenaQueryParams {
+  industry?: Industry  // 按行业筛选: ?industry=finance
+  category?: Category  // 按类别筛选: ?category=service
+}
+```
+
+**使用场景**:
+- 首页"Explore by Industry"行业的每个行业卡片点击后跳转到 `/arena?industry={id}`
+- 其他页面可以通过链接直接跳转到已筛选状态的Arena页面
+
+**实现细节**:
+- Arena页面为客户端组件（'use client'），使用 `useSearchParams` 读取URL参数
+- 参数值必须在 `Category` 或 `Industry` 类型范围内
+- 无效参数值会被忽略，显示所有Arena
 
 ---
 

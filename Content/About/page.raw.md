@@ -1,160 +1,69 @@
-# About Page - About RWAI
+# About Page
 
 ## Team Maintained Original Content
 
-### Page Header
-**Title**: About RWAI
+### About Us Section
+
+**Heading**: About RWAI
 **Chinese**: 关于RWAI
 
-**Subtitle**: Building the future of real-world AI implementation
-**Chinese**: 构建现实世界AI实施的未来
+**Description**: Real-World AI （RWAI） is an open-source project focused on AI implementation in real-world scenarios. We primarily share best practice cases for solving various AI implementation problems through open-source code, documentation, and associated resource links.
+**Chinese**: Real-World AI （RWAI）是一个开源项目，专注真实场景的AI落地。目前主要通过开源代码、文档及其关联的其他资源链接，分享解决真实场景AI落地各种问题的最佳实践案例。
 
 ---
 
-## Section 1: Introduction
+### Initiating Team Section
+**Heading**: Initiating Team
+**Chinese**: 发起团队
 
-### English
-RWAI (Real-World AI) is an academic open-source project initiated by researchers from Tsinghua University and Oxford University, in collaboration with Fortune 500 companies. Our mission is to bridge the gap between AI research and real-world applications, ensuring that AI technologies deliver tangible value in business operations.
-
-### Chinese
-RWAI（Real-World AI，现实世界AI）是由清华大学和牛津大学研究人员发起，与财富500强企业合作的学术开源项目。我们的使命是弥合AI研究与实际应用之间的差距，确保AI技术在商业运营中交付实际价值。
-
----
-
-## Section 2: Our Mission
-
-### Vision（愿景）
-**English**: To become the world's most trusted platform for verified real-world AI best practices.
-**Chinese**: 成为世界上最受信任的验证过的现实世界AI最佳实践平台。
-
-### Mission（使命）
-**English**: Democratize access to production-ready AI solutions by verifying, documenting, and open-sourcing best practices from real-world deployments.
-**Chinese**: 通过验证、记录和开源真实部署中的最佳实践， democratize（普及）生产级AI解决方案的获取。
-
-### Values（价值观）
-- **Openness（开放）**: All practices are open source and transparent
-- **Rigor（严谨）**: Only solutions verified in real scenarios
-- **Collaboration（协作）**: Global community of researchers and practitioners
-- **Impact（影响）**: Focus on practical business value
+**Description**: Yangtze Delta Region Institute of Tsinghua University, Artificial Intelligence Innovation Research Center (THU-ZJAI)
+**Chinese**: 浙江清华长三角研究院人工智能创新研究中心（THU-ZJAI）
 
 ---
 
-## Section 3: Team Members
+### Team Overview Section
+**Heading**: Team Overview
+**Chinese**: 团队概述
 
-### Academic Team（学术团队）
-
-#### Prof. [Name 1]
-- **Title**: Project Lead, Tsinghua University
-- **Chinese**: 项目负责人，清华大学
-- **Expertise**: Human-AI Interaction, Task Formalization
-- **Chinese**: 专长：人机交互、任务形式化
-
-#### Prof. [Name 2]
-- **Title**: Research Lead, Oxford University
-- **Chinese**: 研究负责人，牛津大学
-- **Expertise**: Contextual Alignment, AI Ethics
-- **Chinese**: 专长：上下文对齐、AI伦理
-
-#### Dr. [Name 3]
-- **Title**: Core Researcher, Tsinghua University
-- **Chinese**: 核心研究员，清华大学
-- **Expertise**: Evaluation Framework, Benchmark Design
-- **Chinese**: 专长：评估框架、基准设计
+**Description**: The team focuses on research and application of "Human-in-the-Loop" (HITL) technology for AI-human interaction in real-world scenarios. We are committed to promoting technological innovation and deep application of cutting-edge AI technologies in industrial fields such as finance, energy, and social governance, and have served dozens of well-known professional companies at home and abroad. Team members come from AI experts from renowned universities such as Oxford University, Tsinghua University, and Columbia University, as well as companies like Microsoft, Ping An, and Baidu. We undertake multiple national and international major industrial innovation projects and provide intelligent technology solutions for many domestic and overseas enterprises.
+**Chinese**: 团队聚焦真实场景AI与人交互的"人在回路"（HITL）技术研究和应用，致力于推动人工智能前沿技术在金融、能源、社会治理等产业领域的技术创新和深度应用，曾为国内外数十家知名专业公司提供服务。团队成员来自牛津大学、清华大学、哥伦比亚大学等知名高校以及微软、平安、百度等企业的人工智能专家，承接多项国家、国际重大产业创新课题，并为海内外多家企业提供产业智能化技术方案。
 
 ---
 
-### Industry Partners（行业合作伙伴）
+### Center Director Section
+**Heading**: Center Director
+**Chinese**: 中心主任
 
-#### [Company Name 1] - Fortune 500 Bank
-- **Contribution**: Financial use cases, testing environment
-- **Chinese**: 贡献：金融用例、测试环境
+**Name**: Xu Liang, Ph.D.
+**Chinese**: 徐亮 博士
 
-#### [Company Name 2] - Global Retail Chain
-- **Contribution**: Retail scenarios, customer service automation
-- **Chinese**: 贡献：零售场景、客服自动化
-
-#### [Company Name 3] - Manufacturing Enterprise
-- **Contribution**: Quality inspection, process optimization
-- **Chinese**: 贡献：质量检测、流程优化
+**Description**: Named to the MIT Technology Review's "Global 35 Innovators Under 35", focusing on research and application of AI technology for industrial empowerment. Dr. Xu Liang received his bachelor's degree from Tsinghua University and his Ph.D. from Oxford University. He has led multiple major projects from national to local levels, provided AI solutions for dozens of enterprises, and previously served as the head and chief engineer of Ping An Group's Hybrid Augmented Intelligence Department. He has won the "Chinese AI Highest Award" Wu Wenjun Science and Technology Award three times, the PBOC Financial Technology Development Award, published multiple papers in ACL and The Lancet sub-journals, jointly published multiple monographs with international institutions such as CFA, and obtained over 100 authorized patents.
+**Chinese**: 《麻省理工科技评论》"全球35岁以下科技创新35人"，专注人工智能技术赋能产业的研发和应用。徐亮博士本科毕业于清华大学，在牛津大学取得博士学位。承担从国家到地方的多个重大项目，为数十家企业提供人工智能解决方案。曾任平安集团混合增强智能部门负责人、总工程师，三次获"中国人工智能最高奖"吴文俊科学技术奖、央行金融科技发展奖，在ACL、《柳叶刀》子刊等发表多篇论文，与CFA等国际机构联合发表多篇专著，获100项以上授权专利。
 
 ---
 
-## Section 4: Partners
-
-### Academic Partners（学术合作伙伴）
-- Tsinghua University（清华大学）
-- Oxford University（牛津大学）
-- [Other University Names]
-
-### Industry Partners（行业合作伙伴）
-- [Fortune 500 Company Names]
-- [Leading Tech Companies]
-- [Financial Institutions]
-
-### Open Source Community（开源社区）
-- GitHub Community
-- Open Source Initiative
-- AI Research Community
+### Business Cooperation Section
+**Heading**: Contact us
+**Chinese**: 联系我们
+**Email**: contactmx@163.com
 
 ---
 
-## Section 5: Achievements
+### Partners Section
+**Heading**: Partners
+**Chinese**: 合作伙伴
 
-### Metrics（数据）
-- **50+** Verified AI Practices（验证过的AI实践）
-- **6** Industries Covered（覆盖行业）
-- **14+** Best Practices Listed（列出的最佳实践）
-- **5000+** GitHub Stars（GitHub星标数）
-- **100+** Contributors（贡献者）
+**Description**: The following organizations currently provide application scenarios, technical support, and participate in co-creation. We look forward to more enterprises, universities, and organizations joining us.
+**Chinese**: 目前提供应用场景、技术支持和参与共创的合作单位如下，期待更多企业、高校和组织加入。
 
-### Milestones（里程碑）
-- **2024 Q1**: Project inception（项目启动）
-- **2024 Q3**: First Arena launch（首个擂台上线）
-- **2024 Q4**: 10 verified practices（10个验证过的实践）
-- **2025 Q1**: Public platform launch（公开平台上线）
-
----
-
-## Section 6: Contact Information
-
-### Get in Touch（联系我们）
-**English**: Interested in collaborating or learning more? We'd love to hear from you.
-**Chinese**: 有兴趣合作或了解更多？我们很乐意收到您的来信。
-
-### Contact Methods（联系方式）
-- **Email**: contact@rwai-arena.org
-- **GitHub**: https://github.com/THU-ZJAI/Real-World-AI
-- **Website**: https://rwai-arena.org
-
-### Social Media（社交媒体）
-- **Twitter/X**: [@RWAIArena](https://twitter.com/RWAIArena)
-- **LinkedIn**: [RWAI Arena](https://linkedin.com/company/rwai-arena)
-- **WeChat**: RWAI_Arena（微信公众号）
-
----
-
-## Section 7: Join Us
-
-### We're Hiring（我们正在招聘）
-**English**: Join our team and help shape the future of real-world AI!
-**Chinese**: 加入我们的团队，共同塑造现实世界AI的未来！
-
-### Open Positions（开放职位）
-- **AI Researchers**（AI研究员）
-- **Full-stack Developers**（全栈开发工程师）
-- **Product Managers**（产品经理）
-- **Community Managers**（社区经理）
-
-### How to Apply（申请方式）
-Send your CV and a brief introduction to: careers@rwai-arena.org
+**Partner List**: We welcome more enterprises, universities, and organizations to join us. Please contact us for cooperation.
+**Chinese**: 我们欢迎更多企业、高校和组织加入。欢迎联系我们进行合作。
 
 ---
 
 ## Notes for Content Team
-- About页面内容需要定期更新，特别是团队信息和里程碑
-- 实际团队成员姓名和公司名称需要从官方来源获取
-- 伙伴logo使用统一尺寸和样式
-- 联系方式确保准确有效
-- 社交媒体链接定期检查
-- 招聘信息根据实际情况更新
-- 考虑添加团队成员照片（需获得授权）
+- About page content should be professional and concise
+- Include bilingual content for all sections
+- Highlight the academic and industry background
+- Emphasize the open-source nature
+- Include clear contact information

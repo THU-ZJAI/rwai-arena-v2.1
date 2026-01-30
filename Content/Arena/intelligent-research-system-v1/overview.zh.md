@@ -1,9 +1,6 @@
-# 智能研究与报告生成系统
+# Intelligent Research & Report Generation System 智能研究与报告生成系统
 
-
-
-## 概述
-
+## Overview 概述
 
 本方案实现了一个**AI驱动的智能研究与报告生成系统**，在DeepResearch基准测试中获得**51.86分（全球排名第2）**的成绩。与第1名（tavily-research）仅相差1.5%，领先第3名（gpt-researcher）6.6%。实现**95%的手动研究工作量减少**，报告生成时间**≤15分钟**，比salesforce-air快33%。
 
@@ -13,9 +10,7 @@
 - ✅ ≤15分钟报告生成时间
 - ✅ 比最近的竞争对手快33%
 
-
-## 关键指标
-
+## Key Metrics 关键指标
 
 | 指标 | 数值 | 基准对比 |
 | **DeepResearch得分** | 51.86 | 全球排名第2（截至2024-12-24） |
@@ -25,9 +20,7 @@
 | **工作量减少** | 95% | 节省的手动工作量 |
 | **报告生成** | ≤15分钟 | 从查询到最终报告 |
 
-
-## 部署选项
-
+## Deployment Options 部署选项
 
 **部署模式**:
 
@@ -38,9 +31,11 @@
 
 **当前实现**: 云API（可升级为本地部署）
 
+## Business Value 商业价值
 
-## 商业价值
+### ROI Highlights 投资回报亮点
 
+### Use Cases 应用场景
 
 ### 投资回报亮点
 
@@ -57,9 +52,11 @@
 - **学术研究**: 文献综述、研究现状
 - **战略分析**: 行业趋势、技术路线图
 
+## Technical Architecture 技术架构
 
-## 技术架构
+### System Workflow
 
+### Tech Stack
 
 ### 系统工作流
 
@@ -76,9 +73,7 @@ DeepResearch引擎
 - **输出格式**: Markdown、Word、PDF
 - **部署方式**: Docker容器化，支持云/本地部署
 
-
-## 演示
-
+## Demo 演示
 
 **视频演示**: 即将推出
 
@@ -86,32 +81,30 @@ DeepResearch引擎
 - **当前**: 通过Claude Code CLI访问
 - **即将推出**: 基于Web的交互界面
 
+## Quick Start 快速开始
 
-## 快速开始
+### Prerequisites
 
+### 3-Step Setup
 
 ### 前置条件
 
 - Anthropic API密钥
 - Python 3.9+ (用于本地部署)
 
-### 步设置流程
+### 3步设置流程
 
 1. **安装Claude Code**: `npm install -g @anthropic-ai/claude-code`
 2. **配置API**: 设置Anthropic API密钥
 3. **运行研究**: 执行查询，生成报告
 
-
-## 查看完整文档
-
+## View Full Documentation 查看完整文档
 
 探索详细的技术实现、验证要求、测试报告和项目规划。
 
 [实施指南](#implementation) [需求文档](#requirements) [验证报告](#validation-report) [项目报告](#project-report)
 
-
-## 商业案例
-
+## Business Case 商业案例
 
 **减少95%的研究工作量，同时生成更快的报告**
 

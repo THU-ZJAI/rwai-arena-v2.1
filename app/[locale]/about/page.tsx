@@ -1,8 +1,7 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import { Github, Mail, MessageSquare, Users, BookOpen, Target, Zap, ArrowRight } from 'lucide-react';
-import Link from 'next/link';
+import { Mail } from 'lucide-react';
+import Image from 'next/image';
 import { useLocale } from 'next-intl';
 
 export const dynamic = 'force-dynamic';
@@ -10,6 +9,15 @@ export const dynamic = 'force-dynamic';
 export default function AboutPage() {
   const locale = useLocale();
   const isChina = locale === 'zh';
+
+  const partners = [
+    { name: 'Tsinghua University', nameZh: '清华大学', logo: '/partners/logo1.png' },
+    { name: 'Microsoft', nameZh: '微软', logo: '/partners/logo2.png' },
+    { name: 'Columbia University', nameZh: '哥伦比亚大学', logo: '/partners/logo3.png' },
+    { name: 'Oxford University', nameZh: '牛津大学', logo: '/partners/logo4.png' },
+    { name: 'CFA Institute', nameZh: 'CFA协会', logo: '/partners/logo5.png' },
+    { name: 'Yangtze Delta Region Institute', nameZh: '浙江清华长三角研究院', logo: '/partners/logo6.png' },
+  ];
 
   return (
     <div className="w-full">
@@ -28,267 +36,132 @@ export default function AboutPage() {
             <h1 className="text-5xl font-bold tracking-tight text-white sm:text-6xl mb-6">
               {isChina ? '关于 RWAI' : 'About RWAI'}
             </h1>
-            <p className="text-2xl font-semibold text-blue-400 mb-8">
-              {isChina ? '构建现实世界AI实施的未来' : 'Building the future of real-world AI implementation'}
-            </p>
             <p className="text-lg leading-relaxed text-slate-400">
               {isChina
-                ? 'RWAI（Real-World AI，现实世界AI）是由清华大学和牛津大学研究人员发起，与财富500强企业合作的学术开源项目。我们的使命是弥合AI研究与实际应用之间的差距，确保AI技术在商业运营中交付实际价值。'
-                : 'RWAI (Real-World AI) is an academic open-source project initiated by researchers from Tsinghua University and Oxford University, in collaboration with Fortune 500 companies. Our mission is to bridge the gap between AI research and real-world applications, ensuring that AI technologies deliver tangible value in business operations.'}
+                ? 'Real-World AI （RWAI）是一个开源项目，专注真实场景的AI落地。目前主要通过开源代码、文档及其关联的其他资源链接，分享解决真实场景AI落地各种问题的最佳实践案例。'
+                : 'Real-World AI (RWAI) is an open-source project focused on AI implementation in real-world scenarios. We primarily share best practice cases for solving various AI implementation problems through open-source code, documentation, and associated resource links.'}
             </p>
           </div>
         </div>
       </section>
 
-      {/* Mission */}
-      <section className="py-24 bg-white">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
-              {isChina ? '我们的使命' : 'Our Mission'}
-            </h2>
-            <p className="text-xl text-slate-600">
-              {isChina
-                ? '通过验证、记录和开源真实部署中的最佳实践，普及生产级AI解决方案的获取'
-                : 'Democratize access to production-ready AI solutions by verifying, documenting, and open-sourcing best practices from real-world deployments'}
-            </p>
-          </div>
-
-          <div className="mx-auto max-w-5xl grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: Target,
-                title: isChina ? '开放' : 'Openness',
-                desc: isChina
-                  ? '所有实践都是开源和透明的'
-                  : 'All practices are open source and transparent',
-              },
-              {
-                icon: Zap,
-                title: isChina ? '严谨' : 'Rigor',
-                desc: isChina
-                  ? '仅推荐在真实场景中验证的解决方案'
-                  : 'Only solutions verified in real scenarios',
-              },
-              {
-                icon: BookOpen,
-                title: isChina ? '协作' : 'Collaboration',
-                desc: isChina
-                  ? '研究人员和从业者的全球社区'
-                  : 'Global community of researchers and practitioners',
-              },
-            ].map((item, idx) => (
-              <div key={idx} className="text-center">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-blue-600 text-white mb-4">
-                  <item.icon className="h-8 w-8" />
-                </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-3">{item.title}</h3>
-                <p className="text-slate-600 leading-relaxed">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Team */}
+      {/* Initiating Team */}
       <section className="py-24 bg-slate-50">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
-              {isChina ? '团队' : 'Team'}
+              {isChina ? '发起团队' : 'Initiating Team'}
             </h2>
             <p className="text-xl text-slate-600">
               {isChina
-                ? '来自清华大学、牛津大学等顶级院校的AI专家'
-                : 'AI experts from Tsinghua, Oxford, and other top institutions'}
+                ? '浙江清华长三角研究院人工智能创新研究中心（THU-ZJAI）'
+                : 'Yangtze Delta Region Institute of Tsinghua University, Artificial Intelligence Innovation Research Center (THU-ZJAI)'}
             </p>
           </div>
 
-          <div className="mx-auto max-w-4xl">
+          <div className="mx-auto max-w-4xl space-y-8">
+            {/* Team Overview */}
             <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {[
-                  {
-                    category: isChina ? '学术团队' : 'Academic Team',
-                    members: isChina
-                      ? '清华大学、牛津大学等院校教授'
-                      : 'Professors from Tsinghua, Oxford, etc.',
-                  },
-                  {
-                    category: isChina ? '行业合作伙伴' : 'Industry Partners',
-                    members: isChina
-                      ? '世界500强企业AI架构师、资深工程师'
-                      : 'AI architects and senior engineers from Fortune 500',
-                  },
-                  {
-                    category: isChina ? '开源社区' : 'Open Source Community',
-                    members: isChina
-                      ? '来自全球的开源社区开发者'
-                      : 'Developers from open source communities worldwide',
-                  },
-                ].map((item, idx) => (
-                  <div key={idx} className="border-b border-slate-200 pb-6 last:border-0 last:pb-0">
-                    <h3 className="text-lg font-bold text-slate-900 mb-2">{item.category}</h3>
-                    <p className="text-slate-600">{item.members}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Achievements */}
-      <section className="py-24 bg-white">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
-              {isChina ? '成就' : 'Achievements'}
-            </h2>
-          </div>
-
-          <div className="mx-auto max-w-4xl grid grid-cols-2 md:grid-cols-5 gap-8">
-            {[
-              { value: '50+', label: isChina ? '验证过的AI实践' : 'Verified AI Practices' },
-              { value: '6', label: isChina ? '覆盖行业' : 'Industries Covered' },
-              { value: '14+', label: isChina ? '列出的最佳实践' : 'Best Practices Listed' },
-              { value: '5000+', label: 'GitHub Stars' },
-              { value: '100+', label: isChina ? '贡献者' : 'Contributors' },
-            ].map((item, idx) => (
-              <div key={idx} className="text-center">
-                <div className="text-4xl font-bold text-blue-600 mb-2">{item.value}</div>
-                <div className="text-sm text-slate-600">{item.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Contact */}
-      <section className="py-24 bg-white">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
-              {isChina ? '联系方式' : 'Contact'}
-            </h2>
-            <p className="text-xl text-slate-600">
-              {isChina ? '有兴趣合作或了解更多？我们很乐意收到您的来信。' : 'Interested in collaborating or learning more? We\'d love to hear from you.'}
-            </p>
-          </div>
-
-          <div className="mx-auto max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              {
-                icon: Github,
-                title: 'GitHub',
-                href: 'https://github.com/THU-ZJAI/Real-World-AI',
-                desc: isChina ? '查看源代码' : 'View source code',
-              },
-              {
-                icon: Mail,
-                title: 'Email',
-                href: 'mailto:contact@rwai-arena.org',
-                desc: isChina ? '发送邮件' : 'Send email',
-              },
-              {
-                icon: MessageSquare,
-                title: 'Discord',
-                href: 'https://discord.gg/rwai',
-                desc: isChina ? '加入讨论' : 'Join discussion',
-              },
-            ].map((item, idx) => (
-              <a
-                key={idx}
-                href={item.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex flex-col items-center p-8 bg-slate-50 rounded-xl border-2 border-slate-200 hover:border-blue-600 hover:bg-white hover:shadow-lg transition-all"
-              >
-                <div className="flex items-center justify-center w-16 h-16 rounded-xl bg-white border border-slate-300 text-slate-700 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600 transition-all mb-4">
-                  <item.icon className="h-8 w-8" />
-                </div>
-                <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-600 transition-colors mb-2">
-                  {item.title}
-                </h3>
-                <p className="text-sm text-slate-600">{item.desc}</p>
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Join Us */}
-      <section className="py-24 bg-slate-50">
-        <div className="mx-auto max-w-4xl px-6 lg:px-8">
-          <div className="bg-slate-950 rounded-2xl p-12 text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-              {isChina ? '加入我们' : 'Join Us'}
-            </h2>
-            <p className="text-xl text-slate-400 mb-8 max-w-2xl mx-auto">
-              {isChina
-                ? '加入我们的团队，共同塑造现实世界AI的未来！'
-                : 'Join our team and help shape the future of real-world AI!'}
-            </p>
-
-            <div className="mb-8">
-              <h3 className="text-lg font-semibold text-blue-400 mb-4">
-                {isChina ? '开放职位' : 'Open Positions'}
+              <h3 className="text-xl font-bold text-slate-900 mb-4">
+                {isChina ? '团队概述' : 'Team Overview'}
               </h3>
-              <div className="flex flex-wrap justify-center gap-3">
-                {[
-                  isChina ? 'AI研究员' : 'AI Researchers',
-                  isChina ? '全栈开发工程师' : 'Full-stack Developers',
-                  isChina ? '产品经理' : 'Product Managers',
-                  isChina ? '社区经理' : 'Community Managers',
-                ].map((position, idx) => (
-                  <span key={idx} className="px-4 py-2 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
-                    {position}
-                  </span>
-                ))}
-              </div>
+              <p className="text-slate-700 leading-relaxed">
+                {isChina
+                  ? '团队聚焦真实场景AI与人交互的"人在回路"（HITL）技术研究和应用，致力于推动人工智能前沿技术在金融、能源、社会治理等产业领域的技术创新和深度应用，曾为国内外数十家知名专业公司提供服务。团队成员来自牛津大学、清华大学、哥伦比亚大学等知名高校以及微软、平安、百度等企业的人工智能专家，承接多项国家、国际重大产业创新课题，并为海内外多家企业提供产业智能化技术方案。'
+                  : 'The team focuses on research and application of "Human-in-the-Loop" (HITL) technology for AI-human interaction in real-world scenarios. We are committed to promoting technological innovation and deep application of cutting-edge AI technologies in industrial fields such as finance, energy, and social governance, and have served dozens of well-known professional companies at home and abroad. Team members come from AI experts from renowned universities such as Oxford University, Tsinghua University, and Columbia University, as well as companies like Microsoft, Ping An, and Baidu. We undertake multiple national and international major industrial innovation projects and provide intelligent technology solutions for many domestic and overseas enterprises.'}
+              </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link
-                href="mailto:careers@rwai-arena.org"
-                className="inline-flex items-center justify-center gap-2 h-14 px-8 text-lg font-medium transition-all duration-fast bg-blue-600 hover:bg-blue-700 text-white rounded-button"
+            {/* Center Director */}
+            <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm">
+              <h3 className="text-xl font-bold text-slate-900 mb-4">
+                {isChina ? '中心主任' : 'Center Director'}
+              </h3>
+              <div className="flex items-start gap-6">
+                <div className="flex-shrink-0">
+                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center text-white text-2xl font-bold">
+                    {isChina ? '徐亮' : 'XL'}
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <p className="text-lg font-semibold text-slate-900 mb-2">
+                    {isChina ? '徐亮 博士' : 'Xu Liang, Ph.D.'}
+                  </p>
+                  <p className="text-slate-700 leading-relaxed text-sm mb-3">
+                    {isChina
+                      ? '《麻省理工科技评论》"全球35岁以下科技创新35人"'
+                      : 'Named to the MIT Technology Review\'s "Global 35 Innovators Under 35"'}
+                  </p>
+                  <p className="text-slate-600 leading-relaxed text-sm">
+                    {isChina
+                      ? '徐亮博士本科毕业于清华大学，在牛津大学取得博士学位。承担从国家到地方的多个重大项目，为数十家企业提供人工智能解决方案。曾任平安集团混合增强智能部门负责人、总工程师，三次获"中国人工智能最高奖"吴文俊科学技术奖、央行金融科技发展奖，在ACL、《柳叶刀》子刊等发表多篇论文，与CFA等国际机构联合发表多篇专著，获100项以上授权专利。'
+                      : 'Dr. Xu Liang received his bachelor\'s degree from Tsinghua University and his Ph.D. from Oxford University. He has led multiple major projects from national to local levels, provided AI solutions for dozens of enterprises, and previously served as the head and chief engineer of Ping An Group\'s Hybrid Augmented Intelligence Department. He has won the "Chinese AI Highest Award" Wu Wenjun Science and Technology Award three times, the PBOC Financial Technology Development Award, published multiple papers in ACL and The Lancet sub-journals, jointly published multiple monographs with international institutions such as CFA, and obtained over 100 authorized patents.'}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Us */}
+      <section className="py-24 bg-white">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
+              {isChina ? '联系我们' : 'Contact Us'}
+            </h2>
+            <div className="mt-8">
+              <a
+                href="mailto:contactmx@163.com"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-medium bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-all"
               >
                 <Mail className="h-5 w-5" />
-                {isChina ? '申请职位' : 'Apply Now'}
-              </Link>
+                contactmx@163.com
+              </a>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-24 bg-slate-950">
-        <div className="mx-auto max-w-4xl px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-            {isChina ? '准备开始了吗？' : 'Ready to Get Started?'}
-          </h2>
-          <p className="text-xl text-slate-400 mb-10 max-w-2xl mx-auto">
-            {isChina
-              ? '浏览AI最佳实践，或提交您自己的方案参与竞技'
-              : 'Explore AI best practices or submit your own solution'}
-          </p>
+      {/* Partners */}
+      <section className="py-24 bg-slate-50">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-3xl text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
+              {isChina ? '合作伙伴' : 'Partners'}
+            </h2>
+            <p className="text-xl text-slate-600">
+              {isChina
+                ? '目前提供应用场景、技术支持和参与共创的合作单位如下，期待更多企业、高校和组织加入。'
+                : 'The following organizations currently provide application scenarios, technical support, and participate in co-creation. We look forward to more enterprises, universities, and organizations joining us.'}
+            </p>
+          </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href={`/${locale}/arena`}
-              className="inline-flex items-center justify-center gap-2 h-14 px-8 text-lg font-medium transition-all duration-fast bg-blue-600 hover:bg-blue-700 text-white rounded-button w-full sm:w-auto font-semibold"
-            >
-              {isChina ? '浏览擂台' : 'Browse Arena'}
-            </Link>
-            <a
-              href="https://github.com/THU-ZJAI/Real-World-AI"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 h-14 px-8 text-lg font-medium transition-all duration-fast border-2 border-slate-700 bg-transparent text-slate-300 hover:bg-slate-900 hover:text-white rounded-button w-full sm:w-auto"
-            >
-              <Github className="h-5 w-5" />
-              GitHub
-            </a>
+          <div className="mx-auto max-w-4xl grid grid-cols-2 md:grid-cols-3 gap-8">
+            {partners.map((partner, idx) => (
+              <div
+                key={idx}
+                className="bg-white rounded-xl border border-slate-200 p-8 shadow-sm text-center hover:shadow-md transition-shadow flex flex-col items-center justify-center min-h-[140px]"
+              >
+                <Image
+                  src={partner.logo}
+                  alt={isChina ? partner.nameZh : partner.name}
+                  width={200}
+                  height={200}
+                  unoptimized
+                  className="object-contain w-full h-auto max-h-[100px]"
+                />
+              </div>
+            ))}
+          </div>
+
+          <div className="mx-auto max-w-3xl text-center mt-12">
+            <p className="text-slate-600">
+              {isChina
+                ? '我们欢迎更多企业、高校和组织加入。欢迎联系我们进行合作。'
+                : 'We welcome more enterprises, universities, and organizations to join us. Please contact us for cooperation.'}
+            </p>
           </div>
         </div>
       </section>
