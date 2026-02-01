@@ -11,18 +11,18 @@
 - **Badge (ZH)**: 可复制
 
 ### Main Content
-- **Title (EN)**: Which AI Actually Works?
-- **Title (ZH)**: AI实战，谁是最佳？
-- **Subtitle (EN)**: We run them in Real World. Recommend only the Best Practice.
-- **Subtitle (ZH)**: 跑通AI落地的最佳实践
-- **Description (EN)**: Test AI practice in real-world scenarios. Locate only the best-proven practice and open-source everything - not only the code, but the whole practice you need in real-world.
-- **Description (ZH)**: 在真实场景下验证AI落地的最佳实践，不仅开源代码，也开源可复刻的实践路径
+- **Title (EN)**: Build to Ship. Real World AI.
+- **Title (ZH)**: Build to Ship. Real World AI.
+- **Subtitle (EN)**: RWAI provides end-to-end, production-ready AI implementations
+- **Subtitle (ZH)**: RWAI汇集了已在企业中落地的AI场景全链路工程指南
+- **Description (EN)**: Including system architecture, model choices, team setup, workflows, and code — so you never have to start from scratch.
+- **Description (ZH)**: 提供完整架构、模型选择、流程与代码，让你不再从零试错
 
 ### CTA Buttons
-- **Primary (EN)**: Find AI Best Practice
-- **Primary (ZH)**: 寻找AI最佳实践
-- **Secondary (EN)**: About RWAI
-- **Secondary (ZH)**: 关于RWAI
+- **Primary (EN)**: Browse Best AI Practices
+- **Primary (ZH)**: 浏览最佳AI实践
+- **Secondary (EN)**: About Us
+- **Secondary (ZH)**: 关于我们
 
 ## Featured Arenas Section
 

@@ -122,16 +122,16 @@ export function ParticlesBackground() {
     const animate = (time: number) => {
       if (!ctx || !canvas) return;
 
-      // Dark background
-      ctx.fillStyle = '#0a0a1a';
+      // Dark background - Updated to #0A0E17
+      ctx.fillStyle = '#0A0E17';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Gradient background
+      // Gradient background - Updated to #0A0E17
       const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-      gradient.addColorStop(0, '#0a0a1a');
-      gradient.addColorStop(0.3, '#1a1a3a');
-      gradient.addColorStop(0.7, '#0f0f2a');
-      gradient.addColorStop(1, '#0a0a1a');
+      gradient.addColorStop(0, '#0A0E17');
+      gradient.addColorStop(0.3, '#0A0E17');
+      gradient.addColorStop(0.7, '#0A0E17');
+      gradient.addColorStop(1, '#0A0E17');
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -162,7 +162,7 @@ export function ParticlesBackground() {
 
   if (!isClient) {
     return (
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-[#0a0a1a] via-[#1a1a3a] to-[#0f0f2a]" />
+      <div className="absolute inset-0 -z-10 bg-[#0A0E17]" />
     );
   }
 
@@ -173,7 +173,7 @@ export function ParticlesBackground() {
         className="absolute inset-0 -z-10 w-full h-full"
         aria-hidden="true"
       />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-[#0a0a1a] via-[#1a1a3a] to-[#0f0f2a]" />
+      <div className="absolute inset-0 -z-10 bg-[#0A0E17]" />
     </>
   );
 }

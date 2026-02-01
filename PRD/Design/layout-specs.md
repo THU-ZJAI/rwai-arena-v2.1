@@ -12,14 +12,67 @@
 ```
 ┌─────────────────────────────────────────────────────┐
 │                                                     │
-│           Which AI Actually Works?                  │
-│                    │                                │
-│        Test AI practice in real-world...            │
+│     AI实战，谁是最佳？                                │
+│              跑通AI落地的最佳实践                    │
+│        在真实场景下验证AI落地的最佳实践...            │
 │              │                                      │
-│    [Find AI Solutions]  [Join as Developer]         │
-│   主色按钮              次级按钮/轮廓按钮             │
+│   [浏览解决方案 →]      [关于我们 ⌨]                   │
+│   蓝色背景              白色边框，透明背景              │
 │                                                     │
 └─────────────────────────────────────────────────────┘
+```
+
+**背景色方案**:
+- **主背景**: `#0A0E17` (深海军蓝黑，near-black with blue undertones)
+- **渐变**: `bg-gradient-to-br from-[#0A0E17] to-[#0A0E17]`
+- **替代**: 纯色背景 `bg-[#0A0E17]`
+
+**CTA按钮规范**:
+- **主按钮** (左侧 - "浏览解决方案"):
+  - 背景: `bg-blue-600` 或 `bg-[#3B82F6]`
+  - 文字: 白色 `text-white`
+  - 圆角: `rounded-lg` (8px)
+  - 图标: 箭头 `→` (白色)
+  - Hover: `hover:bg-blue-700`
+
+- **次按钮** (右侧 - "关于我们"):
+  - 背景: 透明 `bg-transparent`
+  - 边框: `border border-white` (2px)
+  - 文字: 白色 `text-white`
+  - 圆角: `rounded-lg` (8px)
+  - 图标: 终端 `>_` (白色)
+  - Hover: `hover:bg-white/10`
+
+**按钮图标**:
+- 主按钮: `<ArrowRight size={16} className="ml-2" />`
+- 次按钮: `<Code2 size={16} className="ml-2" />`
+
+**按钮间距**: `gap-4` (16px)
+
+**文字颜色调整** (适配深色背景):
+- 标题: 白色 `text-white`
+  - 可选: 部分文字用蓝色高亮 `text-blue-500`
+- 副标题: 浅白色 `text-gray-100`
+- 描述: 浅灰色 `text-gray-300`
+- 按钮: 白色 `text-white`
+
+**实现方式**:
+```tsx
+// 主按钮
+<Link href={`/${locale}/arena`}>
+  <Button size="large" className="bg-[#3B82F6] hover:bg-blue-700 text-white rounded-lg">
+    {content.primaryCta}
+    <ArrowRight size={16} className="ml-2" />
+  </Button>
+</Link>
+
+// 次按钮
+<Link href={`/${locale}/about`}>
+  <Button size="large" variant="outline" className="border-white text-white hover:bg-white/10 rounded-lg">
+    {content.secondaryCta}
+    <Code2 size={16} className="ml-2" />
+  </Button>
+</Link>
 ```
 
 **布局规范**
@@ -190,6 +243,177 @@ const PARTICLE_CONFIG = {
   }
 }
 ```
+
+---
+
+### 1.15 Value Proposition区（价值主张展示）
+
+**位置**: Hero区下方，合作伙伴轮播区上方
+
+**设计理念**: Dify/Blueprint风格 - 深色科技感，突出核心技术优势
+
+**布局结构**
+```
+┌────────────────────────────────────────────────────────────────┐
+│  ┌────┐  ┌────┐  ┌────┐  ┌────┐                           │
+│  │⚡  │  │✓  │  │</>│  │⊞  │                           │
+│  └────┘  └────┘  └────┘  └────┘                           │
+│   01      02      03      04                               │
+│                                                               │
+│ High   Production   Open      End-to-End                      │
+│ Velocity   Proven    Source     Guidance                      │
+│                                                               │
+│ 极速构建   实战验证   完全开源   全程指引                      │
+│                                                               │
+│ 2-7天   SLA>99.9%   架构透明   模型微调→私有化               │
+│ 交付    头部企业验证  代码可控   完整工程路径                   │
+└────────────────────────────────────────────────────────────────┘
+```
+
+**布局规范**:
+- **网格**: 4列等宽网格 `grid-cols-1 md:grid-cols-4`
+- **分隔**: 垂直分割线 `divide-x divide-white/10`
+- **高度**: 每个卡片 320px 高度 `h-[320px]`
+- **内边距**: `p-8 md:p-10`
+- **背景**:
+  - 基础: `bg-black/40 backdrop-blur-sm` (半透明黑色 + 模糊)
+  - 整体背景: `#0A0E17` (深海军蓝黑)
+  - 装饰线: 顶部和底部 `h-px bg-white/10` (白色半透明线)
+
+**卡片设计**:
+- **图标块**:
+  - 尺寸: `w-12 h-12`
+  - 颜色: 蓝色 `text-blue-500` (`#3b82f6`)
+  - 背景: `bg-blue-500/10` (蓝色10%透明)
+  - 边框: `ring-1 ring-blue-500/20` (蓝色20%透明)
+  - 圆角: `rounded-sm` (4px)
+  - Hover: `group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white`
+
+- **水印数字**:
+  - 字号: `text-[100px]`
+  - 颜色: `text-white/[0.03]` (白色3%透明)
+  - 位置: 绝对定位右上角
+  - 字体: `font-mono tracking-tighter` (等宽字体)
+  - Hover效果: `group-hover:text-blue-600/[0.08]`
+
+- **装饰角标**:
+  - 符号: `+` (加号)
+  - 颜色: `text-white/20` (白色20%透明)
+  - 位置:
+    - 右下角（所有卡片）
+    - 左下角（仅第一个卡片）
+  - 字体: `font-thin`
+
+**内容层次**:
+1. **图标** (顶部，z-index: 10)
+2. **英文标题** - `text-xl font-bold text-white`
+   - Hover: `group-hover:text-blue-400 transition-colors`
+   - 字重: Bold (700)
+3. **中文副标题** - `text-xs font-mono text-blue-500 uppercase tracking-widest`
+   - 大小: 12px
+   - 颜色: 蓝色 `#3b82f6`
+   - 字母间距: `tracking-widest` (0.1em)
+   - 透明度: `opacity-80`
+4. **描述文字** - `text-sm text-gray-400 border-l border-white/10 pl-3`
+   - 大小: 14px
+   - 颜色: 灰色 `#8a92a6`
+   - 左边框: 白色10%透明
+   - 行高: `leading-relaxed` (1.625)
+   - 字重: `font-light` (300)
+
+**颜色方案** (精确值):
+- **整体背景**: `#0A0E17` (深海军蓝黑，RGB: 10, 14, 23)
+- **卡片背景**: `rgba(0, 0, 0, 0.4)` + `backdrop-blur-sm`
+- **标题**: 白色 `text-white` (#FFFFFF)
+- **副标题**: 蓝色 `text-blue-500` (#3B82F6)
+- **描述**: 灰色 `text-gray-400` (#9CA3AF)
+- **分隔线**: `border-white/10` (rgba(255, 255, 255, 0.1))
+- **装饰线**: `bg-white/10` (rgba(255, 255, 255, 0.1))
+- **图标**: 蓝色 `#3B82F6`
+- **图标背景**: `bg-blue-500/10` (rgba(59, 130, 246, 0.1))
+- **图标边框**: `ring-blue-500/20` (rgba(59, 130, 246, 0.2))
+
+**交互效果**:
+- **卡片Hover**: `hover:bg-white/[0.02]` (白色2%透明背景)
+- **图标Hover**:
+  - 缩放: `group-hover:scale-110` (110%)
+  - 背景: `group-hover:bg-blue-600` (纯蓝色)
+  - 文字: `group-hover:text-white` (白色)
+  - 过渡: `transition-all duration-300`
+- **标题Hover**: `group-hover:text-blue-400`
+- **水印Hover**: `group-hover:text-blue-600/[0.08]`
+- **过渡时间**:
+  - 卡片/图标/标题: `duration-300`
+  - 水印: `duration-500`
+
+**整体间距**:
+- 区域下方间距: `mb-32` (128px)
+- 内边距: `p-8 md:p-10` (32px / 40px)
+
+**4个价值点内容**:
+
+1. **High Velocity / 极速构建**
+   - 图标: `Zap` (闪电)
+   - 描述: "2-7 天交付企业级系统，内置标准 CI/CD 流水线。"
+
+2. **Production Proven / 实战验证**
+   - 图标: `CheckCircle` (对勾)
+   - 描述: "经头部企业高并发场景验证，SLA > 99.9%。"
+
+3. **Open Source / 完全开源**
+   - 图标: `Code2` (代码标签)
+   - 描述: "架构透明，代码可控，无供应商锁定风险。"
+
+4. **End-to-End / 全程指引**
+   - 图标: `Layers` (堆叠层)
+   - 描述: "从模型微调到私有化部署的完整工程路径。"
+
+**响应式**:
+- **移动端**: 单列堆叠 `grid-cols-1`，水平分割线 `divide-y`
+- **桌面端**: 4列网格，垂直分割线 `divide-x`
+- **高度**: 移动端自适应
+
+**交互动效**:
+- **卡片Hover**: `hover:bg-white/[0.02]`
+- **图标Hover**: `group-hover:scale-110` + 颜色变化
+- **标题Hover**: `group-hover:text-blue-400`
+- **水印Hover**: `group-hover:text-blue-600/[0.08]`
+- **过渡**: `transition-all duration-300` 或 `duration-500`
+
+**技术实现**:
+```tsx
+const features = [
+  {
+    icon: <Zap size={24} />,
+    title: "High Velocity",
+    subtitle: "极速构建",
+    desc: "2-7 天交付企业级系统，内置标准 CI/CD 流水线。"
+  },
+  {
+    icon: <CheckCircle size={24} />,
+    title: "Production Proven",
+    subtitle: "实战验证",
+    desc: "经头部企业高并发场景验证，SLA > 99.9%。"
+  },
+  {
+    icon: <Code2 size={24} />,
+    title: "Open Source",
+    subtitle: "完全开源",
+    desc: "架构透明，代码可控，无供应商锁定风险。"
+  },
+  {
+    icon: <Layers size={24} />,
+    title: "End-to-End",
+    subtitle: "全程指引",
+    desc: "从模型微调到私有化部署的完整工程路径。"
+  },
+];
+```
+
+**整体间距**:
+- 顶部装饰线距顶部: `0`
+- 底部装饰线距底部: `0`
+- 区域外边距: `mb-32` (下方间距)
 
 ---
 

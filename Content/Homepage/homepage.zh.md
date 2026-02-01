@@ -8,13 +8,13 @@
 - **Badge**: 可复制
 
 ### 主要内容
-- **Title**: AI实战，谁是最佳？
-- **Subtitle**: 跑通AI落地的最佳实践
-- **Description**: 在真实场景下验证AI落地的最佳实践，不仅开源代码，也开源可复刻的实践路径
+- **Title**: Build to Ship. Real World AI.
+- **Subtitle**: RWAI汇集了已在企业中落地的AI场景全链路工程指南
+- **Description**: 提供完整架构、模型选择、流程与代码，让你不再从零试错
 
 ### 行动按钮
-- **Primary**: 寻找AI最佳实践
-- **Secondary**: 关于RWAI
+- **Primary**: 浏览最佳AI实践
+- **Secondary**: 关于我们
 
 ## 精选实践区
 

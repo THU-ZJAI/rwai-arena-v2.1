@@ -8,13 +8,13 @@
 - **Badge**: Replicable
 
 ### Main Content
-- **Title**: Which AI Actually Works?
-- **Subtitle**: We run them in Real World. Recommend only the Best Practice.
-- **Description**: Test AI practice in real-world scenarios. Locate only the best-proven practice and open-source everything - not only the code, but the whole practice you need in real-world.
+- **Title**: Build to Ship. Real World AI.
+- **Subtitle**: RWAI provides end-to-end, production-ready AI implementations
+- **Description**: Including system architecture, model choices, team setup, workflows, and code — so you never have to start from scratch.
 
 ### CTA Buttons
-- **Primary**: Find AI Best Practice
-- **Secondary**: About RWAI
+- **Primary**: Browse Best AI Practices
+- **Secondary**: About Us
 
 ## Featured Arenas Section
 

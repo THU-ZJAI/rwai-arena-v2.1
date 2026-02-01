@@ -3,6 +3,7 @@ import { Manrope, Noto_Sans_SC, IBM_Plex_Mono } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { Header, Footer } from '@/components/layout';
+import { FloatingCTA } from '@/components/floating-cta';
 import '../globals.css';
 
 const manrope = Manrope({
@@ -47,6 +48,7 @@ export default async function LocaleLayout({
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />
+            <FloatingCTA locale={locale} />
           </div>
         </NextIntlClientProvider>
       </body>
