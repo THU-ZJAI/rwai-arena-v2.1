@@ -16,6 +16,24 @@
 - **Primary**: Browse Best AI Practices
 - **Secondary**: About Us
 
+## Value Props Section
+
+### Value Prop 1
+- **Title**: Rapid Deployment
+- **Description**: Deliver enterprise level solution in 2-7 days
+
+### Value Prop 2
+- **Title**: Real-World Tested
+- **Description**: Validated in high-frequency used scenarios by top enterprises.
+
+### Value Prop 3
+- **Title**: Fully Open Source
+- **Description**: Transparent architecture, controllable code, no vendor lock-in risk.
+
+### Value Prop 4
+- **Title**: End-to-End Guidance
+- **Description**: Complete implementation path from team building to private deployment.
+
 ## Featured Arenas Section
 
 ### Content
@@ -73,6 +91,6 @@
 ### Content
 - **Title**: Ready to Find Your AI Best Practice?
 - **Description**: Browse verified AI best practices, or join the developer community to contribute
-- **Primary Button**: Browse Best AI Practices
+- **Primary Button**: Browse Best Practices
 - **Secondary Button**: GitHub
 - **Beta Note**: Currently in beta testing, we welcome your feedback and suggestions

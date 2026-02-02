@@ -117,6 +117,7 @@ export async function getHomepageContent(
  */
 const HOMEPAGE_SECTION_HEADERS: Record<string, Record<string, string>> = {
   'Hero Section': { en: 'Hero Section', zh: '英雄区' },
+  'Value Props Section': { en: 'Value Props Section', zh: 'Value Props Section' },
   'Featured Arenas Section': { en: 'Featured Arenas Section', zh: '精选实践区' },
   'Industries Section': { en: 'Industries Section', zh: '行业区' },
   'Approach Section': { en: 'Approach Section', zh: '方法区' },

@@ -126,7 +126,8 @@ function parseHeroContent(markdown: string) {
   const parsed = parseHomepageSectionContent(markdown);
 
   // Parse badges - support both English "Badges" and Chinese "徽章"
-  const badgesSection = markdown.match(/### (Badges|徽章)\n([\s\S]*?)(?=###|$)/);
+  // Updated regex to match badges section more robustly
+  const badgesSection = markdown.match(/### (Badges|徽章)\s*\n+([\s\S]*?)(?=\n### |$)/);
   let badges = '';
   if (badgesSection) {
     const badgeItems = badgesSection[2].split('\n')
@@ -286,17 +287,6 @@ async function HeroSection({ locale }: { locale: string }) {
       <ParticlesBackground />
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center">
-          {/* Badges - with dot decoration */}
-          <div className="hero-animate hero-animate-delay-100">
-            <div className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm mb-8">
-              <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
-              <span className="text-xs font-mono text-gray-400 tracking-widest uppercase">
-                {content.badges}
-              </span>
-              <div className="w-1.5 h-1.5 rounded-full bg-blue-500/50 animate-pulse delay-100" />
-            </div>
-          </div>
-
           {/* Large Title with blue highlight */}
           <h1 className="text-[67px] sm:text-[84px] md:text-[101px] lg:text-[101px] font-bold text-white mb-8 max-w-5xl mx-auto leading-[1.1] hero-animate hero-animate-delay-200 tracking-tight hero-glow">
             {renderTitle(content.title, isZh)}
@@ -376,31 +366,37 @@ async function HeroSection({ locale }: { locale: string }) {
 }
 
 /**
+ * Parse value props section content
+ */
+function parseValuePropsContent(markdown: string) {
+  const result: Array<{ title: string; description: string }> = [];
+
+  // Support both English "Value Prop N" and Chinese "价值主张 N"
+  const propSections = markdown.match(/### (Value Prop \d+|价值主张 \d+)\n([\s\S]*?)(?=### |$)/g);
+  if (propSections) {
+    propSections.forEach((section) => {
+      const parsed = parseHomepageSectionContent(section);
+      result.push({
+        title: parsed['Title'] || parsed['标题'] || '',
+        description: parsed['Description'] || parsed['描述'] || '',
+      });
+    });
+  }
+
+  return result;
+}
+
+/**
  * Value Proposition Section
  */
 async function ValuePropSection({ locale }: { locale: string }) {
-  const features = [
-    {
-      icon: <Zap size={40} />,
-      title: '极速构建',
-      desc: locale === 'zh' ? '2-7 天交付企业级系统，内置标准 CI/CD 流水线。' : 'Deliver enterprise systems in 2-7 days, with built-in standard CI/CD pipelines.'
-    },
-    {
-      icon: <CheckCircle2 size={40} />,
-      title: '实战验证',
-      desc: locale === 'zh' ? '经头部企业高并发场景验证，SLA > 99.9%。' : 'Validated in high-concurrency scenarios by top enterprises, SLA > 99.9%.'
-    },
-    {
-      icon: <Code2 size={40} />,
-      title: '完全开源',
-      desc: locale === 'zh' ? '架构透明，代码可控，无供应商锁定风险。' : 'Transparent architecture, controllable code, no vendor lock-in risk.'
-    },
-    {
-      icon: <Layers size={40} />,
-      title: '全程指引',
-      desc: locale === 'zh' ? '从模型微调到私有化部署的完整工程路径。' : 'Complete engineering path from model fine-tuning to private deployment.'
-    },
-  ];
+  const contentFile = await getHomepageSectionContent('Value Props Section', locale);
+  if (!contentFile) {
+    return null; // Skip section if content not found
+  }
+  const valueProps = parseValuePropsContent(contentFile.content);
+
+  const icons = [<Zap size={40} />, <CheckCircle2 size={40} />, <Code2 size={40} />, <Layers size={40} />];
 
   return (
     <section className="relative w-full max-w-7xl mx-auto mb-0">
@@ -409,7 +405,7 @@ async function ValuePropSection({ locale }: { locale: string }) {
       <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
       <div className="relative grid grid-cols-1 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-white/10 border-x border-white/10">
-        {features.map((feature, idx) => (
+        {valueProps.map((prop, idx) => (
           <div key={idx} className="relative group p-8 md:p-10 flex flex-col items-center text-center transition-all hover:bg-white/[0.02] overflow-hidden">
 
             {/* Shine effect on hover */}
@@ -427,17 +423,17 @@ async function ValuePropSection({ locale }: { locale: string }) {
             {/* Icon - Larger with enhanced hover effects */}
             <div className="relative z-10 mb-8">
               <div className="w-16 h-16 flex items-center justify-center text-blue-500 bg-blue-500/10 rounded-lg ring-1 ring-blue-500/20 group-hover:scale-125 group-hover:bg-blue-600 group-hover:text-white group-hover:shadow-[0_0_50px_-15px_#3B82F6] transition-all duration-500">
-                {feature.icon}
+                {icons[idx] || <Zap size={40} />}
               </div>
             </div>
 
             {/* Content - Larger and centered */}
             <div className="relative z-10">
               <h3 className="text-2xl font-bold text-[#1a3a5c] mb-4 tracking-tight group-hover:scale-110 group-hover:text-blue-400 transition-all duration-300 block">
-                {feature.title}
+                {prop.title}
               </h3>
               <p className="text-base text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors">
-                {feature.desc}
+                {prop.description}
               </p>
             </div>
           </div>

@@ -2,27 +2,47 @@
 
 ## Hero Section
 
-### Badges
-- **Badge (EN)**: Open Source
-- **Badge (ZH)**: 开源
-- **Badge (EN)**: Verified
-- **Badge (ZH)**: 已验证
-- **Badge (EN)**: Replicable
-- **Badge (ZH)**: 可复制
+
 
 ### Main Content
-- **Title (EN)**: Build to Ship. Real World AI.
-- **Title (ZH)**: Build to Ship. Real World AI.
-- **Subtitle (EN)**: RWAI provides end-to-end, production-ready AI implementations
-- **Subtitle (ZH)**: RWAI汇集了已在企业中落地的AI场景全链路工程指南
-- **Description (EN)**: Including system architecture, model choices, team setup, workflows, and code — so you never have to start from scratch.
-- **Description (ZH)**: 提供完整架构、模型选择、流程与代码，让你不再从零试错
+- **Title (EN)**: Find the ONE Best AI Practice. Real World AI Arena
+- **Title (ZH)**: AI实战，谁是最佳？ RWAI真实世界AI擂台
+- **Subtitle (EN)**: RWAI finds the best end-to-end, production-ready AI implementations
+- **Subtitle (ZH)**: RWAI寻找和验证最好的AI全链路落地实践
+- **Description (EN)**: Including team setup, system architecture, model choices, workflows, and code — so you never have to start from scratch.
+- **Description (ZH)**: 提供团队构建、系统架构、模型选择、流程与代码，让你不再从零试错
 
 ### CTA Buttons
 - **Primary (EN)**: Browse Best AI Practices
 - **Primary (ZH)**: 浏览最佳AI实践
 - **Secondary (EN)**: About Us
 - **Secondary (ZH)**: 关于我们
+
+## Value Props Section
+
+### Value Prop 1
+- **Title (EN)**: Rapid Deployment
+- **Title (ZH)**: 极速构建
+- **Description (EN)**: Deliver enterprise level solution in 2-7 days.
+- **Description (ZH)**: 2-7 天交付产业级系统解决方案
+
+### Value Prop 2
+- **Title (EN)**: Real-World Tested
+- **Title (ZH)**: 实战验证
+- **Description (EN)**: Validated in high-frequency used scenarios by top enterprises.
+- **Description (ZH)**: 经头部企业高频场景验证
+
+### Value Prop 3
+- **Title (EN)**: Fully Open Source
+- **Title (ZH)**: 完全开源
+- **Description (EN)**: Transparent architecture, controllable code, no vendor lock-in risk.
+- **Description (ZH)**: 架构透明，代码可控，无供应商锁定风险
+
+### Value Prop 4
+- **Title (EN)**: End-to-End Guidance
+- **Title (ZH)**: 全程指引
+- **Description (EN)**: Complete implementation path from team setup to private deployment.
+- **Description (ZH)**: 从团队搭建到私有化部署的完整落地路径
 
 ## Featured Arenas Section
 

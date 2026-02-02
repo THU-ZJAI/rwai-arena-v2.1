@@ -9,12 +9,30 @@
 
 ### 主要内容
 - **Title**: Build to Ship. Real World AI.
-- **Subtitle**: RWAI汇集了已在企业中落地的AI场景全链路工程指南
+- **Subtitle**: RWAI汇集了最好的AI全链路落地指南
 - **Description**: 提供完整架构、模型选择、流程与代码，让你不再从零试错
 
 ### 行动按钮
 - **Primary**: 浏览最佳AI实践
 - **Secondary**: 关于我们
+
+## Value Props Section
+
+### Value Prop 1
+- **Title**: 极速构建
+- **Description**: 2-7 天交付产业级系统解决方案
+
+### Value Prop 2
+- **Title**: 实战验证
+- **Description**: 经头部企业高频场景验证。
+
+### Value Prop 3
+- **Title**: 完全开源
+- **Description**: 架构透明，代码可控，无供应商锁定风险。
+
+### Value Prop 4
+- **Title**: 全程指引
+- **Description**: 从团队搭建到私有化部署的完整落地路径。
 
 ## 精选实践区
 
@@ -73,6 +91,6 @@
 ### 内容
 - **Title**: 准备找到您的AI最佳实践？
 - **Description**: 浏览验证的AI最佳实践，或加入开发者社区做出贡献
-- **Primary Button**: 浏览最佳 AI 实践
+- **Primary Button**: 浏览最佳实践
 - **Secondary Button**: GitHub
 - **Beta Note**: 目前正在beta测试中，欢迎您的反馈和建议
