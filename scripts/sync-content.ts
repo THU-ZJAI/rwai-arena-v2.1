@@ -41,6 +41,7 @@ const HOMEPAGE_ZH_SECTIONS: Record<string, string> = {
   'Hero Section': '英雄区',
   'Featured Arenas Section': '精选实践区',
   'Industries Section': '行业区',
+  'Real-World Testing Section': '实战验证区',
   'Approach Section': '方法区',
   'Practice Includes Section': '实践包含区',
   'Case Studies Section': '案例研究区',
@@ -64,6 +65,10 @@ const HOMEPAGE_ZH_SUBSECTIONS: Record<string, string> = {
   'Trust Point 1': '信任点 1',
   'Trust Point 2': '信任点 2',
   'Trust Point 3': '信任点 3',
+  'Value Point 1': '价值点 1',
+  'Value Point 2': '价值点 2',
+  'Value Point 3': '价值点 3',
+  'Value Point 4': '价值点 4',
 };
 
 /**
@@ -867,7 +872,13 @@ function parseSimplePage(content: string, locale: 'en' | 'zh'): string {
       }
       // Include English content or content in 'both' sections
       if (currentLangSection === 'en' || currentLangSection === 'both') {
-        // Skip lines that are primarily Chinese
+        // Check if line contains HTML tags - preserve them as-is
+        if (line.includes('<div') || line.includes('<span') || line.includes('</div>') || line.includes('</span>')) {
+          result.push(line);
+          continue;
+        }
+
+        // Skip lines that are primarily Chinese (but not HTML lines)
         if (isChinese(line) && !/[a-zA-Z]/.test(line)) {
           continue;
         }
@@ -911,6 +922,12 @@ function parseSimplePage(content: string, locale: 'en' | 'zh'): string {
       }
       // Include Chinese content or content in 'both' sections
       if (currentLangSection === 'zh' || currentLangSection === 'both') {
+        // Check if line contains HTML tags - preserve them as-is
+        if (line.includes('<div') || line.includes('<span') || line.includes('</div>') || line.includes('</span>')) {
+          result.push(line);
+          continue;
+        }
+
         // Handle bilingual field names like "**编号 Case Number**: value"
         if (line.match(/^\*\*/)) {
           // First try bilingual format: "**中文 English**: value" (first part MUST contain Chinese)
@@ -954,6 +971,41 @@ function parseSimplePage(content: string, locale: 'en' | 'zh'): string {
 }
 
 /**
+ * Parse overview/raw files with separate English and Chinese sections
+ * Format: #### English [all English content] #### 中文 [all Chinese content]
+ */
+function parseSeparatedLanguageContent(content: string, locale: 'en' | 'zh'): string {
+  const lines = content.split('\n');
+  const result: string[] = [];
+  let currentLangSection: 'en' | 'zh' | null = null;
+
+  for (const line of lines) {
+    // Check for language section markers
+    if (line.trim() === '#### English') {
+      currentLangSection = 'en';
+      continue;
+    }
+    if (line.trim() === '#### 中文') {
+      currentLangSection = 'zh';
+      continue;
+    }
+
+    // Only include content from the matching language section
+    if (currentLangSection === locale) {
+      // Skip the separator lines (---)
+      if (line.trim() === '---') {
+        result.push('');
+        continue;
+      }
+      // Include all other lines from the target language section
+      result.push(line);
+    }
+  }
+
+  return result.join('\n').replace(/\n{3,}/g, '\n\n');
+}
+
+/**
  * Process a single raw file and generate .en.md and .zh.md
  */
 function processRawFile(rawFilePath: string, contentDir: string) {
@@ -988,7 +1040,15 @@ function processRawFile(rawFilePath: string, contentDir: string) {
   } else if (dirName === 'Framework' && fileName === 'page') {
     enContent = parseFrameworkPage(rawContent, 'en');
     zhContent = parseFrameworkPage(rawContent, 'zh');
-  } else if (['page', 'overview', 'implementation', 'requirements', 'validation-report', 'project-report'].includes(fileName)) {
+  } else if (fileName === 'overview') {
+    // Use separated language parser for overview
+    enContent = parseSeparatedLanguageContent(rawContent, 'en');
+    zhContent = parseSeparatedLanguageContent(rawContent, 'zh');
+  } else if (fileName === 'tech-configuration') {
+    // Use separated language parser for tech-configuration
+    enContent = parseSeparatedLanguageContent(rawContent, 'en');
+    zhContent = parseSeparatedLanguageContent(rawContent, 'zh');
+  } else if (['page', 'implementation', 'requirements', 'validation-report', 'project-report'].includes(fileName)) {
     enContent = parseSimplePage(rawContent, 'en');
     zhContent = parseSimplePage(rawContent, 'zh');
   } else {

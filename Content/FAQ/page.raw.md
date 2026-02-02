@@ -92,7 +92,7 @@
 
 ### Contact Methods
 - **GitHub**: https://github.com/THU-ZJAI/Real-World-AI
-- **Email**: contactmx@163.com
+- **Email**: xuyuyao@tsinghua-zj.edu.cn
 
 ---
 

@@ -34,6 +34,8 @@ export interface Arena {
   highlightsEn: string;  // Highlights - 英文
   metrics: Metrics;
   githubStars?: number; // GitHub stars count
+  videoFile?: string;   // Video file name for featured arenas showcase
+  hasContent?: boolean; // Whether the arena has full content files (overview, requirements, etc.)
 }
 
 // 翻译类型

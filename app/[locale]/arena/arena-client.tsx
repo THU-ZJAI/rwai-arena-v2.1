@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { arenas, categories, industries } from '@/lib/data';
 import type { Arena } from '@/lib/types';
-import { Shield, Trophy, ArrowRight, Filter, ArrowUpDown, ArrowUp, ArrowDown, Code2, Search, Check, Zap, Star, DollarSign, Github } from 'lucide-react';
+import { Shield, Trophy, Filter, ArrowUpDown, ArrowUp, ArrowDown, Code2, Search, Check, Zap, Star, DollarSign } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
@@ -27,12 +27,20 @@ const metricValueTranslations: Record<string, string> = {
   '较优': 'Optimal',
 };
 
-// Speed to time mapping
-const speedToTimeMapping: Record<string, string> = {
-  '很快': '1-2天',
-  '较快': '一周',
-  '中等': '两周',
-  '较慢': '一月',
+// Speed to time mapping (English only - Chinese uses original data values)
+const speedToTimeMappingEn: Record<string, string> = {
+  '很快': '1-2 days',
+  '较快': '1 week',
+  '中等': '2 weeks',
+  '较慢': '1 month',
+  // Direct mappings from data
+  '一周': '1 week',
+  '1~2天': '1-2 days',
+  '1-2天': '1-2 days',
+  '2~3天': '2-3 days',
+  '两周': '2 weeks',
+  '一月': '1 month',
+  '半天': 'Half day',
 };
 
 // Metric value to star rating
@@ -58,8 +66,9 @@ function translateMetricValue(value: string, isChina: boolean): string {
 }
 
 // Translate speed to time display
-function translateSpeedToTime(value: string): string {
-  return speedToTimeMapping[value] || value;
+function translateSpeedToTime(value: string, isChina: boolean): string {
+  if (isChina) return value; // Chinese uses original data values
+  return speedToTimeMappingEn[value] || value;
 }
 
 // Extract time from highlights/description
@@ -213,7 +222,11 @@ export default function ArenaClient({ params, pageTitle, pageSubtitle }: ArenaCl
     const categoryParam = searchParams.get('category');
 
     if (industryParam) {
-      setSelectedIndustries([industryParam]);
+      // Convert industry key to Chinese name for internal state
+      const industryObj = industries[industryParam as keyof typeof industries];
+      if (industryObj) {
+        setSelectedIndustries([industryObj.zh]);
+      }
     }
     if (categoryParam) {
       setSelectedCategories([categoryParam]);
@@ -257,7 +270,8 @@ export default function ArenaClient({ params, pageTitle, pageSubtitle }: ArenaCl
           );
           if (industryKey) {
             const targetIndustry = industries[industryKey as keyof typeof industries].zh;
-            return arena.industry.includes(targetIndustry) || arena.industry.includes('通用');
+            const arenaIndustries = arena.industry.split(',').map(s => s.trim());
+            return arenaIndustries.some(ai => ai.includes(targetIndustry) || targetIndustry.includes(ai)) || arena.industry.includes('通用');
           }
           return false;
         });
@@ -275,7 +289,9 @@ export default function ArenaClient({ params, pageTitle, pageSubtitle }: ArenaCl
           );
           if (categoryKey) {
             const targetCategory = categories[categoryKey as keyof typeof categories].zh;
-            return arena.category.includes(targetCategory) || arena.category.includes('通用');
+            const arenaCategories = arena.category.split(',').map(s => s.trim());
+            // Check if targetCategory is contained in any of the arena's categories
+            return arenaCategories.some(ac => ac.includes(targetCategory) || targetCategory.includes(ac)) || arena.category.includes('通用');
           }
           return false;
         });
@@ -428,7 +444,10 @@ export default function ArenaClient({ params, pageTitle, pageSubtitle }: ArenaCl
                   {Object.entries(industries).map(([key, industry]) => {
                     const Icon = industry.icon;
                     const isSelected = selectedIndustries.includes(industry.zh);
-                    const count = arenas.filter(a => a.industry.includes(industry.zh) || a.industry.includes('通用')).length;
+                    const count = arenas.filter(a => {
+                      const arenaIndustries = a.industry.split(',').map(s => s.trim());
+                      return arenaIndustries.some(ai => ai.includes(industry.zh) || industry.zh.includes(ai)) || a.industry.includes('通用');
+                    }).length;
                     return (
                       <button
                         key={key}
@@ -473,7 +492,10 @@ export default function ArenaClient({ params, pageTitle, pageSubtitle }: ArenaCl
                   </button>
                   {Object.entries(categories).map(([key, category]) => {
                     const isSelected = selectedCategories.includes(category.zh);
-                    const count = arenas.filter(a => a.category.includes(category.zh) || a.category.includes('通用')).length;
+                    const count = arenas.filter(a => {
+                      const arenaCategories = a.category.split(',').map(s => s.trim());
+                      return arenaCategories.some(ac => ac.includes(category.zh) || category.zh.includes(ac)) || a.category.includes('通用');
+                    }).length;
                     return (
                       <button
                         key={key}
@@ -537,7 +559,7 @@ export default function ArenaClient({ params, pageTitle, pageSubtitle }: ArenaCl
               </div>
 
               {/* Arena Cards - IMPROVED VERSION */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                 {filteredArenas.length === 0 ? (
                   <div className="text-center py-16 col-span-full">
                     <Code2 className="h-16 w-16 mx-auto mb-6 text-gray-400" />
@@ -563,57 +585,51 @@ export default function ArenaClient({ params, pageTitle, pageSubtitle }: ArenaCl
                       className="group block"
                     >
                       {/* IMPROVED CARD DESIGN */}
-                      <div className="relative h-[340px] bg-white rounded-2xl p-5 overflow-hidden transition-all duration-300 ease-out hover:scale-[1.02] hover:shadow-2xl hover:shadow-blue-500/20 border border-gray-100/80 hover:border-blue-200">
-                        {/* Subtle gradient background */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-white via-white to-blue-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-                        {/* Inner shadow for depth */}
-                        <div className="absolute inset-0 rounded-2xl shadow-[inset_0_1px_0_0_rgba(255,255,255,0.8)] pointer-events-none"></div>
-
+                      <div className="relative h-[480px] bg-white rounded-2xl p-8 overflow-hidden transition-all duration-300 ease-out hover:scale-[1.02] hover:shadow-2xl hover:shadow-blue-500/20 border border-gray-100/80 hover:border-blue-200">
                         {/* Card Content */}
                         <div className="relative flex flex-col h-full">
                           {/* Top Section: Title + Status */}
-                          <div className="mb-3">
-                            <div className="flex items-start justify-between gap-2 mb-2">
-                              <h3 className="text-lg font-extrabold text-gray-900 tracking-tight leading-tight line-clamp-2 flex-1 min-h-[2.4em]">
+                          <div className="mb-5">
+                            <div className="flex items-start justify-between gap-4 mb-4">
+                              <h3 className="text-2xl font-extrabold text-gray-900 tracking-tight leading-snug line-clamp-2 flex-1">
                                 {cleanArenaTitle(arena.title[locale as keyof typeof arena.title] || arena.title.zh)}
                               </h3>
                               <div className="flex-shrink-0">
                                 {arena.verificationStatus === '已验证' ? (
-                                  <div className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-amber-50 to-amber-100 text-amber-700 border border-amber-200 shadow-sm">
-                                    <Trophy className="h-3 w-3" />
-                                    <span className="scale-90 origin-left">{isChina ? '已验证' : 'Verified'}</span>
+                                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-bold bg-gradient-to-r from-amber-50 to-amber-100 text-amber-700 border border-amber-200 shadow-sm">
+                                    <Trophy className="h-3.5 w-3.5" />
+                                    <span>{isChina ? '已验证' : 'Verified'}</span>
                                   </div>
                                 ) : (
-                                  <div className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-slate-50 to-slate-100 text-slate-600 border border-slate-200 shadow-sm">
-                                    <Shield className="h-3 w-3" />
-                                    <span className="scale-90 origin-left">{isChina ? '验证中' : 'Testing'}</span>
+                                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-slate-50 to-slate-100 text-slate-600 border border-slate-200 shadow-sm">
+                                    <Shield className="h-3.5 w-3.5" />
+                                    <span>{isChina ? '验证中' : 'Testing'}</span>
                                   </div>
                                 )}
                               </div>
                             </div>
 
                             {/* Industry & Category Tags */}
-                            <div className="flex items-center gap-1.5">
-                              <span className="inline-block px-2 py-0.5 rounded-md text-xs font-medium bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 border border-blue-200/60 truncate max-w-[120px]">
+                            <div className="flex items-center gap-2.5">
+                              <span className="inline-block px-3 py-1.5 rounded-lg text-sm font-medium bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 border border-blue-200/60 truncate max-w-[160px]">
                                 {isChina ? arena.industry : arena.industryEn}
                               </span>
-                              <span className="inline-block px-2 py-0.5 rounded-md text-xs font-medium bg-gradient-to-r from-emerald-50 to-emerald-100 text-emerald-700 border border-emerald-200/60 truncate max-w-[120px]">
+                              <span className="inline-block px-3 py-1.5 rounded-lg text-sm font-medium bg-gradient-to-r from-emerald-50 to-emerald-100 text-emerald-700 border border-emerald-200/60 truncate max-w-[160px]">
                                 {isChina ? arena.category : arena.categoryEn}
                               </span>
                             </div>
                           </div>
 
                           {/* Metrics Section - Visual Design */}
-                          <div className="mb-3">
-                            <div className="grid grid-cols-4 gap-2 p-3 bg-gradient-to-br from-slate-50 to-gray-50 rounded-xl border border-slate-100/80">
+                          <div className="mb-5">
+                            <div className="grid grid-cols-4 gap-3 p-5 bg-gradient-to-br from-slate-50 to-gray-50 rounded-xl border border-slate-100/80">
                               {/* Speed - Show time instead of stars */}
                               <div className="text-center group/metric">
-                                <div className="inline-flex items-center justify-center w-6 h-6 rounded-lg bg-violet-50 text-violet-500 mb-1.5 group-hover/metric:scale-110 transition-transform duration-200">
-                                  <Zap className="h-3.5 w-3.5" strokeWidth={2.5} />
+                                <div className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-violet-50 text-violet-500 mb-2.5 group-hover/metric:scale-110 transition-transform duration-200">
+                                  <Zap className="h-4.5 w-4.5" strokeWidth={2.5} />
                                 </div>
                                 <div className="text-xs font-semibold text-violet-600 leading-tight">
-                                  {extractTimeFromDescription(isChina ? arena.highlights : arena.highlightsEn) || translateSpeedToTime(arena.metrics.speed)}
+                                  {extractTimeFromDescription(isChina ? arena.highlights : arena.highlightsEn) || translateSpeedToTime(arena.metrics.speed, isChina)}
                                 </div>
                               </div>
                               {/* Quality, Security, Cost - Star ratings */}
@@ -625,14 +641,14 @@ export default function ArenaClient({ params, pageTitle, pageSubtitle }: ArenaCl
                                 const Icon = metric.icon;
                                 return (
                                   <div key={metric.label} className="text-center group/metric">
-                                    <div className={`inline-flex items-center justify-center w-6 h-6 rounded-lg ${metric.bg} ${metric.color} mb-1.5 group-hover/metric:scale-110 transition-transform duration-200`}>
-                                      <Icon className="h-3.5 w-3.5" strokeWidth={2.5} />
+                                    <div className={`inline-flex items-center justify-center w-8 h-8 rounded-lg ${metric.bg} ${metric.color} mb-2.5 group-hover/metric:scale-110 transition-transform duration-200`}>
+                                      <Icon className="h-4.5 w-4.5" strokeWidth={2.5} />
                                     </div>
-                                    <div className="flex justify-center gap-0.5 mb-0.5">
+                                    <div className="flex justify-center gap-1 mb-1">
                                       {[1, 2, 3].map((star) => (
                                         <svg
                                           key={star}
-                                          className={`h-3 w-3 transition-all duration-200 ${
+                                          className={`h-4 w-4 transition-all duration-200 ${
                                             star <= metric.stars
                                               ? `${metric.color} fill-current drop-shadow-sm`
                                               : 'text-gray-200 fill-current'
@@ -650,51 +666,25 @@ export default function ArenaClient({ params, pageTitle, pageSubtitle }: ArenaCl
                           </div>
 
                           {/* Description - Improved Readability */}
-                          <div className="flex-1 mb-3">
-                            <p className="text-sm text-gray-600 leading-relaxed line-clamp-3">
+                          <div className="flex-1 mb-5">
+                            {/* Champion/擂主 Info */}
+                            {(isChina ? arena.champion : arena.championEn) ? (
+                              <div className="mb-4 p-3 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg border border-purple-100">
+                                <div className="flex items-center gap-2 text-sm">
+                                  <Trophy className="h-4.5 w-4.5 text-purple-600 flex-shrink-0" />
+                                  <span className="font-semibold text-purple-900">{isChina ? '擂主' : 'Champion'}:</span>
+                                  <span className="text-gray-700 truncate">{isChina ? arena.champion : arena.championEn}</span>
+                                </div>
+                              </div>
+                            ) : null}
+                            <p className="text-base text-gray-600 leading-relaxed line-clamp-4">
                               {isChina ? arena.highlights : arena.highlightsEn}
                             </p>
                           </div>
-
-                          {/* Bottom: CTA */}
-                          <div className="pt-3 border-t border-gray-100">
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-2">
-                                <span className="text-xs text-gray-500 font-medium">
-                                  {arena.verificationStatus === '已验证'
-                                    ? (isChina ? '生产环境可用' : 'Production Ready')
-                                    : (isChina ? '邀请测试中' : 'Testing Phase')
-                                  }
-                                </span>
-                                {/* GitHub Stars */}
-                                <div className="flex items-center gap-1">
-                                  <Github className="h-3.5 w-3.5 text-gray-500" />
-                                  <span className="text-xs font-semibold text-gray-500">
-                                    {(arena.githubStars || 0).toLocaleString()}
-                                  </span>
-                                </div>
-                              </div>
-                              {/* Contact Us CTA */}
-                              <button
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  e.stopPropagation();
-                                  window.location.href = `/${locale}/contact`;
-                                }}
-                                className="flex items-center gap-1.5 text-sm font-semibold text-blue-600 hover:text-blue-700 transition-all duration-200"
-                              >
-                                <span>{isChina ? '联系我们' : 'Contact Us'}</span>
-                                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                              </button>
-                            </div>
-                          </div>
                         </div>
 
-                        {/* Gradient Overlay on Hover - More Sophisticated */}
+                        {/* Gradient Overlay on Hover */}
                         <div className="absolute inset-0 bg-gradient-to-t from-blue-600/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-2xl"></div>
-
-                        {/* Shimmer Effect on Hover */}
-                        <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none"></div>
                       </div>
                     </Link>
                   ))

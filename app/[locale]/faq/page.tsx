@@ -201,7 +201,7 @@ export default async function FAQPage({
               GitHub
             </Link>
             <Link
-              href={`/${locale}/contact`}
+              href={`/${locale}/about`}
               className="inline-flex items-center justify-center gap-2 h-11 px-6 text-base font-medium transition-all duration-fast bg-blue-600 hover:bg-blue-700 text-white rounded-button"
             >
               {isChina ? '联系我们' : 'Contact Us'}

@@ -2,15 +2,10 @@
 
 ## Hero Section
 
-### Badges
-- **Badge**: Open Source
-- **Badge**: Verified
-- **Badge**: Replicable
-
 ### Main Content
-- **Title**: Build to Ship. Real World AI.
-- **Subtitle**: RWAI provides end-to-end, production-ready AI implementations
-- **Description**: Including system architecture, model choices, team setup, workflows, and code — so you never have to start from scratch.
+- **Title**: Find the ONE Best AI Practice
+- **Subtitle**: Real World AI finds the best end-to-end, production-ready AI implementations
+- **Description**: Including team setup, system architecture, model choices, workflows, and code — so you never have to start from scratch.
 
 ### CTA Buttons
 - **Primary**: Browse Best AI Practices
@@ -20,11 +15,11 @@
 
 ### Value Prop 1
 - **Title**: Rapid Deployment
-- **Description**: Deliver enterprise level solution in 2-7 days
+- **Description**: Deliver enterprise level prototype in 2-7 days.
 
 ### Value Prop 2
 - **Title**: Real-World Tested
-- **Description**: Validated in high-frequency used scenarios by top enterprises.
+- **Description**: Validated in high-frequency used scenarios by top enterprises and institutions.
 
 ### Value Prop 3
 - **Title**: Fully Open Source
@@ -32,7 +27,7 @@
 
 ### Value Prop 4
 - **Title**: End-to-End Guidance
-- **Description**: Complete implementation path from team building to private deployment.
+- **Description**: Complete implementation path from team setup to private deployment.
 
 ## Featured Arenas Section
 
@@ -42,49 +37,30 @@
 
 ### Configuration
 - **Arena Count**: 3
-- **Arena IDs**: 一周搭建企业级智能调研报告生成系统demo, 两天搭建业务看板及网站demo, 一周搭建文档审核与风控demo
+- **Arena IDs**: 1-intelligent-research-system, business-dashboard-builder, document-review-risk-control
 - **Display Fields**: status, title, industry, category, highlights
 
-## Industries Section
+## Real-World Testing Section
 
 ### Content
-- **Title**: Explore by Industry
-- **Subtitle**: Covering 6 industries, 10+ verified AI solutions
+- **Title**: AI Best Practices Tested in Real Scenarios
+- **Description**: Under real world evaluation standards, we test multiple AI solutions in real world practice, keeping only the most effective and directly reusable implementations.
 
-## Approach Section
+### Value Point 1
+- **Title**: Tested in Real Scenerios
+- **Description**: All practices are from real world scenarios. Evaluation metrics, data paths, and results are traceable.
 
-### Header
-- **Title**: Real Scenarios • Fair Competition • Single Best
-- **Description**: Through the "Arena" mechanism, we fairly test AI practices in real business scenarios and recommend only verified best practices.
+### Value Point 2
+- **Title**: Comparative Testing
+- **Description**: Multiple solutions are tested in parallel under the same data and constraints. Conclusions come from results, not subjective judgment.
 
-### Step 1
-- **Title**: Define Real-world Scenarios
-- **Description**: Select specific real-world problems and establish clear success criteria and evaluation frameworks.
+### Value Point 3
+- **Title**: Directly Reusable
+- **Description**: Complete code, architecture, and deployment process provided. Not reference cases, but actionable solutions.
 
-### Step 2
-- **Title**: Best Practices Compete
-- **Description**: Multiple solutions tested under identical conditions using real data and unified standards.
-
-### Step 3
-- **Title**: Verify and Recommend Best
-- **Description**: Select the optimal solution based on test results, provide complete code and deployment guides.
-
-## Trust Section
-
-### Header
-- **Title**: Why Trust RWAI
-
-### Trust Point 1
-- **Title**: Verified
-- **Description**: All practices verified in real-world scenarios with traceable data and workflow
-
-### Trust Point 2
-- **Title**: Expert Team
-- **Description**: AI experts from Tsinghua, Oxford and Fortune 500 Companies
-
-### Trust Point 3
-- **Title**: Replicable
-- **Description**: All practices recorded with open-source code, solutions and documents to fully replicate
+### Value Point 4
+- **Title**: Expert Team Support
+- **Description**: Designed and validated by AI experts from Tsinghua, Oxford, and Fortune 500 companies.
 
 ## Final CTA Section
 

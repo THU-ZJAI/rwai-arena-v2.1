@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { Arena } from '@/lib/types';
 import { industries } from '@/lib/data';
@@ -10,6 +10,59 @@ interface FeaturedArenasShowcaseProps {
   locale: string;
   title: string;
   subtitle: string;
+}
+
+// Helper function to map Chinese industry name to industry key
+function getIndustryKey(chineseName: string): string | null {
+  for (const [key, value] of Object.entries(industries)) {
+    if (value.zh === chineseName) {
+      return key;
+    }
+  }
+  return null;
+}
+
+// Helper function to find the industry key from arena's industry string
+function findIndustryKeyFromArena(industryString: string, locale: string): string | null {
+  // Split by comma and try each part
+  const parts = industryString.split(',').map(s => s.trim());
+
+  for (const part of parts) {
+    // Try to find exact match first
+    for (const [key, value] of Object.entries(industries)) {
+      if ((locale === 'zh' && value.zh === part) ||
+          (locale === 'en' && value.en === part)) {
+        return key;
+      }
+    }
+
+    // Try to find partial match (e.g., "金融贸易" contains "金融")
+    if (locale === 'zh') {
+      for (const [key, value] of Object.entries(industries)) {
+        if (part.includes(value.zh) || value.zh.includes(part)) {
+          return key;
+        }
+      }
+    } else {
+      // For English, try fuzzy matching
+      for (const [key, value] of Object.entries(industries)) {
+        const partLower = part.toLowerCase();
+        const valueEnLower = value.en.toLowerCase();
+        if (partLower.includes(valueEnLower) || valueEnLower.includes(partLower)) {
+          return key;
+        }
+      }
+    }
+  }
+
+  return null;
+}
+
+// Helper function to map Chinese category name to category key
+function getCategoryKey(chineseName: string): string | null {
+  // Categories are stored in the arena data as comma-separated strings
+  // We'll use the first category for linking
+  return chineseName.toLowerCase().replace(/\s+/g, '-');
 }
 
 // Skeleton component for loading state
@@ -62,9 +115,17 @@ export function FeaturedArenasShowcaseSkeleton() {
 export function FeaturedArenasShowcase({ arenas, locale, title, subtitle }: FeaturedArenasShowcaseProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [videoError, setVideoError] = useState(false);
+  const [videoLoading, setVideoLoading] = useState(true);
 
   const selectedArena = arenas[selectedIndex] || arenas[0];
   const isZh = locale === 'zh';
+
+  // Reset video state when changing arena
+  useEffect(() => {
+    setVideoError(false);
+    setVideoLoading(true);
+  }, [selectedIndex]);
 
   return (
     <section className="relative py-section bg-[#0A0E17]">
@@ -95,13 +156,17 @@ export function FeaturedArenasShowcase({ arenas, locale, title, subtitle }: Feat
                   `} />
 
                   <div className="relative p-4">
-                    {/* Main Title */}
-                    <h3 className={`
-                      text-base font-semibold mb-2 transition-colors duration-300
-                      ${selectedIndex === index ? 'text-blue-400' : 'text-white group-hover:text-blue-300'}
-                    `}>
+                    {/* Main Title - Clickable link to arena details */}
+                    <Link
+                      href={`/${locale}/arena/${arena.folderId}`}
+                      className={`
+                        text-base font-semibold mb-2 transition-colors duration-300 block
+                        ${selectedIndex === index ? 'text-blue-400' : 'text-white group-hover:text-blue-300'}
+                      `}
+                      onClick={(e) => e.stopPropagation()}
+                    >
                       {arena.title[locale as keyof typeof arena.title] || arena.title.zh}
-                    </h3>
+                    </Link>
 
                     {/* Expanded Description - show on hover or selected */}
                     {(hoveredIndex === index || selectedIndex === index) && (
@@ -114,25 +179,62 @@ export function FeaturedArenasShowcase({ arenas, locale, title, subtitle }: Feat
 
                     {/* Tags */}
                     <div className="flex flex-wrap gap-2 mt-2">
-                      {/* Industry Tag */}
-                      <span className={`
-                        text-xs px-2 py-1 rounded-full font-medium
-                        ${selectedIndex === index
-                          ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30'
-                          : 'bg-white/5 text-gray-400 border border-white/10'}
-                      `}>
-                        {isZh ? arena.industry : arena.industryEn}
-                      </span>
+                      {/* Industry Tag - Link to filtered arena page */}
+                      {(() => {
+                        const industryString = isZh ? arena.industry : arena.industryEn;
+                        const industryList = industryString.split(',').map(s => s.trim());
+                        const firstIndustry = industryList[0];
+                        const industryKey = findIndustryKeyFromArena(industryString, locale);
 
-                      {/* Category Tag */}
-                      <span className={`
-                        text-xs px-2 py-1 rounded-full font-medium
-                        ${selectedIndex === index
-                          ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30'
-                          : 'bg-white/5 text-gray-400 border border-white/10'}
-                      `}>
-                        {isZh ? arena.category : arena.categoryEn}
-                      </span>
+                        if (industryKey) {
+                          return (
+                            <Link
+                              href={`/${locale}/arena?industry=${industryKey}`}
+                              className={`
+                                text-xs px-2 py-1 rounded-full font-medium transition-colors duration-300
+                                ${selectedIndex === index
+                                  ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30 hover:bg-blue-500/30'
+                                  : 'bg-white/5 text-gray-400 border border-white/10 hover:bg-white/10 hover:text-gray-300'}
+                              `}
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              {firstIndustry}
+                            </Link>
+                          );
+                        }
+                        return (
+                          <span className={`
+                            text-xs px-2 py-1 rounded-full font-medium
+                            ${selectedIndex === index
+                              ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30'
+                              : 'bg-white/5 text-gray-400 border border-white/10'}
+                          `}>
+                            {firstIndustry}
+                          </span>
+                        );
+                      })()}
+
+                      {/* Category Tag - Link to filtered arena page */}
+                      {(() => {
+                        const categoryString = isZh ? arena.category : arena.categoryEn;
+                        const categoryList = categoryString.split(',').map(s => s.trim());
+                        const firstCategory = categoryList[0];
+
+                        return (
+                          <Link
+                            href={`/${locale}/arena?category=${encodeURIComponent(firstCategory)}`}
+                            className={`
+                              text-xs px-2 py-1 rounded-full font-medium transition-colors duration-300
+                              ${selectedIndex === index
+                                ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30 hover:bg-blue-500/30'
+                                : 'bg-white/5 text-gray-400 border border-white/10 hover:bg-white/10 hover:text-gray-300'}
+                            `}
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            {firstCategory}
+                          </Link>
+                        );
+                      })()}
                     </div>
                   </div>
                 </div>
@@ -143,21 +245,72 @@ export function FeaturedArenasShowcase({ arenas, locale, title, subtitle }: Feat
           {/* Right Side - Case Details / Demo */}
           <div className="lg:col-span-3 lg:pl-8 mt-8 lg:mt-0">
             <div className="relative bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 rounded-2xl overflow-hidden">
-              <video
-                key={selectedArena.id}
-                className="w-full aspect-video object-contain bg-black"
-                controls
-                autoPlay
-                muted
-                loop
-                playsInline
-              >
-                <source
-                  src={`/videos/${selectedArena.folderId}.mp4`}
-                  type="video/mp4"
-                />
-                Your browser does not support the video tag.
-              </video>
+              {selectedArena ? (
+                videoError ? (
+                  // Video error fallback
+                  <div className="w-full aspect-video bg-black flex items-center justify-center text-white p-8">
+                    <div className="text-center">
+                      <svg className="w-16 h-16 mx-auto mb-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                      </svg>
+                      <p className="text-lg mb-2">{isZh ? '视频加载失败' : 'Video Failed to Load'}</p>
+                      <p className="text-sm text-gray-400">{isZh ? '演示视频正在准备中' : 'Demo video coming soon'}</p>
+                    </div>
+                  </div>
+                ) : (
+                  <video
+                    key={selectedArena.id}
+                    className="w-full aspect-video object-contain bg-black"
+                    controls
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    onError={() => {
+                      setVideoError(true);
+                      setVideoLoading(false);
+                    }}
+                    onCanPlay={() => {
+                      setVideoError(false);
+                      setVideoLoading(false);
+                    }}
+                    onLoadedData={() => {
+                      setVideoLoading(false);
+                    }}
+                  >
+                    <source
+                      src={`/videos/${selectedArena.videoFile || `${selectedArena.folderId}.mp4`}`}
+                      type="video/mp4"
+                    />
+                    Your browser does not support the video tag.
+                  </video>
+                )
+              ) : (
+                // No arena selected fallback
+                <div className="w-full aspect-video bg-black flex items-center justify-center text-white">
+                  <p>{isZh ? '加载中...' : 'Loading...'}</p>
+                </div>
+              )}
+
+              {/* Loading overlay */}
+              {videoLoading && !videoError && selectedArena && (
+                <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                  <div className="text-white text-center">
+                    <div className="w-12 h-12 border-4 border-white/20 border-t-white rounded-full animate-spin mx-auto mb-3"></div>
+                    <p className="text-sm">{isZh ? '视频加载中...' : 'Loading video...'}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Arena title and description */}
+            <div className="mt-6">
+              <h3 className="text-2xl font-bold text-white mb-3">
+                {selectedArena ? (selectedArena.title[locale as keyof typeof selectedArena.title] || selectedArena.title.zh) : ''}
+              </h3>
+              <p className="text-gray-400 text-sm leading-relaxed">
+                {selectedArena ? (isZh ? selectedArena.highlights : selectedArena.highlightsEn) : ''}
+              </p>
             </div>
           </div>
         </div>

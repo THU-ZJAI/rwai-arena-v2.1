@@ -104,21 +104,44 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Contact Us */}
+      {/* Contact Us - Email Section */}
       <section className="py-24 bg-white">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
-              {isChina ? '联系我们' : 'Contact Us'}
-            </h2>
-            <div className="mt-8">
-              <a
-                href="mailto:contactmx@163.com"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-medium bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-all"
-              >
-                <Mail className="h-5 w-5" />
-                contactmx@163.com
-              </a>
+          <div className="mx-auto max-w-3xl">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
+                {isChina ? '联系我们' : 'Contact Us'}
+              </h2>
+              <p className="text-lg text-slate-600">
+                {isChina
+                  ? '我们随时准备回答您的问题，听取您的建议，并与您探讨合作机会。'
+                  : 'We are ready to answer your questions, hear your suggestions, and explore collaboration opportunities.'}
+              </p>
+            </div>
+            <div className="bg-gradient-to-br from-blue-50 to-slate-50 rounded-2xl border border-slate-200 p-8 sm:p-12 shadow-sm">
+              <div className="text-center mb-8">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-600 mb-4">
+                  <Mail className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-slate-900 mb-2">
+                  {isChina ? '发送邮件' : 'Send Us an Email'}
+                </h3>
+                <p className="text-slate-600">
+                  {isChina
+                    ? '我们通常在 1-2 个工作日内回复邮件'
+                    : 'We typically respond to emails within 1-2 business days'}
+                </p>
+              </div>
+
+              <div className="text-center">
+                <a
+                  href="mailto:xuyuyao@tsinghua-zj.edu.cn"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-medium bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-all shadow-sm hover:shadow-md"
+                >
+                  <Mail className="h-5 w-5" />
+                  xuyuyao@tsinghua-zj.edu.cn
+                </a>
+              </div>
             </div>
           </div>
         </div>

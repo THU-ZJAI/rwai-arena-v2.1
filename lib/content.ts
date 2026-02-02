@@ -120,6 +120,7 @@ const HOMEPAGE_SECTION_HEADERS: Record<string, Record<string, string>> = {
   'Value Props Section': { en: 'Value Props Section', zh: 'Value Props Section' },
   'Featured Arenas Section': { en: 'Featured Arenas Section', zh: '精选实践区' },
   'Industries Section': { en: 'Industries Section', zh: '行业区' },
+  'Real-World Testing Section': { en: 'Real-World Testing Section', zh: '实战验证区' },
   'Approach Section': { en: 'Approach Section', zh: '方法区' },
   'Trust Section': { en: 'Trust Section', zh: '信任区' },
   'Final CTA Section': { en: 'Final CTA Section', zh: '最终行动区' },

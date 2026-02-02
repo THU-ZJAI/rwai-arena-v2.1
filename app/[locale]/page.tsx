@@ -43,7 +43,7 @@ export default async function HomePage({
         <FeaturedArenasSection locale={locale} />
       </Suspense>
       <Suspense fallback={<SectionSkeleton />}>
-        <ApproachSection locale={locale} />
+        <RealWorldTestingSection locale={locale} />
       </Suspense>
       {/* PracticeIncludesSection and CaseStudiesSection removed - sections not in content files */}
       <Suspense fallback={<SectionSkeleton />}>
@@ -454,6 +454,8 @@ async function PartnersCarouselSection({ locale }: { locale: string }) {
     { id: '4', name: 'Partner 4', logo: '/partners/logo4.png' },
     { id: '5', name: 'Partner 5', logo: '/partners/logo5.png' },
     { id: '6', name: 'Partner 6', logo: '/partners/logo6.png' },
+    { id: '7', name: 'Partner 7', logo: '/partners/logo7.jpg' },
+    { id: '8', name: 'Partner 8', logo: '/partners/logo8.jpg' },
   ];
 
   return (
@@ -548,9 +550,9 @@ async function FeaturedArenasSection({ locale }: { locale: string }) {
   // Parse arena IDs
   const arenaIds = arenaIdsStr.split(',').map((id: string) => id.trim()).filter((id: string) => id);
 
-  // Filter arenas by IDs (fallback to first 3 if no IDs specified)
+  // Filter arenas by IDs (check both id and folderId for backwards compatibility)
   const featuredArenas = arenaIds.length > 0
-    ? arenas.filter(arena => arenaIds.includes(arena.id))
+    ? arenas.filter(arena => arenaIds.includes(arena.id) || arenaIds.includes(arena.folderId))
     : arenas.slice(0, 3);
 
   const title = parsed['Title'];
@@ -654,44 +656,6 @@ function ArenaCard({
   );
 }
 
-async function IndustriesSection({ locale }: { locale: string }) {
-  const contentFile = await getHomepageSectionContent('Industries Section', locale);
-  if (!contentFile) {
-    return null; // Skip section if content not found
-  }
-  const parsed = parseHomepageSectionContent(contentFile.content);
-
-  const title = parsed['Title'];
-  const subtitle = parsed['Subtitle'];
-
-  const isZh = locale === 'zh';
-
-  return (
-    <section className="py-section bg-[#0A0E17]">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-h1 text-white mb-4">{title}</h2>
-          <p className="text-body-lg text-gray-400">{subtitle}</p>
-        </div>
-
-        <div className="flex flex-wrap justify-center gap-3">
-          {Object.entries(industries).map(([key, { en, zh }]) => (
-            <Link
-              key={key}
-              href={`/${locale}/arena?industry=${key}`}
-              className="group"
-            >
-              <div className="px-6 py-3 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
-                <span className="text-white text-sm font-medium">{isZh ? zh : en}</span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 /**
  * Parse approach content
  */
@@ -724,77 +688,14 @@ function parseApproachContent(markdown: string) {
   };
 }
 
-async function ApproachSection({ locale }: { locale: string }) {
-  const isZh = locale === 'zh';
-
-  const valueProps = [
-    {
-      icon: <FlaskRound className="w-14 h-14" />,
-      title: isZh ? '跑过真实业务' : 'Tested in Real Business',
-      description: isZh
-        ? '所有实践均来自真实业务场景，评测指标、数据路径与结果可回溯。'
-        : 'All practices are from real business scenarios. Evaluation metrics, data paths, and results are traceable.',
-    },
-    {
-      icon: <Trophy className="w-14 h-14" />,
-      title: isZh ? '同条件对比测试' : 'Comparative Testing',
-      description: isZh
-        ? '在相同数据与约束条件下并行测试多种方案，结论来自结果，而非主观判断。'
-        : 'Multiple solutions are tested in parallel under the same data and constraints. Conclusions come from results, not subjective judgment.',
-    },
-    {
-      icon: <Copy className="w-14 h-14" />,
-      title: isZh ? '可直接复用' : 'Directly Reusable',
-      description: isZh
-        ? '提供完整代码、架构与部署流程，不是参考案例，而是可落地方案。'
-        : 'Complete code, architecture, and deployment process provided. Not reference cases, but actionable solutions.',
-    },
-    {
-      icon: <Shield className="w-14 h-14" />,
-      title: isZh ? '专家团队背书' : 'Expert Team Endorsement',
-      description: isZh
-        ? '由来自清华、牛津及 500 强企业的 AI 专家共同设计与验证。'
-        : 'Designed and validated by AI experts from Tsinghua, Oxford, and Fortune 500 companies.',
-    },
-  ];
-
-  return (
-    <section className="py-section bg-bg-secondary">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-h1 text-text-primary mb-4">
-            {isZh ? '在真实业务中跑出来的 AI 最佳实践' : 'AI Best Practices Tested in Real Business'}
-          </h2>
-          <p className="text-body-lg text-text-secondary max-w-3xl mx-auto">
-            {isZh
-              ? '在统一评测标准下，对多种AI方案进行真实业务测试，只保留效果最佳可直接复用的实现方案'
-              : 'Under unified evaluation standards, we test multiple AI solutions in real business scenarios, keeping only the most effective and directly reusable implementations.'
-            }
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {valueProps.map((prop, index) => (
-            <div key={index} className="text-center">
-              <div className="flex justify-center mb-4 text-primary">{prop.icon}</div>
-              <h3 className="text-h3 text-text-primary mb-3 font-bold">{prop.title}</h3>
-              <p className="text-text-secondary">{prop.description}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 /**
- * Parse trust section content
+ * Parse real-world testing section content
  */
-function parseTrustContent(markdown: string) {
+function parseRealWorldTestingContent(markdown: string) {
   const result: Array<{ title: string; description: string }> = [];
 
-  // Support both English "Trust Point N" and Chinese "信任点 N"
-  const pointSections = markdown.match(/### (Trust Point \d+|信任点 \d+)\n([\s\S]*?)(?=### |$)/g);
+  // Parse value points - support both English "Value Point N" and Chinese "价值点 N" (or Value Point)
+  const pointSections = markdown.match(/### (Value Point \d+|价值点 \d+)\n([\s\S]*?)(?=### |$)/g);
   if (pointSections) {
     pointSections.forEach((section) => {
       const parsed = parseHomepageSectionContent(section);
@@ -805,37 +706,40 @@ function parseTrustContent(markdown: string) {
     });
   }
 
-  // Extract header subsection for title
-  // Support both English "Header" and Chinese "标题区"
-  const headerMatch = markdown.match(/### (Header|标题区)\n([\s\S]*?)(?=### |$)/);
-  const headerParsed = headerMatch
-    ? parseHomepageSectionContent(headerMatch[0])
+  // Extract Content subsection for title and description
+  const contentMatch = markdown.match(/### (Content|内容)\n([\s\S]*?)(?=### |$)/);
+  const contentParsed = contentMatch
+    ? parseHomepageSectionContent(contentMatch[0])
     : {};
 
   return {
-    title: headerParsed['Title'] || headerParsed['标题'],
-    points: result,
+    title: contentParsed['Title'] || contentParsed['标题'],
+    description: contentParsed['Description'] || contentParsed['描述'],
+    valuePoints: result,
   };
 }
 
-async function TrustSection({ locale }: { locale: string }) {
-  const contentFile = await getHomepageSectionContent('Trust Section', locale);
+async function RealWorldTestingSection({ locale }: { locale: string }) {
+  const contentFile = await getHomepageSectionContent('Real-World Testing Section', locale);
   if (!contentFile) {
     return null; // Skip section if content not found
   }
-  const content = parseTrustContent(contentFile.content);
+  const content = parseRealWorldTestingContent(contentFile.content);
 
-  const icons = [<CheckCircle2 className="w-14 h-14" />, <Users className="w-14 h-14" />, <Star className="w-14 h-14" />];
+  const icons = [<FlaskRound className="w-14 h-14" />, <Trophy className="w-14 h-14" />, <Copy className="w-14 h-14" />, <Shield className="w-14 h-14" />];
 
   return (
     <section className="py-section bg-bg-secondary">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-h1 text-text-primary mb-4">{content.title}</h2>
+          <p className="text-body-lg text-text-secondary max-w-3xl mx-auto">
+            {content.description}
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {content.points.map((point, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          {content.valuePoints.map((point, index) => (
             <div key={index} className="text-center">
               <div className="flex justify-center mb-4 text-primary">{icons[index]}</div>
               <h3 className="text-h3 text-text-primary mb-3 font-bold">{point.title}</h3>
