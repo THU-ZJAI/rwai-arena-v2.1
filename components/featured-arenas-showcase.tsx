@@ -184,11 +184,11 @@ export function FeaturedArenasShowcase({ arenas, locale, title, subtitle }: Feat
           {/* Second Row - Browse All Link */}
           <div className="text-left">
             <Link
-              href={`/${locale}/arena`}
+              href={`/${locale}/contact`}
               className="inline-flex items-center gap-2 group"
             >
               <span className="text-blue-400 text-base font-medium underline underline-offset-4 group-hover:text-blue-300 group-hover:shadow-[0_0_20px_-5px_rgba(59,130,246,0.6)] transition-all duration-300">
-                {isZh ? '浏览全部 →' : 'Browse All →'}
+                {isZh ? '联系我们 →' : 'Contact Us →'}
               </span>
             </Link>
           </div>

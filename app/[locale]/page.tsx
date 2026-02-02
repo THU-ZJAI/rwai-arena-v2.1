@@ -881,11 +881,13 @@ async function FinalCtaSection({ locale }: { locale: string }) {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-          <Button size="large" variant="primary" className="bg-white text-primary hover:bg-bg-secondary">
-            {primaryButton}
+          <Button size="large" variant="primary" className="bg-white text-primary hover:bg-bg-secondary" asChild>
+            <Link href="/arena">{primaryButton}</Link>
           </Button>
-          <Button size="large" variant="secondary" className="border-white text-white hover:bg-white/10">
-            {secondaryButton}
+          <Button size="large" variant="secondary" className="border-white text-white hover:bg-white/10" asChild>
+            <a href="https://github.com/THU-ZJAI/Real-World-AI" target="_blank" rel="noopener noreferrer">
+              {secondaryButton}
+            </a>
           </Button>
         </div>
 

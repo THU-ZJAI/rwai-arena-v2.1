@@ -15,6 +15,7 @@ import {
   Settings,
   Users,
   FileText,
+  Github,
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -23,6 +24,75 @@ import 'highlight.js/styles/github-dark.css';
 import { motion } from 'framer-motion';
 
 type TabType = 'overview' | 'implementation' | 'requirements' | 'validation-report' | 'project-report';
+
+// Metric value to star rating
+const metricToStars: Record<string, number> = {
+  '很慢': 1,
+  '较低': 1,
+  '慢': 1,
+  '差': 1,
+  '中等': 2,
+  '较快': 3,
+  '较高': 3,
+  '很较': 3,
+  '很快': 3,
+  '很高': 3,
+  '较优': 3,
+  '优': 3,
+};
+
+// Convert metric value to stars
+function getStarRating(value: string): number {
+  return metricToStars[value] || 2;
+}
+
+// Speed to time mapping
+const speedToTimeMapping: Record<string, string> = {
+  '很快': '1-2天',
+  '较快': '一周',
+  '中等': '两周',
+  '较慢': '一月',
+};
+
+// Extract time from description
+function extractTimeFromDescription(description: string): string {
+  const timePatterns: [RegExp, string][] = [
+    [/(\d+[-~]\d+[天小时分钟]+)/, '$1'],
+    [/两天半/, '2-3天'],
+    [/三天半/, '3-4天'],
+    [/四天半/, '4-5天'],
+    [/五天半/, '5-6天'],
+    [/半天/, '半天'],
+    [/(一周|七天)/, '一周'],
+    [/(两周|十四天)/, '两周'],
+    [/(十天)/, '10天'],
+    [/(九天)/, '9天'],
+    [/(八天)/, '8天'],
+    [/(七天的)/, '7天'],
+    [/(六天)/, '6天'],
+    [/(五天)/, '5天'],
+    [/(四天)/, '4天'],
+    [/(三天)/, '3天'],
+    [/(两天)(?!半)/, '2天'],
+    [/(一天)/, '1天'],
+    [/(半小时|30分钟)/, '半小时'],
+    [/(一小时|60分钟)/, '1小时'],
+    [/(两小时|2小时)/, '2小时'],
+    [/(三小时|3小时)/, '3小时'],
+    [/(四小时|4小时)/, '4小时'],
+    [/(五小时|5小时)/, '5小时'],
+    [/(六小时|6小时)/, '6小时'],
+  ];
+
+  for (const [pattern, replacement] of timePatterns) {
+    const match = description.match(pattern);
+    if (match) {
+      return replacement;
+    }
+  }
+
+  return '';
+}
 
 interface ArenaDetailClientProps {
   arena: Arena;
@@ -104,59 +174,91 @@ export function ArenaDetailClient({ arena, locale, arenaId, initialContent, hasC
 
               {/* Status Badge */}
               <div className="hidden sm:block">
-                <span className="inline-flex items-center rounded-full bg-amber-50 px-3 py-1 text-sm font-semibold text-amber-700 ring-1 ring-inset ring-amber-600/20">
-                  <CheckCircle2 className="h-4 w-4 mr-1" />
-                  {locale === 'zh' ? '已验证' : 'Verified'}
-                </span>
+                <div className="flex items-center gap-3">
+                  <span className="inline-flex items-center rounded-full bg-amber-50 px-3 py-1 text-sm font-semibold text-amber-700 ring-1 ring-inset ring-amber-600/20">
+                    <CheckCircle2 className="h-4 w-4 mr-1" />
+                    {locale === 'zh' ? '已验证' : 'Verified'}
+                  </span>
+                  {/* GitHub Stars */}
+                  {arena.githubStars !== undefined && (
+                    <div className="flex items-center gap-1">
+                      <Github className="h-3.5 w-3.5 text-gray-500" />
+                      <span className="text-xs font-medium text-gray-500">
+                        {arena.githubStars.toLocaleString()}
+                      </span>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </motion.div>
 
-          {/* 4-Pillar Metrics */}
+          {/* 4-Pillar Metrics - Clean horizontal layout */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mb-12"
+            className="mb-8"
           >
-            {[
-              { name: locale === 'zh' ? '质量' : 'Quality', value: metrics.quality, icon: Star },
-              { name: locale === 'zh' ? '速度' : 'Speed', value: metrics.speed, icon: Zap },
-              { name: locale === 'zh' ? '成本' : 'Cost', value: metrics.cost, icon: DollarSign },
-              { name: locale === 'zh' ? '安全' : 'Security', value: metrics.security, icon: Shield },
-            ].map((metric, index) => (
-              <motion.div
-                key={metric.name}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="flex flex-col items-center p-4 sm:p-6 rounded-xl bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow"
-              >
-                <metric.icon className="h-5 w-5 text-primary mb-2" />
-                <div className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">
-                  {metric.value}
+            <div className="flex items-center justify-between">
+              {/* Left: Metrics icons - horizontal, left-aligned, no background */}
+              <div className="flex items-center gap-6">
+                {/* Speed - Show time instead of stars */}
+                <div className="flex items-center gap-2">
+                  <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg text-violet-500">
+                    <Zap className="h-5 w-5" strokeWidth={2} />
+                  </div>
+                  <div className="flex flex-col">
+                    <div className="text-sm font-semibold text-violet-600 leading-tight">
+                      {extractTimeFromDescription(arena.highlights) || speedToTimeMapping[metrics.speed] || metrics.speed}
+                    </div>
+                    <div className="text-xs text-gray-500">{locale === 'zh' ? '速度' : 'Speed'}</div>
+                  </div>
                 </div>
-                <div className="text-sm font-medium text-gray-600 mt-2">
-                  {metric.name}
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
+                {/* Quality, Security, Cost - Star ratings */}
+                {[
+                  { label: locale === 'zh' ? '质量' : 'Quality', value: metrics.quality, stars: getStarRating(metrics.quality), icon: Star, color: 'text-amber-500' },
+                  { label: locale === 'zh' ? '安全' : 'Security', value: metrics.security, stars: getStarRating(metrics.security), icon: Shield, color: 'text-emerald-500' },
+                  { label: locale === 'zh' ? '成本' : 'Cost', value: metrics.cost, stars: getStarRating(metrics.cost), icon: DollarSign, color: 'text-blue-500' },
+                ].map((metric) => {
+                  const Icon = metric.icon;
+                  return (
+                    <div key={metric.label} className="flex items-center gap-2">
+                      <div className={`inline-flex items-center justify-center w-10 h-10 rounded-lg ${metric.color}`}>
+                        <Icon className="h-5 w-5" strokeWidth={2} />
+                      </div>
+                      <div className="flex flex-col">
+                        <div className="flex justify-center gap-0.5">
+                          {[1, 2, 3].map((star) => (
+                            <svg
+                              key={star}
+                              className={`h-3.5 w-3.5 ${
+                                star <= metric.stars
+                                  ? `${metric.color} fill-current`
+                                  : 'text-gray-200 fill-current'
+                              }`}
+                              viewBox="0 0 20 20"
+                            >
+                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                            </svg>
+                          ))}
+                        </div>
+                        <div className="text-xs text-gray-500">{metric.label}</div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
 
-          {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="flex flex-wrap gap-4"
-          >
-            <a
-              href={`mailto:contactmx@163.com?subject=Arena: ${arena.title[locale as keyof typeof arena.title] || arena.title.zh}`}
-              className="inline-flex items-center justify-center rounded-lg border-2 border-primary bg-white px-6 py-3 text-base font-semibold text-primary hover:bg-primary-50 transition-colors"
-            >
-              <Mail className="h-5 w-5 mr-2" />
-              {locale === 'zh' ? '联系专家' : 'Contact Expert'}
-            </a>
+              {/* Right: CTA Button */}
+              <Link
+                href={`/${locale}/contact`}
+                className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg transition-all"
+              >
+                <Mail className="h-4 w-4" />
+                {locale === 'zh' ? '联系我们' : 'Contact Us'}
+              </Link>
+            </div>
           </motion.div>
         </div>
       </div>

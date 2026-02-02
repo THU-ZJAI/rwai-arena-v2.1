@@ -73,6 +73,6 @@
 ### 内容
 - **Title**: 准备找到您的AI最佳实践？
 - **Description**: 浏览验证的AI最佳实践，或加入开发者社区做出贡献
-- **Primary Button**: 浏览最佳实践
+- **Primary Button**: 浏览最佳 AI 实践
 - **Secondary Button**: GitHub
 - **Beta Note**: 目前正在beta测试中，欢迎您的反馈和建议

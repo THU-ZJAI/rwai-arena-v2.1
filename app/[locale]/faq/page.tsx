@@ -196,16 +196,16 @@ export default async function FAQPage({
               href={`https://github.com/THU-ZJAI/Real-World-AI`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 h-11 px-6 text-base font-medium transition-all duration-fast bg-blue-600 hover:bg-blue-700 text-white rounded-button"
-            >
-              GitHub
-              <ArrowRight className="h-5 w-5" />
-            </Link>
-            <Link
-              href="mailto:contactmx@163.com"
               className="inline-flex items-center justify-center gap-2 h-11 px-6 text-base font-medium transition-all duration-fast border-2 border-gray-200 bg-transparent text-gray-900 hover:bg-gray-50 hover:border-gray-300 rounded-button"
             >
-              {isChina ? '发送邮件' : 'Send Email'}
+              GitHub
+            </Link>
+            <Link
+              href={`/${locale}/contact`}
+              className="inline-flex items-center justify-center gap-2 h-11 px-6 text-base font-medium transition-all duration-fast bg-blue-600 hover:bg-blue-700 text-white rounded-button"
+            >
+              {isChina ? '联系我们' : 'Contact Us'}
+              <ArrowRight className="h-5 w-5" />
             </Link>
           </div>
         </div>

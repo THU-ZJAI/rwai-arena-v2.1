@@ -351,15 +351,17 @@ export default function FrameworkPage() {
               href={`/${locale}/arena`}
               className="inline-flex items-center justify-center gap-2 h-11 px-6 text-base font-medium transition-all duration-fast bg-blue-600 hover:bg-blue-700 text-white rounded-button"
             >
-              {isChina ? '浏览擂台' : 'Browse Arena'}
+              {isChina ? '浏览最佳 AI 实践' : 'Browse Best AI Practices'}
               <ArrowRight className="h-5 w-5" />
             </Link>
-            <Link
-              href={`/${locale}/about`}
+            <a
+              href="https://github.com/THU-ZJAI/Real-World-AI"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 h-11 px-6 text-base font-medium transition-all duration-fast border-2 border-gray-200 bg-transparent text-gray-900 hover:bg-gray-50 hover:border-gray-300 rounded-button"
             >
-              {isChina ? '联系我们' : 'Contact Us'}
-            </Link>
+              GitHub
+            </a>
           </div>
         </div>
       </div>

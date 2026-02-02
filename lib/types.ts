@@ -33,6 +33,7 @@ export interface Arena {
   highlights: string;    // 亮点 - 中文
   highlightsEn: string;  // Highlights - 英文
   metrics: Metrics;
+  githubStars?: number; // GitHub stars count
 }
 
 // 翻译类型

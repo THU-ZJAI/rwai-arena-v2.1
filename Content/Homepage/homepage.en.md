@@ -73,6 +73,6 @@
 ### Content
 - **Title**: Ready to Find Your AI Best Practice?
 - **Description**: Browse verified AI best practices, or join the developer community to contribute
-- **Primary Button**: Browse Best Practices
+- **Primary Button**: Browse Best AI Practices
 - **Secondary Button**: GitHub
 - **Beta Note**: Currently in beta testing, we welcome your feedback and suggestions
