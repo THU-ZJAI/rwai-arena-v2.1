@@ -22,14 +22,14 @@ export const industries = {
 };
 
 // Arena data - auto-generated from List of Arenas.xlsx
-// Last updated: 2026-02-04T09:25:07.120Z
+// Last updated: 2026-02-04T11:30:16.769Z
 export const arenas: Arena[] = [
   {
     id: '智能调研报告生成',
     folderId: '1-intelligent-research-system',
     title: {
       zh: '智能调研报告生成',
-      en: '1-Week Build: Enterprise-Level Intelligent Research Report Generation System Demo',
+      en: 'Enterprise-Level Intelligent Research Report Generation System Demo',
     },
     category: '服务,运营,管理',
     categoryEn: 'Service, Operations, Management',
@@ -55,7 +55,7 @@ export const arenas: Arena[] = [
     folderId: '2-business-dashboard-website',
     title: {
       zh: '业务看板搭建',
-      en: '2-Day Build: Business Dashboard & Website Demo',
+      en: 'Business Dashboard & Website Demo',
     },
     category: '服务,运营,营销',
     categoryEn: 'Service, Operations, Marketing',
@@ -81,7 +81,7 @@ export const arenas: Arena[] = [
     folderId: '3-document-review-risk-control',
     title: {
       zh: '文档审核与风控',
-      en: '1-Week Build: Document Review & Risk Control Demo',
+      en: 'Document Review & Risk Control Demo',
     },
     category: '风控,管理,运营',
     categoryEn: 'Risk Control, Management, Operations',
@@ -104,7 +104,7 @@ export const arenas: Arena[] = [
   },
   {
     id: '企业演示视频',
-    folderId: '',
+    folderId: 'enterprise-demo-video',
     title: {
       zh: '企业演示视频',
       en: 'Enterprise Demo Video',
@@ -126,14 +126,14 @@ export const arenas: Arena[] = [
       security: '较高',
       cost: '较优',
     },
-    hasContent: true,
+    hasContent: false,
   },
   {
     id: '儿童教育趣味应用',
     folderId: '5-educational-app-children',
     title: {
       zh: '儿童教育趣味应用',
-      en: '1-Week Build: Educational App for Children Demo',
+      en: 'Educational App for Children Demo',
     },
     category: '服务',
     categoryEn: 'Service',
@@ -159,7 +159,7 @@ export const arenas: Arena[] = [
     folderId: '6-time-series-forecasting-energy',
     title: {
       zh: '长时间序列预测系统',
-      en: '1-Week Build: Long-Term Time Series Forecasting System Demo (Energy)',
+      en: 'Long-Term Time Series Forecasting System Demo (Energy)',
     },
     category: '运营,风控',
     categoryEn: 'Operations, Risk Control',
@@ -185,7 +185,7 @@ export const arenas: Arena[] = [
     folderId: '7-document-translation',
     title: {
       zh: '智能文档翻译系统',
-      en: '1-Week Build: Intelligent Document Translation System Demo',
+      en: 'Intelligent Document Translation System Demo',
     },
     category: '服务,运营,管理',
     categoryEn: 'Service, Operations, Management',
@@ -211,7 +211,7 @@ export const arenas: Arena[] = [
     folderId: 'intelligent-system',
     title: {
       zh: '智能合同法审系统',
-      en: 'Intelligent Contract Legal Review System',
+      en: 'Intelligent Contract Legal Review System Demo',
     },
     category: '风控',
     categoryEn: 'Risk Control',
@@ -237,7 +237,7 @@ export const arenas: Arena[] = [
     folderId: 'system',
     title: {
       zh: '通用目标检测系统',
-      en: 'Universal Object Detection System',
+      en: 'Universal Object Detection System Demo',
     },
     category: '运营,管理,风控',
     categoryEn: 'Operations, Management, Risk Control',
@@ -286,10 +286,10 @@ export const arenas: Arena[] = [
   },
   {
     id: '功能推荐助手',
-    folderId: '',
+    folderId: 'feature-recommendation-assistant-demo',
     title: {
       zh: '功能推荐助手',
-      en: 'Feature Recommendation Assistant',
+      en: 'Feature Recommendation Assistant Demo',
     },
     category: '服务,运营',
     categoryEn: 'Service, Operations',
@@ -308,14 +308,14 @@ export const arenas: Arena[] = [
       security: '较高',
       cost: '较优',
     },
-    hasContent: true,
+    hasContent: false,
   },
   {
     id: '智能信贷报告生成系统',
     folderId: '12-credit-report',
     title: {
       zh: '智能信贷报告生成系统',
-      en: '1-Week Build: Intelligent Credit Report Generation System Demo',
+      en: 'Intelligent Credit Report Generation System Demo',
     },
     category: '服务,运营',
     categoryEn: 'Service, Operations',
