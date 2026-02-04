@@ -585,23 +585,23 @@ export default function ArenaClient({ params, pageTitle, pageSubtitle }: ArenaCl
                       className="group block"
                     >
                       {/* IMPROVED CARD DESIGN */}
-                      <div className="relative h-[480px] bg-white rounded-2xl p-8 overflow-hidden transition-all duration-300 ease-out hover:scale-[1.02] hover:shadow-2xl hover:shadow-blue-500/20 border border-gray-100/80 hover:border-blue-200">
+                      <div className="relative h-[330px] bg-white rounded-2xl p-7 overflow-hidden transition-all duration-300 ease-out hover:scale-[1.02] hover:shadow-2xl hover:shadow-blue-500/20 border border-gray-100/80 hover:border-blue-200">
                         {/* Card Content */}
                         <div className="relative flex flex-col h-full">
                           {/* Top Section: Title + Status */}
-                          <div className="mb-5">
-                            <div className="flex items-start justify-between gap-4 mb-4">
-                              <h3 className="text-2xl font-extrabold text-gray-900 tracking-tight leading-snug line-clamp-2 flex-1">
+                          <div className="mb-4">
+                            <div className="flex items-start justify-between gap-3 mb-3">
+                              <h3 className="text-xl font-extrabold text-gray-900 tracking-tight leading-snug line-clamp-2 flex-1">
                                 {cleanArenaTitle(arena.title[locale as keyof typeof arena.title] || arena.title.zh)}
                               </h3>
                               <div className="flex-shrink-0">
                                 {arena.verificationStatus === '已验证' ? (
-                                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-bold bg-gradient-to-r from-amber-50 to-amber-100 text-amber-700 border border-amber-200 shadow-sm">
+                                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-amber-50 to-amber-100 text-amber-700 border border-amber-200 shadow-sm whitespace-nowrap">
                                     <Trophy className="h-3.5 w-3.5" />
                                     <span>{isChina ? '已验证' : 'Verified'}</span>
                                   </div>
                                 ) : (
-                                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-slate-50 to-slate-100 text-slate-600 border border-slate-200 shadow-sm">
+                                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-slate-50 to-slate-100 text-slate-600 border border-slate-200 shadow-sm whitespace-nowrap">
                                     <Shield className="h-3.5 w-3.5" />
                                     <span>{isChina ? '验证中' : 'Testing'}</span>
                                   </div>
@@ -610,25 +610,25 @@ export default function ArenaClient({ params, pageTitle, pageSubtitle }: ArenaCl
                             </div>
 
                             {/* Industry & Category Tags */}
-                            <div className="flex items-center gap-2.5">
-                              <span className="inline-block px-3 py-1.5 rounded-lg text-sm font-medium bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 border border-blue-200/60 truncate max-w-[160px]">
+                            <div className="flex items-center gap-2">
+                              <span className="inline-block px-2.5 py-1 rounded-lg text-sm font-medium bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 border border-blue-200/60 truncate max-w-[140px]">
                                 {isChina ? arena.industry : arena.industryEn}
                               </span>
-                              <span className="inline-block px-3 py-1.5 rounded-lg text-sm font-medium bg-gradient-to-r from-emerald-50 to-emerald-100 text-emerald-700 border border-emerald-200/60 truncate max-w-[160px]">
+                              <span className="inline-block px-2.5 py-1 rounded-lg text-sm font-medium bg-gradient-to-r from-emerald-50 to-emerald-100 text-emerald-700 border border-emerald-200/60 truncate max-w-[140px]">
                                 {isChina ? arena.category : arena.categoryEn}
                               </span>
                             </div>
                           </div>
 
                           {/* Metrics Section - Visual Design */}
-                          <div className="mb-5">
-                            <div className="grid grid-cols-4 gap-3 p-5 bg-gradient-to-br from-slate-50 to-gray-50 rounded-xl border border-slate-100/80">
+                          <div className="mb-4">
+                            <div className="grid grid-cols-4 gap-2.5 p-4 bg-gradient-to-br from-slate-50 to-gray-50 rounded-xl border border-slate-100/80">
                               {/* Speed - Show time instead of stars */}
                               <div className="text-center group/metric">
-                                <div className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-violet-50 text-violet-500 mb-2.5 group-hover/metric:scale-110 transition-transform duration-200">
-                                  <Zap className="h-4.5 w-4.5" strokeWidth={2.5} />
+                                <div className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-violet-50 text-violet-500 mb-2 group-hover/metric:scale-110 transition-transform duration-200">
+                                  <Zap className="h-4 w-4" strokeWidth={2.5} />
                                 </div>
-                                <div className="text-xs font-semibold text-violet-600 leading-tight">
+                                <div className="text-[11px] font-semibold text-violet-600 leading-tight">
                                   {extractTimeFromDescription(isChina ? arena.highlights : arena.highlightsEn) || translateSpeedToTime(arena.metrics.speed, isChina)}
                                 </div>
                               </div>
@@ -641,14 +641,14 @@ export default function ArenaClient({ params, pageTitle, pageSubtitle }: ArenaCl
                                 const Icon = metric.icon;
                                 return (
                                   <div key={metric.label} className="text-center group/metric">
-                                    <div className={`inline-flex items-center justify-center w-8 h-8 rounded-lg ${metric.bg} ${metric.color} mb-2.5 group-hover/metric:scale-110 transition-transform duration-200`}>
-                                      <Icon className="h-4.5 w-4.5" strokeWidth={2.5} />
+                                    <div className={`inline-flex items-center justify-center w-7 h-7 rounded-lg ${metric.bg} ${metric.color} mb-2 group-hover/metric:scale-110 transition-transform duration-200`}>
+                                      <Icon className="h-4 w-4" strokeWidth={2.5} />
                                     </div>
-                                    <div className="flex justify-center gap-1 mb-1">
+                                    <div className="flex justify-center gap-0.5 mb-1">
                                       {[1, 2, 3].map((star) => (
                                         <svg
                                           key={star}
-                                          className={`h-4 w-4 transition-all duration-200 ${
+                                          className={`h-3.5 w-3.5 transition-all duration-200 ${
                                             star <= metric.stars
                                               ? `${metric.color} fill-current drop-shadow-sm`
                                               : 'text-gray-200 fill-current'
@@ -666,18 +666,18 @@ export default function ArenaClient({ params, pageTitle, pageSubtitle }: ArenaCl
                           </div>
 
                           {/* Description - Improved Readability */}
-                          <div className="flex-1 mb-5">
+                          <div className="flex-1 mb-4">
                             {/* Champion/擂主 Info */}
                             {(isChina ? arena.champion : arena.championEn) ? (
-                              <div className="mb-4 p-3 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg border border-purple-100">
-                                <div className="flex items-center gap-2 text-sm">
-                                  <Trophy className="h-4.5 w-4.5 text-purple-600 flex-shrink-0" />
-                                  <span className="font-semibold text-purple-900">{isChina ? '擂主' : 'Champion'}:</span>
-                                  <span className="text-gray-700 truncate">{isChina ? arena.champion : arena.championEn}</span>
+                              <div className="mb-2.5 p-2 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg border border-purple-100">
+                                <div className="flex items-center gap-2 text-sm whitespace-nowrap">
+                                  <Trophy className="h-3.5 w-3.5 text-purple-600 flex-shrink-0" />
+                                  <span className="font-semibold text-purple-900 text-xs">{isChina ? '擂主' : 'Champion'}:</span>
+                                  <span className="text-gray-700 truncate text-xs">{isChina ? arena.champion : arena.championEn}</span>
                                 </div>
                               </div>
                             ) : null}
-                            <p className="text-base text-gray-600 leading-relaxed line-clamp-4">
+                            <p className="text-sm text-gray-600 leading-relaxed line-clamp-3">
                               {isChina ? arena.highlights : arena.highlightsEn}
                             </p>
                           </div>

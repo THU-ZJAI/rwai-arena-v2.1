@@ -14,6 +14,14 @@ import {
   Settings,
   Github,
   Trophy,
+  Play,
+  Sparkles,
+  Rocket,
+  CheckCircle2,
+  Target,
+  TrendingUp,
+  Lightbulb,
+  Users,
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -146,7 +154,7 @@ export function ArenaDetailClient({ arena, locale, arenaId, initialContent, hasC
         {/* Grid pattern overlay */}
         <div className="absolute inset-0 bg-grid-pattern opacity-50 pointer-events-none"></div>
 
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
           {/* Breadcrumb */}
           <nav className="mb-8">
             <Link
@@ -158,96 +166,84 @@ export function ArenaDetailClient({ arena, locale, arenaId, initialContent, hasC
             </Link>
           </nav>
 
-          {/* Title Section */}
+          {/* Compact Hero Section - Two-column layout */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="mb-12"
+            className="mb-4"
           >
-            <div className="flex items-start justify-between mb-6">
-              <div className="flex-1">
-                <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-gray-900 mb-4">
-                  {arena.title[locale as keyof typeof arena.title] || arena.title.zh}
-                </h1>
-                {/* Champion/擂主 Info */}
-                {(locale === 'zh' ? arena.champion : arena.championEn) ? (
-                  <div className="mb-4 inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg border border-purple-100">
-                    <Trophy className="h-5 w-5 text-purple-600 flex-shrink-0" />
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+              {/* Left Column (40%): Title, Status, Champion, Description, Metrics */}
+              <div className="lg:col-span-2 flex flex-col justify-between">
+                {/* Title with inline status badges */}
+                <div className="mb-4">
+                  <div className="flex flex-wrap items-center gap-3 mb-3">
+                    <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900">
+                      {arena.title[locale as keyof typeof arena.title] || arena.title.zh}
+                    </h1>
+                    {/* Status and Contact Badges - Inline with title */}
                     <div className="flex items-center gap-2">
-                      <span className="font-semibold text-purple-900">
+                      <span className="inline-flex items-center rounded-full bg-amber-50 px-3 py-1 text-sm font-semibold text-amber-700 ring-1 ring-inset ring-amber-600/20">
+                        <Trophy className="h-3.5 w-3.5 mr-1" />
+                        {locale === 'zh' ? '已验证' : 'Verified'}
+                      </span>
+                      <Link
+                        href={`/${locale}/about`}
+                        className="inline-flex items-center gap-1 px-3 py-1 text-sm font-semibold text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-full transition-all"
+                      >
+                        <Mail className="h-3.5 w-3.5" />
+                        {locale === 'zh' ? '联系我们' : 'Contact'}
+                      </Link>
+                    </div>
+                  </div>
+
+                  {/* Champion/擂主 Info */}
+                  {(locale === 'zh' ? arena.champion : arena.championEn) && (
+                    <div className="mb-3 inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg border border-purple-100">
+                      <Trophy className="h-4 w-4 text-purple-600 flex-shrink-0" />
+                      <span className="font-semibold text-purple-900 text-sm">
                         {locale === 'zh' ? '擂主' : 'Champion'}:
                       </span>
-                      <span className="text-gray-700">{locale === 'zh' ? arena.champion : arena.championEn}</span>
-                    </div>
-                  </div>
-                ) : null}
-                <p className="text-xl text-gray-600 leading-relaxed max-w-3xl">
-                  {locale === 'zh' ? arena.highlights : arena.highlightsEn}
-                </p>
-              </div>
-
-              {/* Status Badge */}
-              <div className="hidden sm:block">
-                <div className="flex items-center gap-3">
-                  <span className="inline-flex items-center rounded-full bg-amber-50 px-3 py-1 text-sm font-semibold text-amber-700 ring-1 ring-inset ring-amber-600/20">
-                    <Trophy className="h-4 w-4 mr-1" />
-                    {locale === 'zh' ? '已验证' : 'Verified'}
-                  </span>
-                  {/* GitHub Stars */}
-                  {arena.githubStars !== undefined && (
-                    <div className="flex items-center gap-1">
-                      <Github className="h-3.5 w-3.5 text-gray-500" />
-                      <span className="text-xs font-medium text-gray-500">
-                        {arena.githubStars.toLocaleString()}
-                      </span>
+                      <span className="text-gray-700 text-sm">{locale === 'zh' ? arena.champion : arena.championEn}</span>
                     </div>
                   )}
-                </div>
-              </div>
-            </div>
-          </motion.div>
 
-          {/* 4-Pillar Metrics - Clean horizontal layout */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="mb-8"
-          >
-            <div className="flex items-center justify-between">
-              {/* Left: Metrics icons - horizontal, left-aligned, no background */}
-              <div className="flex items-center gap-6">
-                {/* Speed - Show time instead of stars */}
-                <div className="flex items-center gap-2">
-                  <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg text-violet-500">
-                    <Zap className="h-5 w-5" strokeWidth={2} />
-                  </div>
-                  <div className="flex flex-col">
-                    <div className="text-sm font-semibold text-violet-600 leading-tight">
+                  {/* Description */}
+                  <p className="text-base text-gray-600 leading-relaxed mb-4">
+                    {locale === 'zh' ? arena.highlights : arena.highlightsEn}
+                  </p>
+                </div>
+
+                {/* Compact Metrics */}
+                <div className="grid grid-cols-4 gap-2">
+                  {/* Speed */}
+                  <div className="text-center">
+                    <div className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-violet-500 mb-1">
+                      <Zap className="h-4 w-4" strokeWidth={2} />
+                    </div>
+                    <div className="text-xs font-semibold text-violet-600 leading-tight mb-0.5">
                       {extractTimeFromDescription(locale === 'zh' ? arena.highlights : arena.highlightsEn) || (locale === 'zh' ? metrics.speed : speedToTimeMapping[metrics.speed] || metrics.speed)}
                     </div>
-                    <div className="text-xs text-gray-500">{locale === 'zh' ? '速度' : 'Speed'}</div>
+                    <div className="text-[10px] text-gray-500">{locale === 'zh' ? '速度' : 'Speed'}</div>
                   </div>
-                </div>
-                {/* Quality, Security, Cost - Star ratings */}
-                {[
-                  { label: locale === 'zh' ? '质量' : 'Quality', value: metrics.quality, stars: getStarRating(metrics.quality), icon: Star, color: 'text-amber-500' },
-                  { label: locale === 'zh' ? '安全' : 'Security', value: metrics.security, stars: getStarRating(metrics.security), icon: Shield, color: 'text-emerald-500' },
-                  { label: locale === 'zh' ? '成本' : 'Cost', value: metrics.cost, stars: getStarRating(metrics.cost), icon: DollarSign, color: 'text-blue-500' },
-                ].map((metric) => {
-                  const Icon = metric.icon;
-                  return (
-                    <div key={metric.label} className="flex items-center gap-2">
-                      <div className={`inline-flex items-center justify-center w-10 h-10 rounded-lg ${metric.color}`}>
-                        <Icon className="h-5 w-5" strokeWidth={2} />
-                      </div>
-                      <div className="flex flex-col">
-                        <div className="flex justify-center gap-0.5">
+                  {/* Quality, Security, Cost */}
+                  {[
+                    { label: locale === 'zh' ? '质量' : 'Quality', stars: getStarRating(metrics.quality), icon: Star, color: 'text-amber-500' },
+                    { label: locale === 'zh' ? '安全' : 'Security', stars: getStarRating(metrics.security), icon: Shield, color: 'text-emerald-500' },
+                    { label: locale === 'zh' ? '成本' : 'Cost', stars: getStarRating(metrics.cost), icon: DollarSign, color: 'text-blue-500' },
+                  ].map((metric) => {
+                    const Icon = metric.icon;
+                    return (
+                      <div key={metric.label} className="text-center">
+                        <div className={`inline-flex items-center justify-center w-8 h-8 rounded-lg ${metric.color} mb-1`}>
+                          <Icon className="h-4 w-4" strokeWidth={2} />
+                        </div>
+                        <div className="flex justify-center gap-0.5 mb-0.5">
                           {[1, 2, 3].map((star) => (
                             <svg
                               key={star}
-                              className={`h-3.5 w-3.5 ${
+                              className={`h-3 w-3 ${
                                 star <= metric.stars
                                   ? `${metric.color} fill-current`
                                   : 'text-gray-200 fill-current'
@@ -258,21 +254,43 @@ export function ArenaDetailClient({ arena, locale, arenaId, initialContent, hasC
                             </svg>
                           ))}
                         </div>
-                        <div className="text-xs text-gray-500">{metric.label}</div>
+                        <div className="text-[10px] text-gray-500">{metric.label}</div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
 
-              {/* Right: CTA Button */}
-              <Link
-                href={`/${locale}/about`}
-                className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg transition-all"
-              >
-                <Mail className="h-4 w-4" />
-                {locale === 'zh' ? '联系我们' : 'Contact Us'}
-              </Link>
+              {/* Right Column (60%): Demo Video Placeholder */}
+              <div className="lg:col-span-3">
+                <div className="relative h-[300px] rounded-2xl overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 shadow-2xl border border-slate-700/50">
+                  {/* Grid pattern overlay */}
+                  <div className="absolute inset-0 bg-grid-pattern opacity-20"></div>
+
+                  {/* Center content */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
+                    {/* Play button */}
+                    <div className="relative">
+                      <div className="absolute inset-0 bg-blue-500 rounded-full blur-3xl opacity-30 animate-pulse"></div>
+                      <div className="relative inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/10 backdrop-blur-sm border-2 border-white/30 hover:bg-white/20 hover:border-white/50 transition-all cursor-pointer group">
+                        <Play className="h-8 w-8 text-white ml-1 group-hover:scale-110 transition-transform" fill="currentColor" />
+                      </div>
+                    </div>
+
+                    {/* Demo label */}
+                    <p className="mt-6 text-lg font-semibold text-white/90">
+                      {locale === 'zh' ? '演示 Demo' : 'Demo'}
+                    </p>
+                    <p className="mt-2 text-sm text-white/60">
+                      {locale === 'zh' ? '点击观看完整演示' : 'Click to watch full demo'}
+                    </p>
+                  </div>
+
+                  {/* Corner accents */}
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-blue-500/20 to-transparent"></div>
+                  <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-purple-500/20 to-transparent"></div>
+                </div>
+              </div>
             </div>
           </motion.div>
         </div>
@@ -315,7 +333,7 @@ export function ArenaDetailClient({ arena, locale, arenaId, initialContent, hasC
       </div>
 
       {/* Main Content Area */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
         {!hasContent ? (
           // Content uploading message
           <div className="text-center py-20">
@@ -343,7 +361,7 @@ export function ArenaDetailClient({ arena, locale, arenaId, initialContent, hasC
             >
               <div className="prose prose-lg max-w-none">
                 {activeTab === 'overview' && content.overview && (
-                  <OverviewSection content={content.overview} locale={locale} />
+                  <OverviewSection content={content.overview} locale={locale} activeTab={activeTab} setActiveTab={setActiveTab} />
                 )}
 
                 {activeTab === 'implementation' && content.implementation && (
@@ -479,8 +497,13 @@ const markdownComponents = {
   ),
 };
 
-// Overview Section Component - Card-based design matching Arena style
-function OverviewSection({ content, locale }: { content: string; locale: string }) {
+// Overview Section Component - Original Card-based design
+function OverviewSection({ content, locale, activeTab, setActiveTab }: {
+  content: string;
+  locale: string;
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
+}) {
   const isChina = locale === 'zh';
 
   // Icon mapping for sections
@@ -583,7 +606,128 @@ function OverviewSection({ content, locale }: { content: string; locale: string 
 
   const sections = parseContent(content);
 
-  // Render Key Metrics section with grid of metric cards
+  // Render Business Highlights with EXTRA emphasis
+  const renderBusinessHighlightsCard = (section: typeof sections[0]) => {
+    if (!section.title.toLowerCase().includes('business highlights') && !section.title.includes('业务亮点')) {
+      return null;
+    }
+
+    // Define the 4 highlights exactly as specified
+    const fourHighlights = [
+      {
+        title: 'DeepResearch Bench排名第2',
+        description: '权威基准测试综合得分51.86，与第一名差距<1.5%',
+        icon: <TrendingUp className="h-6 w-6" />
+      },
+      {
+        title: '减少95%手动研究工作量',
+        description: '自动化资料搜集、信息整合，大幅提升调研效率',
+        icon: <Zap className="h-6 w-6" />
+      },
+      {
+        title: '报告≤15分钟生成',
+        description: '快速输出高质量结构化调研文档，支持批量生成',
+        icon: <Target className="h-6 w-6" />
+      },
+      {
+        title: '支持国产大模型',
+        description: '节省90%成本，GLM-4.7等国产模型性能优异',
+        icon: <DollarSign className="h-6 w-6" />
+      },
+    ];
+
+    const vibrantColors = [
+      { bg: 'from-violet-50 to-purple-100', border: 'border-violet-300', iconBg: 'bg-violet-500', title: 'text-violet-900' },
+      { bg: 'from-blue-50 to-cyan-100', border: 'border-blue-300', iconBg: 'bg-blue-500', title: 'text-blue-900' },
+      { bg: 'from-emerald-50 to-green-100', border: 'border-emerald-300', iconBg: 'bg-emerald-500', title: 'text-emerald-900' },
+      { bg: 'from-amber-50 to-yellow-100', border: 'border-amber-300', iconBg: 'bg-amber-500', title: 'text-amber-900' },
+    ];
+
+    return (
+      <div className="bg-gradient-to-br from-amber-50 via-orange-50 to-amber-50 rounded-3xl p-10 border-2 border-amber-200 hover:border-amber-300 hover:shadow-2xl hover:shadow-amber-500/20 transition-all duration-500 relative overflow-hidden">
+        {/* Decorative background elements */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-amber-200/30 to-orange-200/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-orange-200/30 to-amber-200/30 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+
+        <div className="relative z-10">
+          {/* Section Header - No numbering */}
+          <div className="flex items-center gap-4 mb-8">
+            <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl shadow-lg">
+              <Sparkles className="h-8 w-8 text-white" />
+            </div>
+            <div>
+              <span className="inline-block px-3 py-1 rounded-full bg-gradient-to-r from-amber-500 to-orange-600 text-white text-xs font-bold mb-2 shadow-md">
+                {isChina ? '核心价值' : 'CORE VALUE'}
+              </span>
+              <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-700">
+                业务亮点
+              </h2>
+            </div>
+          </div>
+
+          {/* Highlights Grid - 4 separate blocks */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {fourHighlights.map((highlight, idx) => {
+              const color = vibrantColors[idx % vibrantColors.length];
+              return (
+                <div
+                  key={idx}
+                  className={`group relative bg-gradient-to-br ${color.bg} rounded-2xl p-6 border-2 ${color.border} hover:scale-105 hover:shadow-xl hover:shadow-${color.iconBg}/20 transition-all duration-300 cursor-pointer`}
+                >
+                  <div className={`absolute inset-0 bg-gradient-to-br ${color.bg} rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300`}></div>
+
+                  <div className="relative z-10">
+                    <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${color.iconBg} text-white shadow-lg mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                      {highlight.icon}
+                    </div>
+
+                    <h3 className={`text-xl font-black ${color.title} mb-3 leading-tight`}>
+                      {highlight.title}
+                    </h3>
+
+                    <div className="flex items-start gap-2 text-sm">
+                      <CheckCircle2 className={`h-4 w-4 ${color.title.replace('text-', 'text-')} flex-shrink-0 mt-0.5`} />
+                      <span className="text-gray-800 font-medium leading-relaxed">
+                        {highlight.description}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Call to Action Banner */}
+          <div className="mt-8 p-6 bg-gradient-to-r from-amber-500 to-orange-600 rounded-2xl shadow-lg">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <Rocket className="h-8 w-8 text-white" />
+                <div>
+                  <p className="text-white font-black text-xl">
+                    {isChina ? '立即可用，快速部署' : 'Ready to Use, Quick Deploy'}
+                  </p>
+                  <p className="text-amber-100 font-medium text-sm">
+                    {isChina ? '完整的开源方案，企业级质量保证' : 'Complete open-source solution, enterprise-grade quality'}
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  setActiveTab('implementation');
+                  window.location.hash = 'implementation';
+                }}
+                className="hidden sm:inline-flex items-center gap-2 px-6 py-3 bg-white text-amber-700 rounded-xl font-bold hover:bg-amber-50 transition-all shadow-md hover:shadow-lg"
+              >
+                {isChina ? '立即开始' : 'Get Started'} →
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Render Key Metrics section
   const renderKeyMetricsCard = (section: typeof sections[0]) => {
     if (!section.title.toLowerCase().includes('key metrics') && !section.title.includes('核心指标')) {
       return null;
@@ -620,7 +764,7 @@ function OverviewSection({ content, locale }: { content: string; locale: string 
     );
   };
 
-  // Render Business Pain Points section with colored problem cards
+  // Render Business Pain Points section
   const renderPainPointsCard = (section: typeof sections[0]) => {
     if (!section.title.toLowerCase().includes('pain points') && !section.title.includes('痛点')) {
       return null;
@@ -664,20 +808,105 @@ function OverviewSection({ content, locale }: { content: string; locale: string 
     );
   };
 
-  // Render standard section card
+  // Render Best Practice section - Match screenshot format
+  const renderBestPracticeCard = (section: typeof sections[0]) => {
+    if (!section.title.toLowerCase().includes('best practice') && !section.title.includes('最佳实践')) {
+      return null;
+    }
+
+    // Remove numbering from title
+    const cleanTitle = section.title.replace(/^\d+\.\s*/, '');
+
+    return (
+      <div className="bg-gradient-to-br from-yellow-50 to-amber-50 rounded-2xl p-8 border border-yellow-200 hover:border-yellow-300 hover:shadow-2xl hover:shadow-yellow-500/20 transition-all duration-300">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="flex h-12 w-12 items-center justify-center bg-gradient-to-br from-yellow-500 to-amber-600 rounded-xl text-white">
+            <Trophy className="h-6 w-6" />
+          </div>
+          <h2 className="text-3xl font-bold text-gray-900">{cleanTitle}</h2>
+        </div>
+
+        <div className="space-y-5">
+          {section.subsections.map((subsection, idx) => (
+            <div key={idx} className="bg-white rounded-xl p-5 border border-yellow-200">
+              <h3 className="text-lg font-bold text-amber-900 mb-3">{subsection.title.replace(/^\d+\.\d*\.\s*/, '')}</h3>
+              <div className="space-y-2">
+                {subsection.content.filter((c) => c && !c.startsWith('####')).map((item, i) => {
+                  if (item.startsWith('-')) {
+                    return (
+                      <div key={i} className="flex items-start gap-2 text-sm text-gray-700">
+                        <span className="text-amber-600 flex-shrink-0 mt-0.5">•</span>
+                        <span>{item.replace(/^-\s+/, '').replace(/\*\*/g, '')}</span>
+                      </div>
+                    );
+                  }
+                  return (
+                    <p key={i} className="text-sm text-gray-700 leading-relaxed">
+                      {item}
+                    </p>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  // Render Demo section at bottom
+  const renderDemoCard = (section: typeof sections[0]) => {
+    if (!section.title.toLowerCase().includes('demo') && !section.title.includes('演示')) {
+      return null;
+    }
+
+    return (
+      <div className="bg-gradient-to-br from-cyan-50 to-blue-50 rounded-2xl p-8 border border-cyan-200 hover:border-cyan-300 hover:shadow-2xl hover:shadow-cyan-500/20 transition-all duration-300">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="flex h-12 w-12 items-center justify-center bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl text-white">
+            <Play className="h-6 w-6" />
+          </div>
+          <h2 className="text-3xl font-bold text-gray-900">{section.title}</h2>
+        </div>
+
+        <div className="relative rounded-xl overflow-hidden border-2 border-dashed border-gray-300 bg-gradient-to-br from-gray-50 to-gray-100 h-64 flex flex-col items-center justify-center">
+          <div className="absolute inset-0 bg-grid-pattern opacity-30"></div>
+          <div className="relative z-10 flex flex-col items-center">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-lg mb-4">
+              <Play className="h-7 w-7 ml-1" fill="currentColor" />
+            </div>
+            <p className="text-gray-600 font-semibold text-lg mb-1">
+              {isChina ? '视频演示' : 'Video Demo'}
+            </p>
+            <p className="text-gray-500 text-sm">
+              {isChina ? '即将上线' : 'Coming Soon'}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Render standard section card - Remove numbering from titles
   const renderStandardCard = (section: typeof sections[0]) => {
+    // Remove numbering from title (e.g., "1. 业务亮点" -> "业务亮点", "2. 基本信息" -> "基本信息")
+    const cleanTitle = section.title.replace(/^\d+\.\s*/, '');
+
+    // Remove numbering from subsection titles (e.g., "2.1 概况" -> "概况")
+    const cleanSubtitle = (title: string) => title.replace(/^\d+\.\d*\.\s*/, '');
+
     return (
       <div className="bg-white rounded-2xl p-8 border border-gray-100/80 hover:border-blue-200 hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300">
         <div className="flex items-center gap-3 mb-6">
           <span className="text-4xl">{section.icon}</span>
-          <h2 className="text-3xl font-bold text-gray-900">{section.title}</h2>
+          <h2 className="text-3xl font-bold text-gray-900">{cleanTitle}</h2>
         </div>
 
         <div className="space-y-5">
           {section.subsections.map((subsection, idx) => (
             <div key={idx} className="bg-gradient-to-br from-slate-50 to-gray-50 rounded-xl p-5 border border-slate-100/80">
               {subsection.title && (
-                <h3 className="text-lg font-bold text-gray-900 mb-3">{subsection.title}</h3>
+                <h3 className="text-lg font-bold text-gray-900 mb-3">{cleanSubtitle(subsection.title)}</h3>
               )}
               <div className="space-y-2">
                 {subsection.content.filter((c) => c && !c.startsWith('####')).map((item, i) => {
@@ -711,16 +940,31 @@ function OverviewSection({ content, locale }: { content: string; locale: string 
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {sections.map((section, idx) => {
         const titleLower = section.title.toLowerCase();
 
-        // Special rendering for Key Metrics
+        // Business Highlights - Show prominently
+        if (titleLower.includes('business highlights') || section.title.includes('业务亮点')) {
+          return <div key={idx}>{renderBusinessHighlightsCard(section)}</div>;
+        }
+
+        // Best Practice - Special rendering
+        if (titleLower.includes('best practice') || section.title.includes('最佳实践')) {
+          return <div key={idx}>{renderBestPracticeCard(section)}</div>;
+        }
+
+        // Demo - Skip demo section (already shown in Hero)
+        if (titleLower.includes('demo') || section.title.includes('演示')) {
+          return null;
+        }
+
+        // Key Metrics
         if (titleLower.includes('key metrics') || section.title.includes('核心指标')) {
           return <div key={idx}>{renderKeyMetricsCard(section)}</div>;
         }
 
-        // Special rendering for Pain Points
+        // Pain Points
         if (titleLower.includes('pain points') || section.title.includes('痛点')) {
           return <div key={idx}>{renderPainPointsCard(section)}</div>;
         }
