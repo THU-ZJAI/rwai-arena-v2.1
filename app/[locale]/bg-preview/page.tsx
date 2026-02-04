@@ -2,15 +2,23 @@
 
 import { useState } from 'react';
 import { HeroBackgroundCanvas } from '@/components/effects/hero-background-canvas';
+import { useParams } from 'next/navigation';
 
 export default function BackgroundPreviewPage() {
+  const params = useParams();
+  const locale = (params?.locale as string) || 'zh';
+  const isChina = locale === 'zh';
   const [selectedEffect, setSelectedEffect] = useState<string>('HERO');
 
   return (
     <div className="min-h-screen bg-gray-900 p-8">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-bold text-white mb-4 text-center">背景效果预览</h1>
-        <p className="text-gray-400 text-center mb-8">点击下方按钮切换不同效果</p>
+        <h1 className="text-4xl font-bold text-white mb-4 text-center">
+          {isChina ? '背景效果预览' : 'Background Effect Preview'}
+        </h1>
+        <p className="text-gray-400 text-center mb-8">
+          {isChina ? '点击下方按钮切换不同效果' : 'Click buttons below to switch effects'}
+        </p>
 
         {/* Effect Selector */}
         <div className="flex flex-wrap gap-4 justify-center mb-8">
@@ -31,8 +39,8 @@ export default function BackgroundPreviewPage() {
 
         {/* Effect Description */}
         <div className="bg-gray-800 rounded-lg p-6 mb-8">
-          <h2 className="text-2xl font-bold text-white mb-2">{getEffectName(selectedEffect)}</h2>
-          <p className="text-gray-400">{getEffectDescription(selectedEffect)}</p>
+          <h2 className="text-2xl font-bold text-white mb-2">{getEffectName(selectedEffect, isChina)}</h2>
+          <p className="text-gray-400">{getEffectDescription(selectedEffect, isChina)}</p>
         </div>
 
         {/* Preview Area */}
@@ -42,8 +50,12 @@ export default function BackgroundPreviewPage() {
           {/* Content Overlay */}
           <div className="absolute inset-0 z-10 flex items-center justify-center">
             <div className="text-center">
-              <h3 className="text-5xl font-bold text-white mb-4 drop-shadow-lg">精选擂台区</h3>
-              <p className="text-2xl text-gray-200 drop-shadow-md">这里展示3个精选的AI实战方案</p>
+              <h3 className="text-5xl font-bold text-white mb-4 drop-shadow-lg">
+                {isChina ? '精选擂台区' : 'Featured Arena'}
+              </h3>
+              <p className="text-2xl text-gray-200 drop-shadow-md">
+                {isChina ? '这里展示3个精选的AI实战方案' : '3 Featured AI Solutions'}
+              </p>
             </div>
           </div>
         </div>
@@ -52,30 +64,51 @@ export default function BackgroundPreviewPage() {
   );
 }
 
-function getEffectName(effect: string): string {
-  const names: Record<string, string> = {
-    'HERO': '1.1 Hero: 脉冲+连接线',
-    'A': '方案A: 流动渐变',
-    'B': '方案B: 六边形网格',
-    'C': '方案C: 数据流',
-    'D': '方案D: 几何图形',
-    'E': '方案E: 扫描光效',
-    'F': '方案F: 粒子星云'
+function getEffectName(effect: string, isChina: boolean): string {
+  const names: Record<string, { zh: string; en: string }> = {
+    'HERO': { zh: '1.1 Hero: 脉冲+连接线', en: '1.1 Hero: Pulse + Connection' },
+    'A': { zh: '方案A: 流动渐变', en: 'Plan A: Flowing Gradient' },
+    'B': { zh: '方案B: 六边形网格', en: 'Plan B: Hexagon Grid' },
+    'C': { zh: '方案C: 数据流', en: 'Plan C: Data Flow' },
+    'D': { zh: '方案D: 几何图形', en: 'Plan D: Geometric Shapes' },
+    'E': { zh: '方案E: 扫描光效', en: 'Plan E: Scan Line' },
+    'F': { zh: '方案F: 粒子星云', en: 'Plan F: Particle Nebula' }
   };
-  return names[effect] || effect;
+  return names[effect]?.[isChina ? 'zh' : 'en'] || effect;
 }
 
-function getEffectDescription(effect: string): string {
-  const descriptions: Record<string, string> = {
-    'HERO': '1.1 Hero区效果 - 深色渐变背景 + 中心蓝色脉冲 + 粒子连接网络 + 数据流点，强烈的科技感和未来感',
-    'A': '流动渐变背景 - 使用CSS动画创建流动的多色渐变效果，色彩平滑过渡，性能优异，适合现代科技感',
-    'B': '六边形网格动画 - 动态六边形图案，带有淡入淡出效果，蜂窝状布局，强烈的科技感和未来感',
-    'C': '数据流效果 - 垂直流动的数字和字符流，类似黑客帝国的代码雨效果，充满未来科技感',
-    'D': '浮动几何图形 - 简单的几何图形（三角形、正方形、圆形）缓慢旋转和移动，轻量级动态效果',
-    'E': '扫描光效 - 水平扫描线从上到下移动，带有光晕效果，简洁但有效，科技扫描感',
-    'F': '粒子星云（白色背景）- 轻量粒子效果，蓝色粒子缓慢漂浮和闪烁，清新科技感，优雅且不抢眼'
+function getEffectDescription(effect: string, isChina: boolean): string {
+  const descriptions: Record<string, { zh: string; en: string }> = {
+    'HERO': {
+      zh: '1.1 Hero区效果 - 深色渐变背景 + 中心蓝色脉冲 + 粒子连接网络 + 数据流点，强烈的科技感和未来感',
+      en: '1.1 Hero Effect - Dark gradient + center blue pulse + particle network + data points, strong tech feel'
+    },
+    'A': {
+      zh: '流动渐变背景 - 使用CSS动画创建流动的多色渐变效果，色彩平滑过渡，性能优异，适合现代科技感',
+      en: 'Flowing Gradient - CSS animated flowing multi-color gradient, smooth transitions, high performance'
+    },
+    'B': {
+      zh: '六边形网格动画 - 动态六边形图案，带有淡入淡出效果，蜂窝状布局，强烈的科技感和未来感',
+      en: 'Hexagon Grid - Dynamic hexagonal pattern with fade effects, honeycomb layout, futuristic'
+    },
+    'C': {
+      zh: '数据流效果 - 垂直流动的数字和字符流，类似黑客帝国的代码雨效果，充满未来科技感',
+      en: 'Data Flow - Vertical streaming numbers and characters, Matrix-style code rain effect'
+    },
+    'D': {
+      zh: '浮动几何图形 - 简单的几何图形（三角形、正方形、圆形）缓慢旋转和移动，轻量级动态效果',
+      en: 'Floating Geometry - Simple shapes (triangle, square, circle) slowly rotating and moving'
+    },
+    'E': {
+      zh: '扫描光效 - 水平扫描线从上到下移动，带有光晕效果，简洁但有效，科技扫描感',
+      en: 'Scan Line - Horizontal scan line moving top to bottom with glow, clean and effective'
+    },
+    'F': {
+      zh: '粒子星云（白色背景）- 轻量粒子效果，蓝色粒子缓慢漂浮和闪烁，清新科技感，优雅且不抢眼',
+      en: 'Particle Nebula - Lightweight particle effect, blue particles floating and twinkling, elegant'
+    }
   };
-  return descriptions[effect] || '';
+  return descriptions[effect]?.[isChina ? 'zh' : 'en'] || '';
 }
 
 function renderEffect(effect: string) {

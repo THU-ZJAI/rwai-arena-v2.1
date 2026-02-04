@@ -200,7 +200,7 @@ export function ArenaDetailClient({ arena, locale, arenaId, initialContent, hasC
 
                   {/* Champion/擂主 Info */}
                   {(locale === 'zh' ? arena.champion : arena.championEn) && (
-                    <div className="mb-3 inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg border border-purple-100">
+                    <div className="mb-2 inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg border border-purple-100">
                       <Trophy className="h-4 w-4 text-purple-600 flex-shrink-0" />
                       <span className="font-semibold text-purple-900 text-sm">
                         {locale === 'zh' ? '擂主' : 'Champion'}:
@@ -208,6 +208,19 @@ export function ArenaDetailClient({ arena, locale, arenaId, initialContent, hasC
                       <span className="text-gray-700 text-sm">{locale === 'zh' ? arena.champion : arena.championEn}</span>
                     </div>
                   )}
+
+                  {/* Challenger/攻擂中 Info */}
+                  {(locale === 'zh' ? arena.challenger : arena.challengerEn) &&
+                  (locale === 'zh' ? arena.challenger : arena.challengerEn) !== '寻找攻擂者' &&
+                  (locale === 'zh' ? arena.challenger : arena.challengerEn).trim() !== '' ? (
+                    <div className="mb-3 inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-purple-50/50 to-blue-50/50 rounded-lg border border-purple-100/60">
+                      <Trophy className="h-4 w-4 text-purple-400 flex-shrink-0" />
+                      <span className="font-semibold text-purple-700 text-sm">
+                        {locale === 'zh' ? '攻擂中' : 'Challenger'}:
+                      </span>
+                      <span className="text-gray-600 text-sm">{locale === 'zh' ? arena.challenger : arena.challengerEn}</span>
+                    </div>
+                  ) : null}
 
                   {/* Description */}
                   <p className="text-base text-gray-600 leading-relaxed mb-4">
@@ -615,23 +628,23 @@ function OverviewSection({ content, locale, activeTab, setActiveTab }: {
     // Define the 4 highlights exactly as specified
     const fourHighlights = [
       {
-        title: 'DeepResearch Bench排名第2',
-        description: '权威基准测试综合得分51.86，与第一名差距<1.5%',
+        title: isChina ? 'DeepResearch Bench排名第2' : 'Ranked #2 in DeepResearch Bench',
+        description: isChina ? '权威基准测试综合得分51.86，与第一名差距<1.5%' : 'Score 51.86 on authoritative benchmark, <1.5% gap from #1',
         icon: <TrendingUp className="h-6 w-6" />
       },
       {
-        title: '减少95%手动研究工作量',
-        description: '自动化资料搜集、信息整合，大幅提升调研效率',
+        title: isChina ? '减少95%手动研究工作量' : 'Reduce 95% Manual Research Workload',
+        description: isChina ? '自动化资料搜集、信息整合，大幅提升调研效率' : 'Automated data collection and integration, greatly improving efficiency',
         icon: <Zap className="h-6 w-6" />
       },
       {
-        title: '报告≤15分钟生成',
-        description: '快速输出高质量结构化调研文档，支持批量生成',
+        title: isChina ? '报告≤15分钟生成' : 'Generate Reports in ≤15 Minutes',
+        description: isChina ? '快速输出高质量结构化调研文档，支持批量生成' : 'Quickly output high-quality structured research documents, support batch generation',
         icon: <Target className="h-6 w-6" />
       },
       {
-        title: '支持国产大模型',
-        description: '节省90%成本，GLM-4.7等国产模型性能优异',
+        title: isChina ? '支持国产大模型' : 'Support Domestic LLMs',
+        description: isChina ? '节省90%成本，GLM-4.7等国产模型性能优异' : 'Save 90% cost, domestic models like GLM-4.7 perform excellently',
         icon: <DollarSign className="h-6 w-6" />
       },
     ];
@@ -660,7 +673,7 @@ function OverviewSection({ content, locale, activeTab, setActiveTab }: {
                 {isChina ? '核心价值' : 'CORE VALUE'}
               </span>
               <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-700">
-                业务亮点
+                {isChina ? '业务亮点' : 'Business Highlights'}
               </h2>
             </div>
           </div>

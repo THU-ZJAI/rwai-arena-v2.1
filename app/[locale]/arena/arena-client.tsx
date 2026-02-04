@@ -585,7 +585,7 @@ export default function ArenaClient({ params, pageTitle, pageSubtitle }: ArenaCl
                       className="group block"
                     >
                       {/* IMPROVED CARD DESIGN */}
-                      <div className="relative h-[330px] bg-white rounded-2xl p-7 overflow-hidden transition-all duration-300 ease-out hover:scale-[1.02] hover:shadow-2xl hover:shadow-blue-500/20 border border-gray-100/80 hover:border-blue-200">
+                      <div className="relative h-[420px] bg-white rounded-2xl p-7 overflow-hidden transition-all duration-300 ease-out hover:scale-[1.02] hover:shadow-2xl hover:shadow-blue-500/20 border border-gray-100/80 hover:border-blue-200">
                         {/* Card Content */}
                         <div className="relative flex flex-col h-full">
                           {/* Top Section: Title + Status */}
@@ -666,10 +666,10 @@ export default function ArenaClient({ params, pageTitle, pageSubtitle }: ArenaCl
                           </div>
 
                           {/* Description - Improved Readability */}
-                          <div className="flex-1 mb-4">
+                          <div className="flex-1 flex flex-col justify-end pb-4">
                             {/* Champion/擂主 Info */}
                             {(isChina ? arena.champion : arena.championEn) ? (
-                              <div className="mb-2.5 p-2 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg border border-purple-100">
+                              <div className="mb-2 p-2 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg border border-purple-100">
                                 <div className="flex items-center gap-2 text-sm whitespace-nowrap">
                                   <Trophy className="h-3.5 w-3.5 text-purple-600 flex-shrink-0" />
                                   <span className="font-semibold text-purple-900 text-xs">{isChina ? '擂主' : 'Champion'}:</span>
@@ -677,7 +677,19 @@ export default function ArenaClient({ params, pageTitle, pageSubtitle }: ArenaCl
                                 </div>
                               </div>
                             ) : null}
-                            <p className="text-sm text-gray-600 leading-relaxed line-clamp-3">
+                            {/* Challenger/攻擂中 Info */}
+                            {(isChina ? arena.challenger : arena.challengerEn) &&
+                            (isChina ? arena.challenger : arena.challengerEn) !== '寻找攻擂者' &&
+                            (isChina ? arena.challenger : arena.challengerEn).trim() !== '' ? (
+                              <div className="mb-2.5 p-2 bg-gradient-to-r from-purple-50/50 to-blue-50/50 rounded-lg border border-purple-100/60">
+                                <div className="flex items-center gap-2 text-sm whitespace-nowrap">
+                                  <Trophy className="h-3.5 w-3.5 text-purple-400 flex-shrink-0" />
+                                  <span className="font-semibold text-purple-700 text-xs">{isChina ? '攻擂中' : 'Challenger'}:</span>
+                                  <span className="text-gray-600 truncate text-xs">{isChina ? arena.challenger : arena.challengerEn}</span>
+                                </div>
+                              </div>
+                            ) : null}
+                            <p className="text-sm text-gray-600 leading-relaxed line-clamp-4">
                               {isChina ? arena.highlights : arena.highlightsEn}
                             </p>
                           </div>
