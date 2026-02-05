@@ -34,4 +34,4 @@ If you couldn't find the answer you're looking for, feel free to reach out to us
 ### Contact Methods
 
 - **GitHub**: https://github.com/THU-ZJAI/Real-World-AI
-- **Email**: xuyuyao@tsinghua-zj.edu.cn
+- **Email**: xuyuyao@tsinghua-zj.edu.cn

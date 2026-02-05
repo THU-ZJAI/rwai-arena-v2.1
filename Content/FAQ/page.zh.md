@@ -34,4 +34,4 @@ Real-World AI的目的是让尽可能多和AI落地相关的伙伴获得帮助�
 ### 联系方式
 
 - **GitHub**: https://github.com/THU-ZJAI/Real-World-AI
-- **Email**: xuyuyao@tsinghua-zj.edu.cn
+- **Email**: xuyuyao@tsinghua-zj.edu.cn

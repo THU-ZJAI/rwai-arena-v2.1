@@ -168,7 +168,7 @@ export function ArenaDetailClient({ arena, locale, arenaId, initialContent, hasC
           {/* Breadcrumb */}
           <nav className="mb-8">
             <Link
-              href={`/${locale}/arena`}
+              href={'/' + locale + '/arena'}
               className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors"
             >
               <ArrowLeft className="h-4 w-4" />
@@ -199,7 +199,7 @@ export function ArenaDetailClient({ arena, locale, arenaId, initialContent, hasC
                         {locale === 'zh' ? '已验证' : 'Verified'}
                       </span>
                       <Link
-                        href={`/${locale}/about`}
+                        href={'/' + locale + '/about'}
                         className="inline-flex items-center gap-1 px-3 py-1 text-sm font-semibold text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-full transition-all"
                       >
                         <Mail className="h-3.5 w-3.5" />
@@ -220,17 +220,18 @@ export function ArenaDetailClient({ arena, locale, arenaId, initialContent, hasC
                   )}
 
                   {/* Challenger/攻擂中 Info */}
-                  {(locale === 'zh' ? arena.challenger : arena.challengerEn) &&
-                  (locale === 'zh' ? arena.challenger : arena.challengerEn) !== '寻找攻擂者' &&
-                  (locale === 'zh' ? arena.challenger : arena.challengerEn).trim() !== '' ? (
-                    <div className="mb-3 inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-purple-50/50 to-blue-50/50 rounded-lg border border-purple-100/60">
-                      <Trophy className="h-4 w-4 text-purple-400 flex-shrink-0" />
-                      <span className="font-semibold text-purple-700 text-sm">
-                        {locale === 'zh' ? '攻擂中' : 'Challenger'}:
-                      </span>
-                      <span className="text-gray-600 text-sm">{locale === 'zh' ? arena.challenger : arena.challengerEn}</span>
-                    </div>
-                  ) : null}
+                  {(() => {
+                    const challenger = locale === 'zh' ? arena.challenger : arena.challengerEn;
+                    return challenger && challenger !== '寻找攻擂者' && challenger.trim() !== '' ? (
+                      <div className="mb-3 inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-purple-50/50 to-blue-50/50 rounded-lg border border-purple-100/60">
+                        <Trophy className="h-4 w-4 text-purple-400 flex-shrink-0" />
+                        <span className="font-semibold text-purple-700 text-sm">
+                          {locale === 'zh' ? '攻擂中' : 'Challenger'}:
+                        </span>
+                        <span className="text-gray-600 text-sm">{challenger}</span>
+                      </div>
+                    ) : null;
+                  })()}
 
                   {/* Description */}
                   <p className="text-base text-gray-600 leading-relaxed mb-4">
@@ -259,23 +260,22 @@ export function ArenaDetailClient({ arena, locale, arenaId, initialContent, hasC
                     const Icon = metric.icon;
                     return (
                       <div key={metric.label} className="text-center">
-                        <div className={`inline-flex items-center justify-center w-8 h-8 rounded-lg ${metric.bg} mb-1`}>
-                          <Icon className={`h-4 w-4 ${metric.color}`} strokeWidth={2} />
+                        <div className={'inline-flex items-center justify-center w-8 h-8 rounded-lg ' + metric.bg + ' mb-1'}>
+                          <Icon className={'h-4 w-4 ' + metric.color} strokeWidth={2} />
                         </div>
                         <div className="flex justify-center gap-0.5 mb-0.5">
-                          {[1, 2, 3].map((star) => (
+                          {[1, 2, 3].map((star) => {
+                            const starColor = star <= metric.stars ? metric.color + ' fill-current' : 'text-gray-200 fill-current';
+                            return (
                             <svg
                               key={star}
-                              className={`h-3 w-3 ${
-                                star <= metric.stars
-                                  ? `${metric.color} fill-current`
-                                  : 'text-gray-200 fill-current'
-                              }`}
+                              className={'h-3 w-3 ' + starColor}
                               viewBox="0 0 20 20"
                             >
                               <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                             </svg>
-                          ))}
+                            );
+                          })}
                         </div>
                         <div className="text-[10px] text-gray-500">{metric.label}</div>
                       </div>
@@ -284,34 +284,20 @@ export function ArenaDetailClient({ arena, locale, arenaId, initialContent, hasC
                 </div>
               </div>
 
-              {/* Right Column (60%): Demo Video Placeholder */}
+              {/* Right Column (60%): Demo Video */}
               <div className="lg:col-span-3">
                 <div className="relative h-[300px] rounded-2xl overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 shadow-2xl border border-slate-700/50">
-                  {/* Grid pattern overlay */}
-                  <div className="absolute inset-0 bg-grid-pattern opacity-20"></div>
-
-                  {/* Center content */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
-                    {/* Play button */}
-                    <div className="relative">
-                      <div className="absolute inset-0 bg-blue-500 rounded-full blur-3xl opacity-30 animate-pulse"></div>
-                      <div className="relative inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/10 backdrop-blur-sm border-2 border-white/30 hover:bg-white/20 hover:border-white/50 transition-all cursor-pointer group">
-                        <Play className="h-8 w-8 text-white ml-1 group-hover:scale-110 transition-transform" fill="currentColor" />
-                      </div>
-                    </div>
-
-                    {/* Demo label */}
-                    <p className="mt-6 text-lg font-semibold text-white/90">
-                      {locale === 'zh' ? '演示 Demo' : 'Demo'}
-                    </p>
-                    <p className="mt-2 text-sm text-white/60">
-                      {locale === 'zh' ? '点击观看完整演示' : 'Click to watch full demo'}
-                    </p>
-                  </div>
-
-                  {/* Corner accents */}
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-blue-500/20 to-transparent"></div>
-                  <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-purple-500/20 to-transparent"></div>
+                  <video
+                    className="w-full h-full object-contain"
+                    controls
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                  >
+                    <source src={'/videos/' + (arena.videoFile || arena.folderId + '.mp4')} type="video/mp4" />
+                    {locale === 'zh' ? '您的浏览器不支持视频播放' : 'Your browser does not support the video tag.'}
+                  </video>
                 </div>
               </div>
             </div>
@@ -340,13 +326,14 @@ export function ArenaDetailClient({ arena, locale, arenaId, initialContent, hasC
                     window.location.hash = tab.key;
                   }}
                   role="tab"
-                  className={`group relative flex items-center gap-2 px-6 py-4 text-sm font-semibold border-b-2 transition-all whitespace-nowrap ${
-                    activeTab === tab.key
-                      ? `border-blue-600 text-gray-900 bg-gradient-to-r from-blue-50 to-indigo-50`
-                      : 'border-transparent text-gray-500 hover:text-blue-600 hover:bg-gradient-to-r hover:from-slate-50 hover:to-blue-50 hover:border-gray-300'
-                  }`}
+                  className={
+                    "group relative flex items-center gap-2 px-6 py-4 text-sm font-semibold border-b-2 transition-all whitespace-nowrap " +
+                    (activeTab === tab.key
+                      ? "border-blue-600 text-gray-900 bg-gradient-to-r from-blue-50 to-indigo-50"
+                      : "border-transparent text-gray-500 hover:text-blue-600 hover:bg-gradient-to-r hover:from-slate-50 hover:to-blue-50 hover:border-gray-300")
+                  }
                 >
-                  <Icon className={`h-4 w-4 ${activeTab === tab.key ? colorClasses : 'group-hover:text-blue-600'} transition-colors`} />
+                  <Icon className={"h-4 w-4 " + (activeTab === tab.key ? colorClasses : "group-hover:text-blue-600") + " transition-colors"} />
                   <span>{tab.label}</span>
                   {activeTab === tab.key && (
                     <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600"></div>
@@ -387,7 +374,7 @@ export function ArenaDetailClient({ arena, locale, arenaId, initialContent, hasC
             >
               <div className="prose prose-lg max-w-none">
                 {activeTab === 'overview' && content.overview && (
-                  <OverviewSection content={content.overview} locale={locale} activeTab={activeTab} setActiveTab={setActiveTab} />
+                  <OverviewSection content={content.overview} locale={locale} activeTab={activeTab} setActiveTab={(tab) => setActiveTab(tab as TabType)} />
                 )}
 
                 {activeTab === 'implementation' && content.implementation && (
@@ -643,25 +630,25 @@ function OverviewSection({ content, locale, activeTab, setActiveTab }: {
       {
         title: isChina ? 'DeepResearch Bench排名第2' : 'Ranked #2 in DeepResearch Bench',
         description: isChina ? '权威基准测试综合得分51.86，与第一名差距<1.5%' : 'Score 51.86 on authoritative benchmark, <1.5% gap from #1',
-        icon: <TrendingUp className="h-6 w-6" />,
+        icon: TrendingUp,
         semanticColor: 'yellow' // Quality/Ranking
       },
       {
         title: isChina ? '减少95%手动研究工作量' : 'Reduce 95% Manual Research Workload',
         description: isChina ? '自动化资料搜集、信息整合，大幅提升调研效率' : 'Automated data collection and integration, greatly improving efficiency',
-        icon: <Zap className="h-6 w-6" />,
+        icon: Zap,
         semanticColor: 'violet' // Efficiency/Speed
       },
       {
         title: isChina ? '报告≤15分钟生成' : 'Generate Reports in ≤15 Minutes',
         description: isChina ? '快速输出高质量结构化调研文档，支持批量生成' : 'Quickly output high-quality structured research documents, support batch generation',
-        icon: <Target className="h-6 w-6" />,
+        icon: Target,
         semanticColor: 'violet' // Efficiency/Speed
       },
       {
         title: isChina ? '支持国产大模型' : 'Support Domestic LLMs',
         description: isChina ? '节省90%成本，GLM-4.7等国产模型性能优异' : 'Save 90% cost, domestic models like GLM-4.7 perform excellently',
-        icon: <DollarSign className="h-6 w-6" />,
+        icon: DollarSign,
         semanticColor: 'blue' // Cost/Savings
       },
     ];
@@ -701,26 +688,32 @@ function OverviewSection({ content, locale, activeTab, setActiveTab }: {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {fourHighlights.map((highlight, idx) => {
               const color = semanticColorMap[highlight.semanticColor as keyof typeof semanticColorMap];
+              const Icon = highlight.icon;
+              const cardClassName = 'group relative bg-gradient-to-br ' + color.bg + ' rounded-2xl p-6 border-2 ' + color.border + ' cursor-pointer';
+              const bgClassName = 'absolute inset-0 bg-gradient-to-br ' + color.bg + ' rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300';
+              const iconContainerClassName = 'flex h-12 w-12 items-center justify-center rounded-xl ' + color.iconBg + ' text-white shadow-lg mb-4 group-hover:scale-110 transition-transform duration-300';
+              const titleClassName = 'text-xl font-black ' + color.title + ' mb-3 leading-tight';
+              const checkClassName = 'h-4 w-4 ' + color.check + ' flex-shrink-0 mt-0.5';
               return (
                 <motion.div
                   key={idx}
                   whileHover={{ scale: 1.05, y: -5 }}
                   transition={{ duration: 0.3 }}
-                  className={`group relative bg-gradient-to-br ${color.bg} rounded-2xl p-6 border-2 ${color.border} cursor-pointer`}
+                  className={cardClassName}
                 >
-                  <div className={`absolute inset-0 bg-gradient-to-br ${color.bg} rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300`}></div>
+                  <div className={bgClassName}></div>
 
                   <div className="relative z-10">
-                    <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${color.iconBg} text-white shadow-lg mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                      {highlight.icon}
+                    <div className={iconContainerClassName}>
+                      <Icon className="h-6 w-6" />
                     </div>
 
-                    <h3 className={`text-xl font-black ${color.title} mb-3 leading-tight`}>
+                    <h3 className={titleClassName}>
                       {highlight.title}
                     </h3>
 
                     <div className="flex items-start gap-2 text-sm">
-                      <CheckCircle2 className={`h-4 w-4 ${color.check} flex-shrink-0 mt-0.5`} />
+                      <CheckCircle2 className={checkClassName} />
                       <span className="text-gray-800 font-medium leading-relaxed">
                         {highlight.description}
                       </span>
@@ -819,13 +812,16 @@ function OverviewSection({ content, locale, activeTab, setActiveTab }: {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {section.subsections.map((subsection, idx) => (
+          {section.subsections.map((subsection, idx) => {
+            const cardClassName = 'bg-gradient-to-br ' + riskColor.bg + ' rounded-xl p-6 border ' + riskColor.border + ' hover:scale-[1.02] hover:shadow-lg hover:shadow-emerald-500/10 transition-all duration-300';
+            const titleClassName = 'text-xl font-bold ' + riskColor.text + ' mb-3';
+            return (
             <div
               key={idx}
-              className={`bg-gradient-to-br ${riskColor.bg} rounded-xl p-6 border ${riskColor.border} hover:scale-[1.02] hover:shadow-lg hover:shadow-emerald-500/10 transition-all duration-300`}
+              className={cardClassName}
             >
               {subsection.title && (
-                <h3 className={`text-xl font-bold ${riskColor.text} mb-3`}>{subsection.title}</h3>
+                <h3 className={titleClassName}>{subsection.title}</h3>
               )}
               <div className="text-sm text-gray-700 leading-relaxed space-y-2">
                 {subsection.content.map((item, i) => (
@@ -833,7 +829,8 @@ function OverviewSection({ content, locale, activeTab, setActiveTab }: {
                 ))}
               </div>
             </div>
-          ))}
+          );
+          })}
         </div>
       </div>
     );
@@ -929,8 +926,8 @@ function OverviewSection({ content, locale, activeTab, setActiveTab }: {
 
     const metadata = parseMetadata(infoContent);
     const practitioner = metadata['practitioner'] || 'Real-World AI';
-    const firstReleased = metadata['firstReleased']?.split('-')[0] || '2025-11';
-    const lastUpdated = metadata['lastUpdated']?.split('-')[0] || '2025-12';
+    const firstReleased = metadata['firstReleased'] || '2025-11-20';
+    const lastUpdated = metadata['lastUpdated'] || '2026-02-04';
 
     // Extract implementation link
     const implementationLink = detailsContent.find(c => c.includes('http'));
@@ -978,14 +975,14 @@ function OverviewSection({ content, locale, activeTab, setActiveTab }: {
                 return (
                   <div
                     key={idx}
-                    className={`group bg-gradient-to-br ${color.bg} rounded-xl p-5 border-2 ${color.border} hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-default`}
+                    className={'group bg-gradient-to-br ' + color.bg + ' rounded-xl p-5 border-2 ' + color.border + ' hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-default'}
                   >
                     <div className="flex items-start gap-3">
-                      <div className={`flex h-8 w-8 items-center justify-center rounded-lg ${color.icon} text-white shadow-md flex-shrink-0 group-hover:scale-110 transition-transform`}>
+                      <div className={'flex h-8 w-8 items-center justify-center rounded-lg ' + color.icon + ' text-white shadow-md flex-shrink-0 group-hover:scale-110 transition-transform'}>
                         <span className="text-base">{icons[idx]}</span>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h4 className={`text-base font-bold ${color.text} mb-2`}>{outcome.title}</h4>
+                        <h4 className={'text-base font-bold ' + color.text + ' mb-2'}>{outcome.title}</h4>
                         <p className="text-sm text-gray-700 leading-relaxed">{outcome.desc}</p>
                       </div>
                     </div>
@@ -1063,7 +1060,8 @@ function OverviewSection({ content, locale, activeTab, setActiveTab }: {
           <button
             onClick={() => {
               setActiveTab('implementation');
-              window.location.hash = 'implementation';
+              // Scroll to top of page
+              window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
             className="w-full group inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 text-white text-base font-bold rounded-xl transition-all shadow-lg hover:shadow-xl hover:shadow-blue-500/25 transform hover:scale-[1.02]"
           >
@@ -1073,39 +1071,6 @@ function OverviewSection({ content, locale, activeTab, setActiveTab }: {
             </span>
             <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
           </button>
-        </div>
-      </div>
-    );
-  };
-
-  // Render Demo section at bottom
-  const renderDemoCard = (section: typeof sections[0]) => {
-    if (!section.title.toLowerCase().includes('demo') && !section.title.includes('演示')) {
-      return null;
-    }
-
-    return (
-      <div className="bg-gradient-to-br from-cyan-50 to-blue-50 rounded-2xl p-8 border border-cyan-200 hover:border-cyan-300 hover:shadow-2xl hover:shadow-cyan-500/20 transition-all duration-300">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="flex h-12 w-12 items-center justify-center bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl text-white">
-            <Play className="h-6 w-6" />
-          </div>
-          <h2 className="text-3xl font-bold text-gray-900">{section.title}</h2>
-        </div>
-
-        <div className="relative rounded-xl overflow-hidden border-2 border-dashed border-gray-300 bg-gradient-to-br from-gray-50 to-gray-100 h-64 flex flex-col items-center justify-center">
-          <div className="absolute inset-0 bg-grid-pattern opacity-30"></div>
-          <div className="relative z-10 flex flex-col items-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-lg mb-4">
-              <Play className="h-7 w-7 ml-1" fill="currentColor" />
-            </div>
-            <p className="text-gray-600 font-semibold text-lg mb-1">
-              {isChina ? '视频演示' : 'Video Demo'}
-            </p>
-            <p className="text-gray-500 text-sm">
-              {isChina ? '即将上线' : 'Coming Soon'}
-            </p>
-          </div>
         </div>
       </div>
     );
@@ -1574,7 +1539,7 @@ function ImplementationSection({ content, locale }: { content: string; locale: s
             return (
               <div
                 key={subIdx}
-                className={`bg-gradient-to-br ${bgColor} rounded-xl p-6 border border-violet-200 hover:shadow-md hover:shadow-violet-500/10 transition-all`}
+                className={'bg-gradient-to-br ' + bgColor + ' rounded-xl p-6 border border-violet-200 hover:shadow-md hover:shadow-violet-500/10 transition-all'}
               >
                 {/* Subsection Header - Standardized */}
                 <div className="flex items-center gap-3 mb-4">
@@ -1746,7 +1711,7 @@ function TechConfigurationSection({ content, locale }: { content: string; locale
 
         currentStep = {
           number: stepNum,
-          title: stepName || `Step ${stepNum}`,
+          title: stepName || 'Step ' + stepNum,
           icon: getStepIcon(stepNum),
           subsections: []
         };
@@ -1826,7 +1791,7 @@ function TechConfigurationSection({ content, locale }: { content: string; locale
             return (
               <div
                 key={subIdx}
-                className={`bg-gradient-to-br ${bgColor} rounded-xl p-6 border border-gray-200 hover:shadow-md hover:shadow-gray-500/10 transition-all`}
+                className={'bg-gradient-to-br ' + bgColor + ' rounded-xl p-6 border border-gray-200 hover:shadow-md hover:shadow-gray-500/10 transition-all'}
               >
                 {/* Subsection Header - Standardized */}
                 <div className="flex items-center gap-3 mb-4">
