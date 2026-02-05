@@ -6,6 +6,7 @@ import { Arena } from '@/lib/types';
 import {
   BarChart3,
   ArrowLeft,
+  ArrowRight,
   Mail,
   Star,
   Zap,
@@ -22,6 +23,12 @@ import {
   TrendingUp,
   Lightbulb,
   Users,
+  FileText,
+  Tag,
+  Clock,
+  Calendar,
+  ExternalLink,
+  Code,
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -150,9 +157,12 @@ export function ArenaDetailClient({ arena, locale, arenaId, initialContent, hasC
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-slate-50 via-white to-primary-50/30 relative overflow-hidden">
+      <div className="bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/20 relative overflow-hidden">
         {/* Grid pattern overlay */}
         <div className="absolute inset-0 bg-grid-pattern opacity-50 pointer-events-none"></div>
+        {/* Animated gradient orbs */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-blue-400/10 to-indigo-400/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-indigo-400/10 to-violet-400/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
           {/* Breadcrumb */}
@@ -230,27 +240,27 @@ export function ArenaDetailClient({ arena, locale, arenaId, initialContent, hasC
 
                 {/* Compact Metrics */}
                 <div className="grid grid-cols-4 gap-2">
-                  {/* Speed */}
+                  {/* Speed - Violet for Efficiency */}
                   <div className="text-center">
-                    <div className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-violet-500 mb-1">
-                      <Zap className="h-4 w-4" strokeWidth={2} />
+                    <div className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-violet-100 mb-1">
+                      <Zap className="h-4 w-4 text-violet-600" strokeWidth={2} />
                     </div>
-                    <div className="text-xs font-semibold text-violet-600 leading-tight mb-0.5">
+                    <div className="text-xs font-semibold text-violet-700 leading-tight mb-0.5">
                       {extractTimeFromDescription(locale === 'zh' ? arena.highlights : arena.highlightsEn) || (locale === 'zh' ? metrics.speed : speedToTimeMapping[metrics.speed] || metrics.speed)}
                     </div>
                     <div className="text-[10px] text-gray-500">{locale === 'zh' ? '速度' : 'Speed'}</div>
                   </div>
-                  {/* Quality, Security, Cost */}
+                  {/* Quality - Yellow for Ranking/Accuracy */}
                   {[
-                    { label: locale === 'zh' ? '质量' : 'Quality', stars: getStarRating(metrics.quality), icon: Star, color: 'text-amber-500' },
-                    { label: locale === 'zh' ? '安全' : 'Security', stars: getStarRating(metrics.security), icon: Shield, color: 'text-emerald-500' },
-                    { label: locale === 'zh' ? '成本' : 'Cost', stars: getStarRating(metrics.cost), icon: DollarSign, color: 'text-blue-500' },
+                    { label: locale === 'zh' ? '质量' : 'Quality', stars: getStarRating(metrics.quality), icon: Star, color: 'text-yellow-600', bg: 'bg-yellow-100' },
+                    { label: locale === 'zh' ? '安全' : 'Security', stars: getStarRating(metrics.security), icon: Shield, color: 'text-emerald-600', bg: 'bg-emerald-100' },
+                    { label: locale === 'zh' ? '成本' : 'Cost', stars: getStarRating(metrics.cost), icon: DollarSign, color: 'text-blue-600', bg: 'bg-blue-100' },
                   ].map((metric) => {
                     const Icon = metric.icon;
                     return (
                       <div key={metric.label} className="text-center">
-                        <div className={`inline-flex items-center justify-center w-8 h-8 rounded-lg ${metric.color} mb-1`}>
-                          <Icon className="h-4 w-4" strokeWidth={2} />
+                        <div className={`inline-flex items-center justify-center w-8 h-8 rounded-lg ${metric.bg} mb-1`}>
+                          <Icon className={`h-4 w-4 ${metric.color}`} strokeWidth={2} />
                         </div>
                         <div className="flex justify-center gap-0.5 mb-0.5">
                           {[1, 2, 3].map((star) => (
@@ -310,7 +320,7 @@ export function ArenaDetailClient({ arena, locale, arenaId, initialContent, hasC
       </div>
 
       {/* Sticky Tab Navigation */}
-      <div className="sticky top-16 z-40 bg-white border-b shadow-sm">
+      <div className="sticky top-16 z-40 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <nav className="flex items-center gap-1 overflow-x-auto py-0" role="tablist">
             {tabs.map((tab) => {
@@ -330,14 +340,17 @@ export function ArenaDetailClient({ arena, locale, arenaId, initialContent, hasC
                     window.location.hash = tab.key;
                   }}
                   role="tab"
-                  className={`group relative flex items-center gap-2 px-5 py-4 text-sm font-semibold border-b-2 transition-all whitespace-nowrap ${
+                  className={`group relative flex items-center gap-2 px-6 py-4 text-sm font-semibold border-b-2 transition-all whitespace-nowrap ${
                     activeTab === tab.key
-                      ? `border-primary text-gray-900 bg-gradient-to-r from-primary-50 to-transparent`
-                      : 'border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50 hover:border-gray-300'
+                      ? `border-blue-600 text-gray-900 bg-gradient-to-r from-blue-50 to-indigo-50`
+                      : 'border-transparent text-gray-500 hover:text-blue-600 hover:bg-gradient-to-r hover:from-slate-50 hover:to-blue-50 hover:border-gray-300'
                   }`}
                 >
-                  <Icon className={`h-4 w-4 ${activeTab === tab.key ? colorClasses : ''}`} />
+                  <Icon className={`h-4 w-4 ${activeTab === tab.key ? colorClasses : 'group-hover:text-blue-600'} transition-colors`} />
                   <span>{tab.label}</span>
+                  {activeTab === tab.key && (
+                    <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600"></div>
+                  )}
                 </button>
               );
             })}
@@ -625,54 +638,60 @@ function OverviewSection({ content, locale, activeTab, setActiveTab }: {
       return null;
     }
 
-    // Define the 4 highlights exactly as specified
+    // Define the 4 highlights exactly as specified with semantic colors
     const fourHighlights = [
       {
         title: isChina ? 'DeepResearch Bench排名第2' : 'Ranked #2 in DeepResearch Bench',
         description: isChina ? '权威基准测试综合得分51.86，与第一名差距<1.5%' : 'Score 51.86 on authoritative benchmark, <1.5% gap from #1',
-        icon: <TrendingUp className="h-6 w-6" />
+        icon: <TrendingUp className="h-6 w-6" />,
+        semanticColor: 'yellow' // Quality/Ranking
       },
       {
         title: isChina ? '减少95%手动研究工作量' : 'Reduce 95% Manual Research Workload',
         description: isChina ? '自动化资料搜集、信息整合，大幅提升调研效率' : 'Automated data collection and integration, greatly improving efficiency',
-        icon: <Zap className="h-6 w-6" />
+        icon: <Zap className="h-6 w-6" />,
+        semanticColor: 'violet' // Efficiency/Speed
       },
       {
         title: isChina ? '报告≤15分钟生成' : 'Generate Reports in ≤15 Minutes',
         description: isChina ? '快速输出高质量结构化调研文档，支持批量生成' : 'Quickly output high-quality structured research documents, support batch generation',
-        icon: <Target className="h-6 w-6" />
+        icon: <Target className="h-6 w-6" />,
+        semanticColor: 'violet' // Efficiency/Speed
       },
       {
         title: isChina ? '支持国产大模型' : 'Support Domestic LLMs',
         description: isChina ? '节省90%成本，GLM-4.7等国产模型性能优异' : 'Save 90% cost, domestic models like GLM-4.7 perform excellently',
-        icon: <DollarSign className="h-6 w-6" />
+        icon: <DollarSign className="h-6 w-6" />,
+        semanticColor: 'blue' // Cost/Savings
       },
     ];
 
-    const vibrantColors = [
-      { bg: 'from-violet-50 to-purple-100', border: 'border-violet-300', iconBg: 'bg-violet-500', title: 'text-violet-900' },
-      { bg: 'from-blue-50 to-cyan-100', border: 'border-blue-300', iconBg: 'bg-blue-500', title: 'text-blue-900' },
-      { bg: 'from-emerald-50 to-green-100', border: 'border-emerald-300', iconBg: 'bg-emerald-500', title: 'text-emerald-900' },
-      { bg: 'from-amber-50 to-yellow-100', border: 'border-amber-300', iconBg: 'bg-amber-500', title: 'text-amber-900' },
-    ];
+    // Semantic color mapping - matching Framework page exactly
+    const semanticColorMap = {
+      violet: { bg: 'from-violet-50 to-violet-100', border: 'border-violet-300', iconBg: 'bg-violet-600', title: 'text-violet-900', check: 'text-violet-700' },
+      yellow: { bg: 'from-yellow-50 to-yellow-100', border: 'border-yellow-300', iconBg: 'bg-yellow-600', title: 'text-yellow-900', check: 'text-yellow-700' },
+      blue: { bg: 'from-blue-50 to-blue-100', border: 'border-blue-300', iconBg: 'bg-blue-600', title: 'text-blue-900', check: 'text-blue-700' },
+      emerald: { bg: 'from-emerald-50 to-emerald-100', border: 'border-emerald-300', iconBg: 'bg-emerald-600', title: 'text-emerald-900', check: 'text-emerald-700' },
+    };
 
     return (
-      <div className="bg-gradient-to-br from-amber-50 via-orange-50 to-amber-50 rounded-3xl p-10 border-2 border-amber-200 hover:border-amber-300 hover:shadow-2xl hover:shadow-amber-500/20 transition-all duration-500 relative overflow-hidden">
-        {/* Decorative background elements */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-amber-200/30 to-orange-200/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-orange-200/30 to-amber-200/30 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+      <div className="bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/20 rounded-2xl p-8 border-2 border-blue-200 hover:border-blue-300 hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300 relative overflow-hidden">
+        {/* Decorative background pattern */}
+        <div className="absolute inset-0 bg-grid-pattern opacity-30"></div>
+        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-blue-400/10 to-indigo-400/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-indigo-400/10 to-violet-400/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
 
         <div className="relative z-10">
-          {/* Section Header - No numbering */}
+          {/* Section Header - Standardized */}
           <div className="flex items-center gap-4 mb-8">
-            <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl shadow-lg">
-              <Sparkles className="h-8 w-8 text-white" />
+            <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl shadow-lg">
+              <Sparkles className="h-6 w-6 text-white" />
             </div>
             <div>
-              <span className="inline-block px-3 py-1 rounded-full bg-gradient-to-r from-amber-500 to-orange-600 text-white text-xs font-bold mb-2 shadow-md">
+              <span className="inline-block px-3 py-1 rounded-full bg-gradient-to-r from-blue-600 to-indigo-700 text-white text-xs font-bold mb-2 shadow-md">
                 {isChina ? '核心价值' : 'CORE VALUE'}
               </span>
-              <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-700">
+              <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-indigo-800">
                 {isChina ? '业务亮点' : 'Business Highlights'}
               </h2>
             </div>
@@ -681,11 +700,13 @@ function OverviewSection({ content, locale, activeTab, setActiveTab }: {
           {/* Highlights Grid - 4 separate blocks */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {fourHighlights.map((highlight, idx) => {
-              const color = vibrantColors[idx % vibrantColors.length];
+              const color = semanticColorMap[highlight.semanticColor as keyof typeof semanticColorMap];
               return (
-                <div
+                <motion.div
                   key={idx}
-                  className={`group relative bg-gradient-to-br ${color.bg} rounded-2xl p-6 border-2 ${color.border} hover:scale-105 hover:shadow-xl hover:shadow-${color.iconBg}/20 transition-all duration-300 cursor-pointer`}
+                  whileHover={{ scale: 1.05, y: -5 }}
+                  transition={{ duration: 0.3 }}
+                  className={`group relative bg-gradient-to-br ${color.bg} rounded-2xl p-6 border-2 ${color.border} cursor-pointer`}
                 >
                   <div className={`absolute inset-0 bg-gradient-to-br ${color.bg} rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300`}></div>
 
@@ -699,27 +720,27 @@ function OverviewSection({ content, locale, activeTab, setActiveTab }: {
                     </h3>
 
                     <div className="flex items-start gap-2 text-sm">
-                      <CheckCircle2 className={`h-4 w-4 ${color.title.replace('text-', 'text-')} flex-shrink-0 mt-0.5`} />
+                      <CheckCircle2 className={`h-4 w-4 ${color.check} flex-shrink-0 mt-0.5`} />
                       <span className="text-gray-800 font-medium leading-relaxed">
                         {highlight.description}
                       </span>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               );
             })}
           </div>
 
           {/* Call to Action Banner */}
-          <div className="mt-8 p-6 bg-gradient-to-r from-amber-500 to-orange-600 rounded-2xl shadow-lg">
+          <div className="mt-8 p-6 bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl shadow-lg">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <Rocket className="h-8 w-8 text-white" />
                 <div>
-                  <p className="text-white font-black text-xl">
+                  <p className="text-white font-bold text-lg">
                     {isChina ? '立即可用，快速部署' : 'Ready to Use, Quick Deploy'}
                   </p>
-                  <p className="text-amber-100 font-medium text-sm">
+                  <p className="text-blue-100 font-medium text-sm">
                     {isChina ? '完整的开源方案，企业级质量保证' : 'Complete open-source solution, enterprise-grade quality'}
                   </p>
                 </div>
@@ -729,7 +750,7 @@ function OverviewSection({ content, locale, activeTab, setActiveTab }: {
                   setActiveTab('implementation');
                   window.location.hash = 'implementation';
                 }}
-                className="hidden sm:inline-flex items-center gap-2 px-6 py-3 bg-white text-amber-700 rounded-xl font-bold hover:bg-amber-50 transition-all shadow-md hover:shadow-lg"
+                className="hidden sm:inline-flex items-center gap-2 px-6 py-3 bg-white text-blue-700 rounded-xl font-bold hover:bg-blue-50 transition-all shadow-md hover:shadow-lg"
               >
                 {isChina ? '立即开始' : 'Get Started'} →
               </button>
@@ -747,8 +768,8 @@ function OverviewSection({ content, locale, activeTab, setActiveTab }: {
     }
 
     return (
-      <div className="bg-white rounded-2xl p-8 border border-gray-100/80 hover:border-blue-200 hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300">
-        <div className="flex items-center gap-3 mb-6">
+      <div className="bg-gradient-to-br from-slate-50 via-blue-50/20 to-indigo-50/20 rounded-2xl p-8 border-2 border-blue-200 hover:border-blue-300 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300">
+        <div className="flex items-center gap-4 mb-6">
           <span className="text-4xl">{section.icon}</span>
           <h2 className="text-3xl font-bold text-gray-900">{section.title}</h2>
         </div>
@@ -757,10 +778,10 @@ function OverviewSection({ content, locale, activeTab, setActiveTab }: {
           {section.subsections.map((subsection, idx) => (
             <div
               key={idx}
-              className="bg-gradient-to-br from-slate-50 to-gray-50 rounded-xl p-5 border border-slate-100/80 hover:scale-[1.02] hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-300"
+              className="bg-white rounded-xl p-5 border border-gray-200 shadow-sm hover:shadow-md hover:border-blue-200 hover:scale-[1.02] transition-all duration-300"
             >
               {subsection.title && (
-                <h3 className="text-base font-bold text-gray-900 mb-3">{subsection.title}</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">{subsection.title}</h3>
               )}
               <div className="space-y-2">
                 {subsection.content.filter((c) => c.startsWith('-')).map((item, i) => (
@@ -783,85 +804,275 @@ function OverviewSection({ content, locale, activeTab, setActiveTab }: {
       return null;
     }
 
-    const colors = [
-      { bg: 'from-red-50 to-red-100', border: 'border-red-200', text: 'text-red-700' },
-      { bg: 'from-orange-50 to-orange-100', border: 'border-orange-200', text: 'text-orange-700' },
-      { bg: 'from-yellow-50 to-yellow-100', border: 'border-yellow-200', text: 'text-yellow-700' },
-      { bg: 'from-purple-50 to-purple-100', border: 'border-purple-200', text: 'text-purple-700' },
-    ];
+    // Pain points are about risk/safety - use emerald semantic color
+    const riskColor = {
+      bg: 'from-emerald-50 to-emerald-100',
+      border: 'border-emerald-200',
+      text: 'text-emerald-700'
+    };
 
     return (
-      <div className="bg-white rounded-2xl p-8 border border-gray-100/80 hover:border-blue-200 hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300">
-        <div className="flex items-center gap-3 mb-6">
+      <div className="bg-white rounded-2xl p-8 border border-gray-100/80 hover:border-emerald-200 hover:shadow-2xl hover:shadow-emerald-500/20 transition-all duration-300">
+        <div className="flex items-center gap-4 mb-6">
           <span className="text-4xl">{section.icon}</span>
           <h2 className="text-3xl font-bold text-gray-900">{section.title}</h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {section.subsections.map((subsection, idx) => {
-            const color = colors[idx % colors.length];
-            return (
-              <div
-                key={idx}
-                className={`bg-gradient-to-br ${color.bg} rounded-xl p-6 border ${color.border} hover:scale-[1.02] hover:shadow-lg transition-all duration-300`}
-              >
-                {subsection.title && (
-                  <h3 className={`text-lg font-bold ${color.text} mb-3`}>{subsection.title}</h3>
-                )}
-                <div className="text-sm text-gray-700 leading-relaxed space-y-2">
-                  {subsection.content.map((item, i) => (
-                    <p key={i}>{item}</p>
-                  ))}
-                </div>
+          {section.subsections.map((subsection, idx) => (
+            <div
+              key={idx}
+              className={`bg-gradient-to-br ${riskColor.bg} rounded-xl p-6 border ${riskColor.border} hover:scale-[1.02] hover:shadow-lg hover:shadow-emerald-500/10 transition-all duration-300`}
+            >
+              {subsection.title && (
+                <h3 className={`text-xl font-bold ${riskColor.text} mb-3`}>{subsection.title}</h3>
+              )}
+              <div className="text-sm text-gray-700 leading-relaxed space-y-2">
+                {subsection.content.map((item, i) => (
+                  <p key={i}>{item}</p>
+                ))}
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
       </div>
     );
   };
 
-  // Render Best Practice section - Match screenshot format
+  // Render Best Practice section - Clean three-section design
   const renderBestPracticeCard = (section: typeof sections[0]) => {
     if (!section.title.toLowerCase().includes('best practice') && !section.title.includes('最佳实践')) {
       return null;
     }
 
-    // Remove numbering from title
-    const cleanTitle = section.title.replace(/^\d+\.\s*/, '');
+    // Extract deployment version from subsection title
+    const deploymentSubsection = section.subsections.find(sub =>
+      sub.title?.includes('私部署') || sub.title?.includes('部署') || sub.title?.includes('Server')
+    );
+    const deploymentVersion = deploymentSubsection?.title?.replace(/^[0-9.]+\s*/, '') || (isChina ? '私部署（服务器版）' : 'Private Deployment (Server)');
+
+    // Extract content by keywords from subsection content
+    const extractContentByKeywords = (subsection: typeof section.subsections[0] | undefined, keywords: string[]) => {
+      if (!subsection) return [];
+      const keywordIndex = subsection.content.findIndex(c =>
+        keywords.some(keyword => c.includes(keyword))
+      );
+      if (keywordIndex === -1) return [];
+
+      const result: string[] = [];
+      for (let i = keywordIndex + 1; i < subsection.content.length; i++) {
+        const line = subsection.content[i].trim();
+        if (line.startsWith('####') || line.startsWith('###')) break;
+        if (line) result.push(subsection.content[i]);
+      }
+      return result;
+    };
+
+    const reasonContent = extractContentByKeywords(deploymentSubsection, ['入选最佳实践理由', '最佳实践理由', '理由', '指标提升', '成本优化']);
+    const infoContent = extractContentByKeywords(deploymentSubsection, ['版本基本信息', '基本信息', '实践者信息', '原作者信息', '版本状态']);
+    const detailsContent = extractContentByKeywords(deploymentSubsection, ['实施详情', '详情']);
+
+    // Fixed outcomes - hardcoded, no parsing needed, with semantic colors
+    const outcomes = [
+      {
+        title: isChina ? '效果领先' : 'Quality Leadership',
+        desc: isChina
+          ? '在 DeepResearch Bench 开源方案中排名 第 2，生成内容稳定、可信，适用于正式业务决策场景。'
+          : 'Ranked #2 on DeepResearch Bench. Stable, trustworthy output for business decisions.',
+        semanticColor: 'yellow' as const // Quality/Ranking
+      },
+      {
+        title: isChina ? '生成更快' : 'Faster Generation',
+        desc: isChina
+          ? '单篇报告 ≤15 分钟完成，显著快于同类方案（普遍 ≥20 分钟）。'
+          : '≤15 min per report, significantly faster than alternatives (typically ≥20 min).',
+        semanticColor: 'violet' as const // Efficiency/Speed
+      },
+      {
+        title: isChina ? '成本更低' : 'Lower Cost',
+        desc: isChina
+          ? '支持国产大模型（如 GLM 系列），在保持效果的前提下，整体成本降低 60%+。'
+          : 'Supports domestic models (e.g., GLM series), 60%+ cost reduction while maintaining quality.',
+        semanticColor: 'blue' as const // Cost/Savings
+      },
+      {
+        title: isChina ? '企业可用' : 'Enterprise Ready',
+        desc: isChina
+          ? '模板契合度 ≥95%，格式规范度 ≥99%，可直接用于内部汇报与对外材料。'
+          : '≥95% template match, ≥99% format compliance. Ready for internal and external use.',
+        semanticColor: 'emerald' as const // Stability/Compliance
+      }
+    ];
+
+    // Semantic color mapping for outcomes - matching Framework page exactly
+    const outcomeColorMap = {
+      violet: { bg: 'from-violet-50 to-violet-100', border: 'border-violet-200', icon: 'bg-violet-500', text: 'text-violet-700' },
+      yellow: { bg: 'from-yellow-50 to-yellow-100', border: 'border-yellow-200', icon: 'bg-yellow-500', text: 'text-yellow-700' },
+      blue: { bg: 'from-blue-50 to-blue-100', border: 'border-blue-200', icon: 'bg-blue-500', text: 'text-blue-700' },
+      emerald: { bg: 'from-emerald-50 to-emerald-100', border: 'border-emerald-200', icon: 'bg-emerald-500', text: 'text-emerald-700' },
+    };
+
+    // Parse metadata
+    const parseMetadata = (content: string[]) => {
+      const metadata: { [key: string]: string } = {};
+      content.forEach(c => {
+        const match = c.match(/\*\*([^*]+)\*\*:\s*(.+)/);
+        if (match) {
+          let key = match[1].replace('信息', '').replace(/称呼$/, '').trim();
+          if (key === '实践者') metadata['practitioner'] = match[2].trim();
+          else if (key === '首发日期') metadata['firstReleased'] = match[2].trim();
+          else if (key === '最近更新') metadata['lastUpdated'] = match[2].trim();
+        }
+      });
+      return metadata;
+    };
+
+    const metadata = parseMetadata(infoContent);
+    const practitioner = metadata['practitioner'] || 'Real-World AI';
+    const firstReleased = metadata['firstReleased']?.split('-')[0] || '2025-11';
+    const lastUpdated = metadata['lastUpdated']?.split('-')[0] || '2025-12';
+
+    // Extract implementation link
+    const implementationLink = detailsContent.find(c => c.includes('http'));
+    const linkMatch = implementationLink?.match(/\[([^\]]+)\]\(([^)]+)\)/);
+    const detailLink = linkMatch ? linkMatch[2] : null;
 
     return (
-      <div className="bg-gradient-to-br from-yellow-50 to-amber-50 rounded-2xl p-8 border border-yellow-200 hover:border-yellow-300 hover:shadow-2xl hover:shadow-yellow-500/20 transition-all duration-300">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="flex h-12 w-12 items-center justify-center bg-gradient-to-br from-yellow-500 to-amber-600 rounded-xl text-white">
-            <Trophy className="h-6 w-6" />
+      <div className="bg-gradient-to-br from-slate-50 to-white rounded-2xl p-8 border-2 border-gray-200 hover:border-blue-300 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300">
+        {/* Header - Standardized */}
+        <div className="mb-8">
+          <div className="flex items-center gap-4 mb-3">
+            <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl shadow-lg">
+              <Trophy className="h-6 w-6 text-white" />
+            </div>
+            <h2 className="text-3xl font-bold text-gray-900">
+              {isChina ? '最佳实践版本' : 'Best Practice Version'}
+            </h2>
           </div>
-          <h2 className="text-3xl font-bold text-gray-900">{cleanTitle}</h2>
+          <div className="inline-flex items-center px-3 py-1.5 bg-blue-50 rounded-lg border border-blue-200 mb-4">
+            <span className="text-sm font-semibold text-blue-900">{deploymentVersion}</span>
+          </div>
+          <p className="text-base text-gray-700 leading-relaxed max-w-3xl">
+            {isChina
+              ? '当前最成熟、性能最优的企业级方案。由 RWAI 团队自研并在多家企业真实场景中验证，兼顾效果、速度与成本。'
+              : 'The most mature and high-performance enterprise solution. Developed and validated by RWAI team across real-world scenarios.'}
+          </p>
         </div>
 
-        <div className="space-y-5">
-          {section.subsections.map((subsection, idx) => (
-            <div key={idx} className="bg-white rounded-xl p-5 border border-yellow-200">
-              <h3 className="text-lg font-bold text-amber-900 mb-3">{subsection.title.replace(/^\d+\.\d*\.\s*/, '')}</h3>
-              <div className="space-y-2">
-                {subsection.content.filter((c) => c && !c.startsWith('####')).map((item, i) => {
-                  if (item.startsWith('-')) {
-                    return (
-                      <div key={i} className="flex items-start gap-2 text-sm text-gray-700">
-                        <span className="text-amber-600 flex-shrink-0 mt-0.5">•</span>
-                        <span>{item.replace(/^-\s+/, '').replace(/\*\*/g, '')}</span>
-                      </div>
-                    );
-                  }
-                  return (
-                    <p key={i} className="text-sm text-gray-700 leading-relaxed">
-                      {item}
-                    </p>
-                  );
-                })}
-              </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Left: Why it's better (2 columns wide) */}
+          <div className="lg:col-span-2">
+            <div className="flex items-center gap-2 mb-5">
+              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
+              <h3 className="text-lg font-bold text-gray-900 px-4 whitespace-nowrap">
+                {isChina ? '为什么它是目前最好的版本' : 'Why It\'s the Best Version'}
+              </h3>
+              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
             </div>
-          ))}
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {outcomes.map((outcome, idx) => {
+                const color = outcomeColorMap[outcome.semanticColor];
+                const icons = ['⭐', '⚡', '💰', '✓'];
+
+                return (
+                  <div
+                    key={idx}
+                    className={`group bg-gradient-to-br ${color.bg} rounded-xl p-5 border-2 ${color.border} hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-default`}
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className={`flex h-8 w-8 items-center justify-center rounded-lg ${color.icon} text-white shadow-md flex-shrink-0 group-hover:scale-110 transition-transform`}>
+                        <span className="text-base">{icons[idx]}</span>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className={`text-base font-bold ${color.text} mb-2`}>{outcome.title}</h4>
+                        <p className="text-sm text-gray-700 leading-relaxed">{outcome.desc}</p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Right: Practitioner & Version Info */}
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+              <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wide mb-5">
+                {isChina ? '实践者 & 版本信息' : 'Practitioner & Version'}
+              </h3>
+
+              <div className="space-y-5">
+                {/* Practitioner - Neutral gray */}
+                <div className="flex items-center gap-3 pb-4 border-b border-gray-100">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-100 text-gray-600 shadow-sm">
+                    <Users className="h-5 w-5" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-xs text-gray-500 mb-0.5">{isChina ? '实践者' : 'Practitioner'}</div>
+                    <div className="text-sm font-bold text-gray-900">{practitioner}</div>
+                  </div>
+                </div>
+
+                {/* Version Status - Purple for Time */}
+                <div className="flex items-center gap-3 pb-4 border-b border-gray-100">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100 text-purple-600 shadow-sm">
+                    <Calendar className="h-5 w-5" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-xs text-gray-500 mb-0.5">{isChina ? '版本状态' : 'Version'}</div>
+                    <div className="text-sm text-gray-900">
+                      {isChina ? '首发：' : 'First: '}{firstReleased}
+                    </div>
+                    <div className="text-sm text-gray-900">
+                      {isChina ? '更新：' : 'Updated: '}{lastUpdated}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Key Dependencies - Neutral gray */}
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-100 text-gray-600 shadow-sm">
+                    <Code className="h-5 w-5" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-xs text-gray-500 mb-0.5">{isChina ? '关键依赖' : 'Dependencies'}</div>
+                    <div className="text-sm text-gray-900">Claude Code · Metaso MCP · GLM</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* External Link */}
+              {detailLink && (
+                <a
+                  href={detailLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-5 inline-flex items-center gap-2 px-4 py-2 text-sm text-blue-600 hover:text-blue-700 font-semibold hover:bg-blue-50 rounded-lg transition-colors"
+                >
+                  {isChina ? '外部文档' : 'External Docs'}
+                  <ExternalLink className="h-4 w-4" />
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom CTA - View Implementation Details */}
+        <div className="mt-8 pt-6 border-t border-gray-200">
+          <button
+            onClick={() => {
+              setActiveTab('implementation');
+              window.location.hash = 'implementation';
+            }}
+            className="w-full group inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 text-white text-base font-bold rounded-xl transition-all shadow-lg hover:shadow-xl hover:shadow-blue-500/25 transform hover:scale-[1.02]"
+          >
+            <span className="flex items-center gap-2">
+              <FileText className="h-5 w-5" />
+              {isChina ? '查看完整实践细节' : 'View Full Implementation Details'}
+            </span>
+            <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+          </button>
         </div>
       </div>
     );
@@ -909,17 +1120,17 @@ function OverviewSection({ content, locale, activeTab, setActiveTab }: {
     const cleanSubtitle = (title: string) => title.replace(/^\d+\.\d*\.\s*/, '');
 
     return (
-      <div className="bg-white rounded-2xl p-8 border border-gray-100/80 hover:border-blue-200 hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300">
-        <div className="flex items-center gap-3 mb-6">
+      <div className="bg-gradient-to-br from-slate-50 via-blue-50/20 to-indigo-50/20 rounded-2xl p-8 border-2 border-blue-200 hover:border-blue-300 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300">
+        <div className="flex items-center gap-4 mb-6">
           <span className="text-4xl">{section.icon}</span>
           <h2 className="text-3xl font-bold text-gray-900">{cleanTitle}</h2>
         </div>
 
         <div className="space-y-5">
           {section.subsections.map((subsection, idx) => (
-            <div key={idx} className="bg-gradient-to-br from-slate-50 to-gray-50 rounded-xl p-5 border border-slate-100/80">
+            <div key={idx} className="bg-white rounded-xl p-5 border border-gray-200 shadow-sm hover:shadow-md hover:border-blue-200 transition-all">
               {subsection.title && (
-                <h3 className="text-lg font-bold text-gray-900 mb-3">{cleanSubtitle(subsection.title)}</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">{cleanSubtitle(subsection.title)}</h3>
               )}
               <div className="space-y-2">
                 {subsection.content.filter((c) => c && !c.startsWith('####')).map((item, i) => {
@@ -952,19 +1163,254 @@ function OverviewSection({ content, locale, activeTab, setActiveTab }: {
     );
   };
 
+  // Render Basic Information section - 4 compact visual blocks
+  const renderBasicInfoCard = (section: typeof sections[0]) => {
+    if (!section.title.toLowerCase().includes('basic information') && !section.title.includes('基本信息')) {
+      return null;
+    }
+
+    // Extract subsections
+    const getSubsection = (keyword: string) => {
+      return section.subsections.find(sub => sub.title?.includes(keyword));
+    };
+
+    const overview = getSubsection('概况');
+    const tags = getSubsection('分类标签');
+    const impl = getSubsection('实施周期');
+    const team = getSubsection('团队构成');
+    const painPoints = getSubsection('业务痛点');
+    const coreFunctions = getSubsection('核心功能');
+
+    // Parse content items
+    const parseBulletPoints = (content: string[]) => {
+      return content.filter(c => c.startsWith('-')).map(c => c.replace(/^-\s+/, '').replace(/\*\*/g, ''));
+    };
+
+    // Extract overview text
+    const extractOverviewText = (content: string[]) => {
+      const businessBg = content.find(c => c.includes('业务背景'));
+      const solution = content.find(c => c.includes('解决方案'));
+      return { businessBg: businessBg?.replace(/\*\*业务背景\*\*:?\s*/, '') || '', solution: solution?.replace(/\*\*解决方案\*\*:?\s*/, '') || '' };
+    };
+
+    const overviewText = overview ? extractOverviewText(overview.content) : { businessBg: '', solution: '' };
+
+    // Parse tags
+    const parseTags = (content: string[]) => {
+      const tags: { label: string; items: string[] }[] = [];
+      content.forEach(c => {
+        const match = c.match(/\*\*([^*]+)\*\*:\s*(.+)/);
+        if (match) {
+          tags.push({ label: match[1], items: match[2].split(/[，,]/).map(t => t.trim()).filter(t => t) });
+        }
+      });
+      return tags;
+    };
+
+    const tagList = tags ? parseTags(tags.content) : [];
+
+    // Parse implementation timeline
+    const implItems = impl ? parseBulletPoints(impl.content) : [];
+
+    // Parse team
+    const teamItems = team ? parseBulletPoints(team.content) : [];
+
+    // Parse pain points and solutions, then merge by solution
+    const painPointItems = painPoints ? parseBulletPoints(painPoints.content) : [];
+    const solutionItems = coreFunctions ? parseBulletPoints(coreFunctions.content) : [];
+
+    // Create problem-solution pairs, merging problems with the same solution
+    const problemSolutionPairs: { pains: string[]; solution: string }[] = [];
+
+    // Map each pain point to its solution (simple round-robin for now)
+    painPointItems.forEach((pain, idx) => {
+      const solutionIndex = Math.min(idx, solutionItems.length - 1);
+      const solution = solutionItems[solutionIndex];
+
+      // Check if we already have this solution
+      const existingPair = problemSolutionPairs.find(p => p.solution === solution);
+
+      if (existingPair) {
+        existingPair.pains.push(pain);
+      } else {
+        problemSolutionPairs.push({ pains: [pain], solution });
+      }
+    });
+
+    return (
+      <div className="bg-gradient-to-br from-slate-50 via-blue-50/20 to-indigo-50/20 rounded-2xl p-8 border-2 border-blue-200 hover:border-blue-300 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300">
+        <div className="flex items-center gap-4 mb-8">
+          <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl shadow-lg">
+            <FileText className="h-6 w-6 text-white" />
+          </div>
+          <h2 className="text-3xl font-bold text-gray-900">{section.title.replace(/^\d+\.\s*/, '')}</h2>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Block 1: Overview - Neutral gray */}
+          <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gray-100">
+                <Lightbulb className="h-4 w-4 text-gray-600" />
+              </div>
+              <h3 className="text-lg font-bold text-gray-900">{isChina ? '概述' : 'Overview'}</h3>
+            </div>
+            {overviewText.businessBg && (
+              <p className="text-sm text-gray-700 mb-3 leading-relaxed">{overviewText.businessBg}</p>
+            )}
+            {overviewText.solution && (
+              <div className="flex items-start gap-2 p-3 bg-gradient-to-r from-gray-50 to-slate-50 rounded-lg border border-gray-200">
+                <Sparkles className="h-4 w-4 text-gray-600 flex-shrink-0 mt-0.5" />
+                <p className="text-sm text-gray-800 font-medium leading-relaxed">{overviewText.solution}</p>
+              </div>
+            )}
+          </div>
+
+          {/* Block 2: Classification Tags - Neutral gray */}
+          <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gray-100">
+                <Tag className="h-4 w-4 text-gray-600" />
+              </div>
+              <h3 className="text-lg font-bold text-gray-900">{isChina ? '分类标签' : 'Classification'}</h3>
+            </div>
+            <div className="space-y-3">
+              {tagList.map((tag, idx) => (
+                <div key={idx} className="flex flex-wrap gap-2">
+                  <span className="text-xs font-semibold text-gray-500 bg-slate-100 px-2 py-1 rounded">{tag.label}</span>
+                  {tag.items.map((item, i) => (
+                    <span key={i} className="text-xs font-medium text-gray-700 bg-gray-50 px-2.5 py-1 rounded-full border border-gray-200">
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Block 3: Implementation - Violet for Speed/Efficiency */}
+          <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-100">
+                <Clock className="h-4 w-4 text-violet-600" />
+              </div>
+              <h3 className="text-lg font-bold text-gray-900">{isChina ? '实施' : 'Implementation'}</h3>
+            </div>
+            <div className="space-y-3">
+              {implItems.length > 0 && (
+                <div>
+                  <div className="text-xs text-gray-500 mb-1.5">{isChina ? '周期' : 'Timeline'}</div>
+                  {implItems.map((item, idx) => (
+                    <div key={idx} className="text-sm text-violet-900 font-medium">{item}</div>
+                  ))}
+                </div>
+              )}
+              {teamItems.length > 0 && (
+                <div className="pt-2 border-t border-gray-100">
+                  <div className="text-xs text-gray-500 mb-1.5">{isChina ? '团队' : 'Team'}</div>
+                  {teamItems.map((item, idx) => (
+                    <div key={idx} className="text-sm text-gray-800 font-medium">{item}</div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Block 4: Pain → Solution - Emerald for Safety/Risk */}
+          <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-100">
+                <ArrowRight className="h-4 w-4 text-emerald-600" />
+              </div>
+              <h3 className="text-lg font-bold text-gray-900">{isChina ? '问题 → 解决方案' : 'Problem → Solution'}</h3>
+            </div>
+            <div className="space-y-3">
+              {problemSolutionPairs.map((pair, pairIdx) => {
+                return (
+                  <div key={pairIdx} className="flex items-start gap-2">
+                    <div className="flex flex-col items-center">
+                      <div className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 text-xs font-bold mt-0.5">
+                        {pairIdx + 1}
+                      </div>
+                      {pairIdx < problemSolutionPairs.length - 1 && <div className="w-0.5 h-full bg-gray-200 my-1"></div>}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      {/* Render one or more pain points */}
+                      {pair.pains.map((pain, painIdx) => {
+                        const painMatch = pain.match(/^(.+?)[:：]/);
+                        const painTitle = painMatch ? painMatch[1] : pain;
+                        const painDesc = painMatch ? pain.replace(/^.+?[:：]\s*/, '') : '';
+
+                        return (
+                          <div key={painIdx} className={painIdx > 0 ? 'mt-2' : ''}>
+                            <div className="text-xs font-semibold text-emerald-700 mb-0.5">{painTitle}</div>
+                            <div className="text-xs text-gray-600 mb-1.5 leading-snug">{painDesc}</div>
+                          </div>
+                        );
+                      })}
+                      {/* Solution (rendered once for all merged pains) */}
+                      {pair.solution && (
+                        <div className="flex items-start gap-1.5 p-2 bg-gradient-to-r from-emerald-50 to-emerald-100 rounded border border-emerald-200 mt-1.5">
+                          <CheckCircle2 className="h-3 w-3 text-emerald-600 flex-shrink-0 mt-0.5" />
+                          <span className="text-xs text-emerald-800 leading-snug">{pair.solution}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="space-y-6">
       {sections.map((section, idx) => {
         const titleLower = section.title.toLowerCase();
 
-        // Business Highlights - Show prominently
+        // Business Highlights - Show prominently with animation
         if (titleLower.includes('business highlights') || section.title.includes('业务亮点')) {
-          return <div key={idx}>{renderBusinessHighlightsCard(section)}</div>;
+          return (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: idx * 0.1 }}
+            >
+              {renderBusinessHighlightsCard(section)}
+            </motion.div>
+          );
+        }
+
+        // Basic Information - New compact 4-block rendering
+        if (titleLower.includes('basic information') || section.title.includes('基本信息')) {
+          return (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: idx * 0.1 }}
+            >
+              {renderBasicInfoCard(section)}
+            </motion.div>
+          );
         }
 
         // Best Practice - Special rendering
         if (titleLower.includes('best practice') || section.title.includes('最佳实践')) {
-          return <div key={idx}>{renderBestPracticeCard(section)}</div>;
+          return (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: idx * 0.1 }}
+            >
+              {renderBestPracticeCard(section)}
+            </motion.div>
+          );
         }
 
         // Demo - Skip demo section (already shown in Hero)
@@ -972,18 +1418,27 @@ function OverviewSection({ content, locale, activeTab, setActiveTab }: {
           return null;
         }
 
-        // Key Metrics
+        // Key Metrics - Skip (moved to Basic Info)
         if (titleLower.includes('key metrics') || section.title.includes('核心指标')) {
-          return <div key={idx}>{renderKeyMetricsCard(section)}</div>;
+          return null;
         }
 
-        // Pain Points
+        // Pain Points - Skip (merged into Basic Info)
         if (titleLower.includes('pain points') || section.title.includes('痛点')) {
-          return <div key={idx}>{renderPainPointsCard(section)}</div>;
+          return null;
         }
 
         // Standard rendering for other sections
-        return <div key={idx}>{renderStandardCard(section)}</div>;
+        return (
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: idx * 0.1 }}
+          >
+            {renderStandardCard(section)}
+          </motion.div>
+        );
       })}
     </div>
   );
@@ -1095,11 +1550,11 @@ function ImplementationSection({ content, locale }: { content: string; locale: s
     return (
       <div
         key={idx}
-        className="bg-white rounded-2xl p-8 border border-gray-100/80 hover:border-purple-200 hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-300"
+        className="bg-white rounded-2xl p-8 border border-gray-100/80 hover:border-blue-200 hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300"
       >
-        {/* Phase Header */}
-        <div className="flex items-center gap-4 mb-8 pb-6 border-b-2 border-gradient-to-r from-purple-100 to-blue-100">
-          <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-blue-600 rounded-xl text-white text-3xl font-bold shadow-lg">
+        {/* Phase Header - Standardized */}
+        <div className="flex items-center gap-4 mb-8 pb-6 border-b-2 border-gradient-to-r from-blue-100 to-indigo-100">
+          <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl text-white text-xl font-bold shadow-lg">
             {phase.number}
           </div>
           <div className="flex-1">
@@ -1113,22 +1568,15 @@ function ImplementationSection({ content, locale }: { content: string; locale: s
         {/* Phase Subsections */}
         <div className="space-y-6">
           {phase.subsections.map((subsection, subIdx) => {
-            // Cycle through different background colors for subsections
-            const bgColors = [
-              'from-blue-50 to-indigo-50',
-              'from-purple-50 to-pink-50',
-              'from-green-50 to-emerald-50',
-              'from-amber-50 to-orange-50',
-              'from-cyan-50 to-sky-50',
-            ];
-            const bgColor = bgColors[subIdx % bgColors.length];
+            // Use consistent violet for implementation (speed/efficiency)
+            const bgColor = 'from-violet-50 to-violet-100';
 
             return (
               <div
                 key={subIdx}
-                className={`bg-gradient-to-br ${bgColor} rounded-xl p-6 border border-gray-100/80`}
+                className={`bg-gradient-to-br ${bgColor} rounded-xl p-6 border border-violet-200 hover:shadow-md hover:shadow-violet-500/10 transition-all`}
               >
-                {/* Subsection Header */}
+                {/* Subsection Header - Standardized */}
                 <div className="flex items-center gap-3 mb-4">
                   <span className="text-2xl">{subsection.icon}</span>
                   <h3 className="text-xl font-bold text-gray-900">{subsection.title}</h3>
@@ -1141,7 +1589,7 @@ function ImplementationSection({ content, locale }: { content: string; locale: s
                     if (item.match(/^\d+\./) || item.startsWith('-')) {
                       return (
                         <div key={itemIdx} className="flex items-start gap-3 text-gray-700">
-                          <span className="text-purple-600 flex-shrink-0 mt-1">
+                          <span className="text-violet-600 flex-shrink-0 mt-1">
                             {item.match(/^\d+\./) ? '➢' : '•'}
                           </span>
                           <span className="leading-relaxed">{item.replace(/^\d+\.\s*/, '').replace(/^-\s*/, '').replace(/\*\*/g, '')}</span>
@@ -1159,7 +1607,7 @@ function ImplementationSection({ content, locale }: { content: string; locale: s
                             href={linkMatch[2]}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 text-purple-600 hover:text-purple-800 font-medium"
+                            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium"
                           >
                             <span>🔗</span>
                             {linkMatch[1]}
@@ -1190,7 +1638,16 @@ function ImplementationSection({ content, locale }: { content: string; locale: s
 
   return (
     <div className="space-y-8">
-      {phases.map((phase, idx) => renderPhaseCard(phase, idx))}
+      {phases.map((phase, idx) => (
+        <motion.div
+          key={idx}
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: idx * 0.1 }}
+        >
+          {renderPhaseCard(phase, idx)}
+        </motion.div>
+      ))}
     </div>
   );
 }
@@ -1347,9 +1804,9 @@ function TechConfigurationSection({ content, locale }: { content: string; locale
         key={idx}
         className="bg-white rounded-2xl p-8 border border-gray-100/80 hover:border-blue-200 hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300"
       >
-        {/* Step Header */}
+        {/* Step Header - Standardized */}
         <div className="flex items-center gap-4 mb-8 pb-6 border-b-2 border-gradient-to-r from-blue-100 to-cyan-100">
-          <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl text-white text-3xl font-bold shadow-lg">
+          <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl text-white text-xl font-bold shadow-lg">
             {step.number}
           </div>
           <div className="flex-1">
@@ -1363,22 +1820,15 @@ function TechConfigurationSection({ content, locale }: { content: string; locale
         {/* Step Subsections */}
         <div className="space-y-6">
           {step.subsections.map((subsection, subIdx) => {
-            // Cycle through different background colors for subsections
-            const bgColors = [
-              'from-blue-50 to-cyan-50',
-              'from-indigo-50 to-blue-50',
-              'from-teal-50 to-green-50',
-              'from-cyan-50 to-sky-50',
-              'from-sky-50 to-blue-50',
-            ];
-            const bgColor = bgColors[subIdx % bgColors.length];
+            // Use consistent slate-gray for tech configuration (neutral/technical)
+            const bgColor = 'from-slate-50 to-gray-100';
 
             return (
               <div
                 key={subIdx}
-                className={`bg-gradient-to-br ${bgColor} rounded-xl p-6 border border-gray-100/80`}
+                className={`bg-gradient-to-br ${bgColor} rounded-xl p-6 border border-gray-200 hover:shadow-md hover:shadow-gray-500/10 transition-all`}
               >
-                {/* Subsection Header */}
+                {/* Subsection Header - Standardized */}
                 <div className="flex items-center gap-3 mb-4">
                   <span className="text-2xl">{subsection.icon}</span>
                   <h3 className="text-xl font-bold text-gray-900">{subsection.title}</h3>
@@ -1488,7 +1938,7 @@ function TechConfigurationSection({ content, locale }: { content: string; locale
                           <div key={blockIdx} className="space-y-2">
                             {block.content.map((item, itemIdx) => (
                               <div key={itemIdx} className="flex items-start gap-3">
-                                <span className="text-blue-600 flex-shrink-0 mt-1">
+                                <span className="text-gray-600 flex-shrink-0 mt-1">
                                   {item.match(/^\d+\./) ? '➢' : '•'}
                                 </span>
                                 <span className="leading-relaxed flex-1">
@@ -1542,7 +1992,16 @@ function TechConfigurationSection({ content, locale }: { content: string; locale
   return (
     <div className="space-y-8">
       {steps.length > 0 ? (
-        steps.map((step, idx) => renderStepCard(step, idx))
+        steps.map((step, idx) => (
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: idx * 0.1 }}
+          >
+            {renderStepCard(step, idx)}
+          </motion.div>
+        ))
       ) : (
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
           <p className="text-yellow-800 font-semibold mb-4">

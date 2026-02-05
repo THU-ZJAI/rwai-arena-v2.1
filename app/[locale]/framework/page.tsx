@@ -65,8 +65,8 @@ export default function FrameworkPage() {
         ? '通过Arena机制，我们持续评估和更新最佳实践，确保组织能够获得最新的技术解决方案。'
         : 'Through the Arena mechanism, we continuously evaluate and update best practices to ensure organizations have access to the latest technological solutions.',
       icon: TrendingUp,
-      color: 'bg-amber-500',
-      bgColor: 'bg-amber-50',
+      color: 'bg-yellow-500',
+      bgColor: 'bg-yellow-50',
     },
   ];
 
@@ -76,9 +76,9 @@ export default function FrameworkPage() {
       name: isChina ? '质量' : 'Quality',
       description: isChina ? '输出的准确性和可靠性' : 'Accuracy and reliability of output',
       icon: Star,
-      color: 'bg-amber-500',
-      bgColor: 'bg-amber-50',
-      borderColor: 'border-amber-200',
+      color: 'bg-yellow-500',
+      bgColor: 'bg-yellow-50',
+      borderColor: 'border-yellow-200',
     },
     {
       letter: 'E',

@@ -533,7 +533,7 @@ export default function ArenaClient({ params, pageTitle, pageSubtitle }: ArenaCl
                       { field: 'name' as SortField, label: isChina ? '名称' : 'Name', icon: null },
                       { field: 'status' as SortField, label: isChina ? '验证状态' : 'Status', icon: null },
                       { field: 'speed' as SortField, label: isChina ? '速度' : 'Speed', icon: Zap, color: 'text-violet-500' },
-                      { field: 'quality' as SortField, label: isChina ? '质量' : 'Quality', icon: Star, color: 'text-amber-500' },
+                      { field: 'quality' as SortField, label: isChina ? '质量' : 'Quality', icon: Star, color: 'text-yellow-500' },
                       { field: 'security' as SortField, label: isChina ? '安全' : 'Security', icon: Shield, color: 'text-emerald-500' },
                       { field: 'cost' as SortField, label: isChina ? '成本' : 'Cost', icon: DollarSign, color: 'text-blue-500' },
                     ].map((sortOption) => {
@@ -634,7 +634,7 @@ export default function ArenaClient({ params, pageTitle, pageSubtitle }: ArenaCl
                               </div>
                               {/* Quality, Security, Cost - Star ratings */}
                               {[
-                                { label: isChina ? '质量' : 'Quality', value: arena.metrics.quality, stars: getStarRating(arena.metrics.quality), icon: Star, color: 'text-amber-500', bg: 'bg-amber-50' },
+                                { label: isChina ? '质量' : 'Quality', value: arena.metrics.quality, stars: getStarRating(arena.metrics.quality), icon: Star, color: 'text-yellow-500', bg: 'bg-yellow-50' },
                                 { label: isChina ? '安全' : 'Security', value: arena.metrics.security, stars: getStarRating(arena.metrics.security), icon: Shield, color: 'text-emerald-500', bg: 'bg-emerald-50' },
                                 { label: isChina ? '成本' : 'Cost', value: arena.metrics.cost, stars: getStarRating(arena.metrics.cost), icon: DollarSign, color: 'text-blue-500', bg: 'bg-blue-50' },
                               ].map((metric) => {
